@@ -21,6 +21,10 @@ import {
   removeServersFromConfig,
   listConfiguredServers
 } from "../../src/claude-config.js";
+import {
+  detectProjectInfo,
+  hasMCPConfig
+} from "../../src/claude-code-config.js";
 import { SERVER_REGISTRY } from "../../src/server-registry.js";
 
 const logger = createLogger("remove");
@@ -31,22 +35,40 @@ interface RemoveOptions {
 }
 
 export const removeCommand = new Command("remove")
-  .description("Remove MCP servers from Claude Desktop configuration")
+  .description(
+    "Remove MCP servers from Claude Desktop and/or Claude Code configuration"
+  )
   .argument("[server-names...]", "Names of MCP servers to remove")
   .option("--all", "Remove all MCP servers")
   .option("-f, --force", "Skip confirmation prompts")
   .action(async (serverNames: string[], options: RemoveOptions) => {
     try {
-      console.log(chalk.blue("🗑️  Removing MCP servers from Claude Desktop\n"));
+      console.log(chalk.blue("🗑️  Removing MCP servers\n"));
 
-      // Detect Claude configuration
+      // Detect environments
+      const projectInfo = await detectProjectInfo();
       const claudeConfigPath = detectClaudeConfig();
-      const existingConfig = await readClaudeConfig(claudeConfigPath);
+      const existingDesktopConfig = await readClaudeConfig(claudeConfigPath);
+      const hasCodeConfig = await hasMCPConfig();
 
-      console.log(`📂 Claude config: ${chalk.cyan(claudeConfigPath)}`);
+      console.log(chalk.blue("🔍 Environment Detection:"));
+      console.log(`📂 Claude Desktop: ${chalk.cyan(claudeConfigPath)}`);
 
-      if (!existingConfig.exists) {
-        console.log(chalk.yellow("⚠️  No Claude Desktop configuration found."));
+      if (projectInfo.isProject) {
+        console.log(`📁 Project Directory: ${chalk.green("Yes")}`);
+        console.log(
+          `📄 Claude Code (.mcp.json): ${hasCodeConfig ? chalk.green("Exists") : chalk.dim("Not found")}`
+        );
+      } else {
+        console.log(`📁 Project Directory: ${chalk.dim("No")}`);
+      }
+
+      // Check if any configurations exist
+      const hasDesktop = existingDesktopConfig.exists;
+      const hasCode = hasCodeConfig;
+
+      if (!hasDesktop && !hasCode) {
+        console.log(chalk.yellow("\n⚠️  No Claude configurations found."));
         console.log(chalk.dim("Nothing to remove."));
         process.exit(0);
       }

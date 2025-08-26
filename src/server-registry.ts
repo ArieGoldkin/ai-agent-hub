@@ -144,8 +144,8 @@ export const SERVER_REGISTRY: Record<string, ServerDefinition> = {
     description:
       "Context7 powered documentation search and code snippet retrieval",
     category: "ai",
-    requiredEnv: ["CONTEXT7_API_KEY"],
-    optionalEnv: [],
+    requiredEnv: [],
+    optionalEnv: ["CONTEXT7_API_KEY"],
     defaultArgs: [],
     defaultEnv: {},
     capabilities: ["documentation", "search", "context"],

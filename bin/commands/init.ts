@@ -22,6 +22,13 @@ import {
   type MCPServerConfig
 } from "../../src/claude-config.js";
 import {
+  detectProjectInfo,
+  createMCPConfigFromServers,
+  hasMCPConfig,
+  getMCPJsonPath,
+  type ProjectInfo
+} from "../../src/claude-code-config.js";
+import {
   generateServerConfig,
   batchInstallServers,
   checkNPXAvailable
@@ -39,6 +46,11 @@ interface InitOptions {
   yes?: boolean;
   force?: boolean;
   dryRun?: boolean;
+}
+
+interface ConfigurationTargets {
+  desktop: boolean;
+  code: boolean;
 }
 
 export const initCommand = new Command("init")
@@ -84,19 +96,52 @@ export const initCommand = new Command("init")
 
       spinner.succeed(`Prerequisites met (NPX ${npxCheck.version})`);
 
-      // Detect Claude configuration
+      // Detect environments
+      const projectInfo = await detectProjectInfo();
       const claudeConfigPath = detectClaudeConfig();
-      const existingConfig = await readClaudeConfig(claudeConfigPath);
+      const existingDesktopConfig = await readClaudeConfig(claudeConfigPath);
+      const hasCodeConfig = await hasMCPConfig();
 
-      console.log(`📂 Claude config: ${chalk.cyan(claudeConfigPath)}`);
+      // Display environment detection results
+      console.log(chalk.blue("\n🔍 Environment Detection:"));
+      console.log(`📂 Claude Desktop: ${chalk.cyan(claudeConfigPath)}`);
 
-      if (existingConfig.exists) {
+      if (projectInfo.isProject) {
+        console.log(`📁 Project Directory: ${chalk.green("Yes")}`);
+        if (projectInfo.hasPackageJson) {
+          console.log(`   • package.json: ${chalk.green("Found")}`);
+        }
+        if (projectInfo.hasGitRepo) {
+          console.log(`   • .git directory: ${chalk.green("Found")}`);
+        }
+        console.log(
+          `📄 Claude Code (.mcp.json): ${hasCodeConfig ? chalk.green("Exists") : chalk.dim("Not found")}`
+        );
+      } else {
+        console.log(`📁 Project Directory: ${chalk.dim("No")}`);
+      }
+
+      // Determine configuration targets
+      let configTargets: ConfigurationTargets;
+
+      if (options.yes) {
+        // Auto-detect best configuration in non-interactive mode
+        configTargets = {
+          desktop: true,
+          code: projectInfo.isProject
+        };
+      } else {
+        configTargets = await selectConfigurationTargets(projectInfo, options);
+      }
+
+      // Handle existing configurations
+      if (existingDesktopConfig.exists && configTargets.desktop) {
         const serverCount = Object.keys(
-          existingConfig.config?.mcpServers || {}
+          existingDesktopConfig.config?.mcpServers || {}
         ).length;
         console.log(
           chalk.green(
-            `✅ Found existing configuration with ${serverCount} MCP server(s)`
+            `✅ Found existing Desktop configuration with ${serverCount} MCP server(s)`
           )
         );
 
@@ -111,7 +156,7 @@ export const initCommand = new Command("init")
             type: "confirm",
             name: "proceed",
             message:
-              "Continue with existing configuration? This will merge new servers with existing ones."
+              "Continue with existing Desktop configuration? This will merge new servers with existing ones."
           })) as { proceed: boolean };
           if (!proceed) {
             console.log(chalk.yellow("Setup cancelled."));
@@ -119,31 +164,57 @@ export const initCommand = new Command("init")
           }
         } else if (options.dryRun && serverCount > 0) {
           console.log(
-            chalk.dim("   (Dry run mode - would merge with existing servers)")
+            chalk.dim(
+              "   (Dry run mode - would merge with existing Desktop servers)"
+            )
           );
         }
-      } else {
+      } else if (configTargets.desktop) {
         console.log(
           chalk.dim(
-            "⚠️  No existing Claude configuration found - will create new one"
+            "⚠️  No existing Claude Desktop configuration found - will create new one"
           )
+        );
+      }
+
+      if (
+        hasCodeConfig &&
+        configTargets.code &&
+        !options.force &&
+        !options.yes &&
+        !options.dryRun
+      ) {
+        const enquirer = await getEnquirer();
+        const { proceed } = (await enquirer.prompt({
+          type: "confirm",
+          name: "proceed",
+          message:
+            "Continue with existing Claude Code configuration? This will replace the .mcp.json file."
+        })) as { proceed: boolean };
+        if (!proceed) {
+          console.log(chalk.yellow("Setup cancelled."));
+          process.exit(0);
+        }
+      } else if (hasCodeConfig && configTargets.code && options.dryRun) {
+        console.log(
+          chalk.dim("   (Dry run mode - would replace existing .mcp.json)")
         );
       }
 
       // Handle preset mode
       if (options.preset) {
-        await handlePresetSetup(options.preset, options);
+        await handlePresetSetup(options.preset, options, configTargets);
         return;
       }
 
       // Handle non-interactive mode
       if (options.yes) {
-        await handleDefaultSetup(options);
+        await handleDefaultSetup(options, configTargets);
         return;
       }
 
       // Interactive setup
-      await handleInteractiveSetup(options);
+      await handleInteractiveSetup(options, configTargets);
     } catch (error) {
       logger.error("Init command failed:", error);
       console.error(
@@ -154,9 +225,70 @@ export const initCommand = new Command("init")
     }
   });
 
+async function selectConfigurationTargets(
+  projectInfo: ProjectInfo,
+  options: InitOptions
+): Promise<ConfigurationTargets> {
+  if (options.dryRun) {
+    // In dry run mode, default to both if in project, desktop only otherwise
+    return {
+      desktop: true,
+      code: projectInfo.isProject
+    };
+  }
+
+  const enquirer = await getEnquirer();
+
+  if (!projectInfo.isProject) {
+    // Not in a project directory, only offer Desktop configuration
+    console.log(
+      chalk.dim(
+        "\n💡 Not in a project directory - Claude Code (.mcp.json) configuration not available"
+      )
+    );
+    return { desktop: true, code: false };
+  }
+
+  // In project directory, offer choices
+  const { configChoice } = (await enquirer.prompt({
+    type: "select",
+    name: "configChoice",
+    message: "Which Claude environment(s) would you like to configure?",
+    choices: [
+      {
+        name: "Both Claude Desktop and Claude Code",
+        value: "both",
+        hint: "Global Desktop config + project .mcp.json file"
+      },
+      {
+        name: "Claude Desktop only",
+        value: "desktop",
+        hint: "Global configuration for Claude Desktop app"
+      },
+      {
+        name: "Claude Code only",
+        value: "code",
+        hint: "Project-specific .mcp.json file for Claude Code"
+      }
+    ]
+  })) as { configChoice: string };
+
+  switch (configChoice) {
+    case "both":
+      return { desktop: true, code: true };
+    case "desktop":
+      return { desktop: true, code: false };
+    case "code":
+      return { desktop: false, code: true };
+    default:
+      return { desktop: true, code: false };
+  }
+}
+
 async function handlePresetSetup(
   preset: string,
-  options: InitOptions
+  options: InitOptions,
+  configTargets: ConfigurationTargets
 ): Promise<void> {
   const combination =
     SERVER_COMBINATIONS[preset as keyof typeof SERVER_COMBINATIONS];
@@ -200,19 +332,25 @@ async function handlePresetSetup(
     console.log(chalk.dim("   (In actual run, these would need to be set)"));
   }
 
-  await installServers(servers, options);
+  await installServers(servers, options, configTargets);
 }
 
-async function handleDefaultSetup(options: InitOptions): Promise<void> {
+async function handleDefaultSetup(
+  options: InitOptions,
+  configTargets: ConfigurationTargets
+): Promise<void> {
   console.log(
     chalk.blue("\n📦 Setting up with default configuration (Core Servers)")
   );
 
   const servers = SERVER_CATEGORIES.core.servers;
-  await installServers(servers, options);
+  await installServers(servers, options, configTargets);
 }
 
-async function handleInteractiveSetup(options: InitOptions): Promise<void> {
+async function handleInteractiveSetup(
+  options: InitOptions,
+  configTargets: ConfigurationTargets
+): Promise<void> {
   const enquirer = await getEnquirer();
 
   // Ask about setup type
@@ -344,12 +482,13 @@ async function handleInteractiveSetup(options: InitOptions): Promise<void> {
     );
   }
 
-  await installServers(selectedServers, options);
+  await installServers(selectedServers, options, configTargets);
 }
 
 async function showDryRunDetails(
   serverNames: string[],
-  options: InitOptions
+  options: InitOptions,
+  configTargets: ConfigurationTargets
 ): Promise<void> {
   console.log(chalk.yellow("\n📋 DRY RUN DETAILS:\n"));
 
@@ -377,24 +516,45 @@ async function showDryRunDetails(
 
   // Show configuration changes
   console.log(chalk.blue("⚙️  Configuration changes:"));
-  const claudeConfigPath = detectClaudeConfig();
-  const existingConfig = await readClaudeConfig(claudeConfigPath);
 
-  console.log(`   Config file: ${chalk.cyan(claudeConfigPath)}`);
+  if (configTargets.desktop) {
+    console.log(chalk.bold("   Claude Desktop:"));
+    const claudeConfigPath = detectClaudeConfig();
+    const existingConfig = await readClaudeConfig(claudeConfigPath);
+    console.log(`     Config file: ${chalk.cyan(claudeConfigPath)}`);
 
-  if (existingConfig.exists) {
-    const existingServerCount = Object.keys(
-      existingConfig.config?.mcpServers || {}
-    ).length;
-    console.log(`   Current servers: ${chalk.green(existingServerCount)}`);
+    if (existingConfig.exists) {
+      const existingServerCount = Object.keys(
+        existingConfig.config?.mcpServers || {}
+      ).length;
+      console.log(`     Current servers: ${chalk.green(existingServerCount)}`);
+      console.log(
+        `     After changes: ${chalk.green(existingServerCount + serverNames.length)} (+${serverNames.length})`
+      );
+    } else {
+      console.log(
+        `     ${chalk.yellow("Config file does not exist - would create new one")}`
+      );
+      console.log(`     New servers: ${chalk.green(serverNames.length)}`);
+    }
+  }
+
+  if (configTargets.code) {
+    console.log(chalk.bold("   Claude Code:"));
+    const mcpJsonPath = getMCPJsonPath();
+    const hasExistingMcpConfig = await hasMCPConfig();
+    console.log(`     Config file: ${chalk.cyan(mcpJsonPath)}`);
+
+    if (hasExistingMcpConfig) {
+      console.log(
+        `     ${chalk.yellow("Existing .mcp.json - would be replaced")}`
+      );
+    } else {
+      console.log(`     ${chalk.green("New .mcp.json file would be created")}`);
+    }
     console.log(
-      `   After changes: ${chalk.green(existingServerCount + serverNames.length)} (+${serverNames.length})`
+      `     Servers to configure: ${chalk.green(serverNames.length)}`
     );
-  } else {
-    console.log(
-      `   ${chalk.yellow("Config file does not exist - would create new one")}`
-    );
-    console.log(`   New servers: ${chalk.green(serverNames.length)}`);
   }
 
   // Generate preview of server configurations
@@ -471,10 +631,17 @@ async function showDryRunDetails(
   }
 
   // Show backup information
-  if (!options.force && existingConfig.exists) {
+  let needsBackup = false;
+  if (configTargets.desktop && !options.force) {
+    const claudeConfigPath = detectClaudeConfig();
+    const existingDesktopConfig = await readClaudeConfig(claudeConfigPath);
+    needsBackup = existingDesktopConfig.exists;
+  }
+
+  if (needsBackup) {
     console.log(chalk.blue("💾 Backup:"));
     console.log(
-      `   ${chalk.dim("Current config would be backed up before changes")}`
+      `   ${chalk.dim("Current Desktop config would be backed up before changes")}`
     );
     console.log("");
   }
@@ -482,11 +649,24 @@ async function showDryRunDetails(
   // Show final summary
   console.log(chalk.green("✅ Summary:"));
   console.log(`   • ${serverNames.length} servers would be installed via NPX`);
+
+  if (configTargets.desktop) {
+    const claudeConfigPath = detectClaudeConfig();
+    const existingDesktopConfig = await readClaudeConfig(claudeConfigPath);
+    console.log(
+      `   • Claude Desktop config would be ${existingDesktopConfig.exists ? "updated" : "created"}`
+    );
+  }
+
+  if (configTargets.code) {
+    const hasExistingMcpConfig = await hasMCPConfig();
+    console.log(
+      `   • Claude Code .mcp.json would be ${hasExistingMcpConfig ? "updated" : "created"}`
+    );
+  }
+
   console.log(
-    `   • Claude config would be ${existingConfig.exists ? "updated" : "created"}`
-  );
-  console.log(
-    `   • ${!options.force && existingConfig.exists ? "Backup would be created" : "No backup needed"}`
+    `   • ${needsBackup ? "Desktop backup would be created" : "No backup needed"}`
   );
 
   console.log(
@@ -498,7 +678,8 @@ async function showDryRunDetails(
 
 async function installServers(
   serverNames: string[],
-  options: InitOptions
+  options: InitOptions,
+  configTargets: ConfigurationTargets
 ): Promise<void> {
   const actionVerb = options.dryRun ? "Would install" : "Installing";
   console.log(
@@ -510,7 +691,7 @@ async function installServers(
   });
 
   if (options.dryRun) {
-    await showDryRunDetails(serverNames, options);
+    await showDryRunDetails(serverNames, options, configTargets);
     return;
   }
 
@@ -548,40 +729,52 @@ async function installServers(
       process.exit(1);
     }
 
-    // Generate Claude configuration
-    const configSpinner = createSpinner(
-      "Updating Claude Desktop configuration"
-    );
-    configSpinner.start();
+    // Generate configuration for successful installations
+    const successfulServerNames = successful
+      .map(result => {
+        return serverNames.find(name => {
+          const server = SERVER_REGISTRY[name];
+          return server?.package === result.packageName;
+        });
+      })
+      .filter(name => name !== undefined) as string[];
 
-    const serverConfigs: Record<string, MCPServerConfig> = {};
+    // Collect environment variables for all servers
+    const env: Record<string, string> = {};
+    successfulServerNames.forEach(serverName => {
+      const server = SERVER_REGISTRY[serverName];
+      if (server) {
+        // Add default environment variables
+        Object.assign(env, server.defaultEnv);
 
-    for (const result of successful) {
-      const serverName = serverNames.find(name => {
-        const server = SERVER_REGISTRY[name];
-        return server?.package === result.packageName;
-      });
+        // Add required environment variables from process.env
+        server.requiredEnv.forEach(envVar => {
+          if (process.env[envVar]) {
+            env[envVar] = process.env[envVar]!;
+          }
+        });
 
-      if (serverName) {
+        // Add optional environment variables from process.env
+        server.optionalEnv.forEach(envVar => {
+          if (process.env[envVar]) {
+            env[envVar] = process.env[envVar]!;
+          }
+        });
+      }
+    });
+
+    // Update Claude Desktop configuration if selected
+    if (configTargets.desktop) {
+      const desktopSpinner = createSpinner(
+        "Updating Claude Desktop configuration"
+      );
+      desktopSpinner.start();
+
+      const serverConfigs: Record<string, MCPServerConfig> = {};
+
+      for (const serverName of successfulServerNames) {
         const server = SERVER_REGISTRY[serverName];
         if (server) {
-          // Collect environment variables
-          const env: Record<string, string> = { ...server.defaultEnv };
-
-          // Add required environment variables from process.env
-          server.requiredEnv.forEach(envVar => {
-            if (process.env[envVar]) {
-              env[envVar] = process.env[envVar]!;
-            }
-          });
-
-          // Add optional environment variables from process.env
-          server.optionalEnv.forEach(envVar => {
-            if (process.env[envVar]) {
-              env[envVar] = process.env[envVar]!;
-            }
-          });
-
           serverConfigs[serverName] = generateServerConfig(
             server.package,
             server.version,
@@ -590,38 +783,69 @@ async function installServers(
           );
         }
       }
+
+      const updateResult = await updateClaudeConfig(
+        serverConfigs,
+        undefined,
+        !options.force
+      );
+
+      if (updateResult.updated) {
+        desktopSpinner.succeed("Claude Desktop configuration updated");
+        if (updateResult.backupPath) {
+          console.log(
+            chalk.dim(`💾 Desktop backup saved: ${updateResult.backupPath}`)
+          );
+        }
+      } else {
+        desktopSpinner.succeed(
+          "Claude Desktop configuration unchanged (no updates needed)"
+        );
+      }
     }
 
-    // Update Claude configuration
-    const updateResult = await updateClaudeConfig(
-      serverConfigs,
-      undefined,
-      !options.force
-    );
-
-    if (updateResult.updated) {
-      configSpinner.succeed("Claude Desktop configuration updated");
-      if (updateResult.backupPath) {
-        console.log(chalk.dim(`💾 Backup saved: ${updateResult.backupPath}`));
-      }
-    } else {
-      configSpinner.succeed(
-        "Claude Desktop configuration unchanged (no updates needed)"
+    // Update Claude Code configuration if selected
+    if (configTargets.code) {
+      const codeSpinner = createSpinner(
+        "Creating Claude Code .mcp.json configuration"
       );
+      codeSpinner.start();
+
+      try {
+        await createMCPConfigFromServers(successfulServerNames, env);
+        codeSpinner.succeed("Claude Code .mcp.json configuration created");
+      } catch (error) {
+        codeSpinner.fail("Failed to create Claude Code configuration");
+        console.error(
+          chalk.red("Error:"),
+          error instanceof Error ? error.message : "Unknown error"
+        );
+      }
     }
 
     // Show completion message
     console.log(chalk.green("\n✅ Setup completed successfully!"));
 
     console.log(chalk.bold("\n📋 Next steps:"));
+    let stepCounter = 1;
+
+    if (configTargets.desktop) {
+      console.log(
+        `   ${stepCounter++}. ${chalk.cyan("Restart Claude Desktop")} to load the new servers`
+      );
+    }
+
+    if (configTargets.code) {
+      console.log(
+        `   ${stepCounter++}. ${chalk.cyan("Restart Claude Code")} or reload your project to use .mcp.json`
+      );
+    }
+
     console.log(
-      `   1. ${chalk.cyan("Restart Claude Desktop")} to load the new servers`
+      `   ${stepCounter++}. Run ${chalk.cyan("ai-agent-hub list")} to verify installed servers`
     );
     console.log(
-      `   2. Run ${chalk.cyan("ai-agent-hub list")} to verify installed servers`
-    );
-    console.log(
-      `   3. Run ${chalk.cyan("ai-agent-hub doctor")} to validate your setup`
+      `   ${stepCounter++}. Run ${chalk.cyan("ai-agent-hub doctor")} to validate your setup`
     );
 
     // Show environment variable reminders

@@ -21,6 +21,12 @@ import {
   updateClaudeConfig
 } from "../../src/claude-config.js";
 import {
+  detectProjectInfo,
+  addServerToMCPConfig,
+  hasMCPConfig,
+  listMCPConfiguredServers
+} from "../../src/claude-code-config.js";
+import {
   installMCPServer,
   generateServerConfig,
   checkNPXAvailable
@@ -37,8 +43,15 @@ interface AddOptions {
   version?: string;
 }
 
+interface ConfigurationTargets {
+  desktop: boolean;
+  code: boolean;
+}
+
 export const addCommand = new Command("add")
-  .description("Add a single MCP server to Claude Desktop configuration")
+  .description(
+    "Add a single MCP server to Claude Desktop and/or Claude Code configuration"
+  )
   .argument("<server-name>", "Name of the MCP server to add")
   .option(
     "--version <version>",
@@ -76,20 +89,52 @@ export const addCommand = new Command("add")
       const serverDef = SERVER_REGISTRY[serverName];
       spinner.succeed("Prerequisites validated");
 
-      // Detect Claude configuration
+      // Detect environments
+      const projectInfo = await detectProjectInfo();
       const claudeConfigPath = detectClaudeConfig();
-      const existingConfig = await readClaudeConfig(claudeConfigPath);
+      const existingDesktopConfig = await readClaudeConfig(claudeConfigPath);
+      const hasCodeConfig = await hasMCPConfig();
 
-      console.log(`📂 Claude config: ${chalk.cyan(claudeConfigPath)}`);
+      // Display environment detection results
+      console.log(chalk.blue("\n🔍 Environment Detection:"));
+      console.log(`📂 Claude Desktop: ${chalk.cyan(claudeConfigPath)}`);
 
-      // Check if server is already installed
-      const alreadyInstalled =
-        existingConfig.exists &&
-        existingConfig.config?.mcpServers?.[serverName];
-
-      if (alreadyInstalled && !options.force) {
+      if (projectInfo.isProject) {
+        console.log(`📁 Project Directory: ${chalk.green("Yes")}`);
         console.log(
-          chalk.yellow(`⚠️  Server "${serverName}" is already configured.`)
+          `📄 Claude Code (.mcp.json): ${hasCodeConfig ? chalk.green("Exists") : chalk.dim("Not found")}`
+        );
+      } else {
+        console.log(`📁 Project Directory: ${chalk.dim("No")}`);
+      }
+
+      // Determine configuration targets
+      const configTargets = await selectConfigurationTargets(projectInfo);
+
+      // Check if server is already installed in selected configurations
+      const alreadyInDesktop =
+        configTargets.desktop &&
+        existingDesktopConfig.exists &&
+        existingDesktopConfig.config?.mcpServers?.[serverName];
+
+      const existingCodeServers = configTargets.code
+        ? await listMCPConfiguredServers()
+        : [];
+      const alreadyInCode =
+        configTargets.code && existingCodeServers.includes(serverName);
+
+      if ((alreadyInDesktop || alreadyInCode) && !options.force) {
+        const locations = [
+          alreadyInDesktop && "Claude Desktop",
+          alreadyInCode && "Claude Code"
+        ]
+          .filter(Boolean)
+          .join(" and ");
+
+        console.log(
+          chalk.yellow(
+            `⚠️  Server "${serverName}" is already configured in ${locations}.`
+          )
         );
         console.log(
           chalk.dim(
@@ -193,22 +238,49 @@ export const addCommand = new Command("add")
         serverDef.defaultArgs
       );
 
-      // Update Claude configuration
-      const updateResult = await updateClaudeConfig(
-        { [serverName]: serverConfig },
-        undefined,
-        !options.force
-      );
-
-      if (updateResult.updated) {
-        configSpinner.succeed("Claude Desktop configuration updated");
-        if (updateResult.backupPath) {
-          console.log(chalk.dim(`💾 Backup saved: ${updateResult.backupPath}`));
-        }
-      } else {
-        configSpinner.succeed(
-          "Claude Desktop configuration unchanged (no updates needed)"
+      // Update configurations based on targets
+      if (configTargets.desktop) {
+        const desktopSpinner = createSpinner(
+          "Updating Claude Desktop configuration"
         );
+        desktopSpinner.start();
+
+        const updateResult = await updateClaudeConfig(
+          { [serverName]: serverConfig },
+          undefined,
+          !options.force
+        );
+
+        if (updateResult.updated) {
+          desktopSpinner.succeed("Claude Desktop configuration updated");
+          if (updateResult.backupPath) {
+            console.log(
+              chalk.dim(`💾 Desktop backup saved: ${updateResult.backupPath}`)
+            );
+          }
+        } else {
+          desktopSpinner.succeed(
+            "Claude Desktop configuration unchanged (no updates needed)"
+          );
+        }
+      }
+
+      if (configTargets.code) {
+        const codeSpinner = createSpinner(
+          "Updating Claude Code .mcp.json configuration"
+        );
+        codeSpinner.start();
+
+        try {
+          await addServerToMCPConfig(serverName, env);
+          codeSpinner.succeed("Claude Code .mcp.json configuration updated");
+        } catch (error) {
+          codeSpinner.fail("Failed to update Claude Code configuration");
+          console.error(
+            chalk.red("Error:"),
+            error instanceof Error ? error.message : "Unknown error"
+          );
+        }
       }
 
       // Show completion message
@@ -217,11 +289,22 @@ export const addCommand = new Command("add")
       );
 
       console.log(chalk.bold("\n📋 Next steps:"));
+      let stepCounter = 1;
+
+      if (configTargets.desktop) {
+        console.log(
+          `   ${stepCounter++}. ${chalk.cyan("Restart Claude Desktop")} to load the new server`
+        );
+      }
+
+      if (configTargets.code) {
+        console.log(
+          `   ${stepCounter++}. ${chalk.cyan("Restart Claude Code")} or reload your project to use the updated .mcp.json`
+        );
+      }
+
       console.log(
-        `   1. ${chalk.cyan("Restart Claude Desktop")} to load the new server`
-      );
-      console.log(
-        `   2. Run ${chalk.cyan("ai-agent-hub list")} to verify the installation`
+        `   ${stepCounter++}. Run ${chalk.cyan("ai-agent-hub list")} to verify the installation`
       );
 
       // Show environment variable reminders
@@ -258,3 +341,54 @@ export const addCommand = new Command("add")
       process.exit(1);
     }
   });
+
+async function selectConfigurationTargets(projectInfo: {
+  isProject: boolean;
+}): Promise<ConfigurationTargets> {
+  const enquirer = await getEnquirer();
+
+  if (!projectInfo.isProject) {
+    // Not in a project directory, only offer Desktop configuration
+    console.log(
+      chalk.dim(
+        "\n💡 Not in a project directory - Claude Code (.mcp.json) configuration not available"
+      )
+    );
+    return { desktop: true, code: false };
+  }
+
+  // In project directory, offer choices
+  const { configChoice } = (await enquirer.prompt({
+    type: "select",
+    name: "configChoice",
+    message: "Which Claude environment(s) would you like to add the server to?",
+    choices: [
+      {
+        name: "Both Claude Desktop and Claude Code",
+        value: "both",
+        hint: "Global Desktop config + project .mcp.json file"
+      },
+      {
+        name: "Claude Desktop only",
+        value: "desktop",
+        hint: "Global configuration for Claude Desktop app"
+      },
+      {
+        name: "Claude Code only",
+        value: "code",
+        hint: "Project-specific .mcp.json file for Claude Code"
+      }
+    ]
+  })) as { configChoice: string };
+
+  switch (configChoice) {
+    case "both":
+      return { desktop: true, code: true };
+    case "desktop":
+      return { desktop: true, code: false };
+    case "code":
+      return { desktop: false, code: true };
+    default:
+      return { desktop: true, code: false };
+  }
+}
