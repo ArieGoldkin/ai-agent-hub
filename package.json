@@ -1,8 +1,8 @@
 {
   "name": "ai-agent-hub",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "type": "module",
-  "description": "One-command developer environment setup for Claude Desktop - MCP servers + AI agents",
+  "description": "NPX tool: Run 'npx ai-agent-hub init' to setup Claude Desktop with MCP servers + AI agents",
   "author": "Arie Goldkin",
   "license": "MIT",
   "engines": {
