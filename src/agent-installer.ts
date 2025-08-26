@@ -59,6 +59,14 @@ export async function getAvailableAgents(): Promise<string[]> {
 }
 
 /**
+ * Get the global Claude agents directory (in user's home)
+ */
+function getGlobalClaudeAgentsPath(): string {
+  const homeDir = process.env.HOME || process.env.USERPROFILE || "";
+  return path.join(homeDir, ".claude", "agents");
+}
+
+/**
  * Install agent personality files to the project
  */
 export async function installAgentFiles(
@@ -136,6 +144,19 @@ export async function installAgentFiles(
     result.errors.push(`Installation failed: ${error}`);
     return result;
   }
+}
+
+/**
+ * Install agent personality files globally (to user's home ~/.claude/agents)
+ */
+export async function installAgentFilesGlobally(
+  options: AgentInstallOptions = {}
+): Promise<AgentInstallResult> {
+  const globalPath = getGlobalClaudeAgentsPath();
+  return installAgentFiles({
+    ...options,
+    targetDir: globalPath
+  });
 }
 
 /**

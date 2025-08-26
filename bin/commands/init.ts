@@ -28,7 +28,10 @@ import {
   checkNPXAvailable
 } from "../../src/mcp-installer.js";
 import { SERVER_REGISTRY, DEFAULT_SERVERS } from "../../src/server-registry.js";
-import { installAgentFiles } from "../../src/agent-installer.js";
+import {
+  installAgentFiles,
+  installAgentFilesGlobally
+} from "../../src/agent-installer.js";
 
 const logger = createLogger("init");
 
@@ -81,7 +84,7 @@ export const initCommand = new Command("init")
       await installServers(DEFAULT_SERVERS, configTargets);
 
       // Install agent personalities
-      await installAgentPersonalities();
+      await installAgentPersonalities(configTargets);
 
       // Show success message
       console.log(chalk.green("\n✅ Setup completed successfully!"));
@@ -348,34 +351,62 @@ async function installServers(
   }
 }
 
-async function installAgentPersonalities(): Promise<void> {
+async function installAgentPersonalities(
+  configTargets: ConfigurationTargets
+): Promise<void> {
   const spinner = createSpinner("Installing agent personalities");
   spinner.start();
 
   try {
-    const agentResult = await installAgentFiles({
-      overwrite: false
-    });
+    let totalInstalled = 0;
+    let totalSkipped = 0;
+    const allErrors: string[] = [];
+    const locations: string[] = [];
 
-    if (agentResult.installed.length > 0) {
-      spinner.succeed(
-        `Installed ${agentResult.installed.length} agent personalities to .claude/agents/`
-      );
-      console.log(chalk.dim("   Agents installed:"));
-      agentResult.installed.forEach(agent => {
-        console.log(`     • ${agent}`);
+    // Install to global directory if configuring Desktop
+    if (configTargets.desktop) {
+      const globalResult = await installAgentFilesGlobally({
+        overwrite: false
       });
-    } else if (agentResult.skipped.length > 0) {
+      totalInstalled += globalResult.installed.length;
+      totalSkipped += globalResult.skipped.length;
+      allErrors.push(...globalResult.errors);
+      if (globalResult.installed.length > 0 || globalResult.skipped.length > 0) {
+        locations.push("~/.claude/agents/ (global)");
+      }
+    }
+
+    // Install to project directory if configuring Code
+    if (configTargets.code) {
+      const projectResult = await installAgentFiles({
+        overwrite: false
+      });
+      totalInstalled += projectResult.installed.length;
+      totalSkipped += projectResult.skipped.length;
+      allErrors.push(...projectResult.errors);
+      if (projectResult.installed.length > 0 || projectResult.skipped.length > 0) {
+        locations.push(".claude/agents/ (project)");
+      }
+    }
+
+    if (totalInstalled > 0) {
       spinner.succeed(
-        `Agent personalities already installed (${agentResult.skipped.length} found)`
+        `Installed ${totalInstalled} agent personalities`
+      );
+      if (locations.length > 0) {
+        console.log(chalk.dim(`   Locations: ${locations.join(", ")}`));
+      }
+    } else if (totalSkipped > 0) {
+      spinner.succeed(
+        `Agent personalities already installed (${totalSkipped} found)`
       );
     } else {
       spinner.fail("No agents were installed");
     }
 
-    if (agentResult.errors.length > 0) {
+    if (allErrors.length > 0) {
       console.log(chalk.yellow("\n⚠️  Some agents failed to install:"));
-      agentResult.errors.forEach(error => {
+      allErrors.forEach(error => {
         console.log(`     • ${error}`);
       });
     }
