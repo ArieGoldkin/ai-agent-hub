@@ -1,6 +1,6 @@
 {
   "name": "ai-agent-hub",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "type": "module",
   "description": "NPX tool: Run 'npx ai-agent-hub init' to setup Claude Desktop with MCP servers + AI agents",
   "author": "Arie Goldkin",

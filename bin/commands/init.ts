@@ -253,7 +253,7 @@ async function installServers(
       return;
     }
 
-    const results = await batchInstallServers(packages, 2);
+    const results = await batchInstallServers(packages, 4);
 
     const successful = results.filter(r => r.success);
     const failed = results.filter(r => !r.success);

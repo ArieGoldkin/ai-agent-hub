@@ -17,42 +17,33 @@ const execAsync = promisify(exec);
  */
 export async function installMCPServer(
   packageName: string,
-  version = "latest",
-  timeout = 30000
+  version = "latest"
 ): Promise<ServerInstallResult> {
   try {
-    console.log(`Installing ${packageName}@${version}...`);
-
-    // Use a lightweight approach - just check if we can download the package
-    // This avoids hanging on packages that don't support --help properly
+    // Remove console.log that interferes with spinner
     const packageRef =
       version === "latest" ? packageName : `${packageName}@${version}`;
 
-    // Try to install/cache the package with NPX (this doesn't execute it)
-    const command = `npx --yes ${packageRef} --help || true`;
-    await execAsync(command, { timeout });
+    // Just verify the package exists on npm registry
+    // Don't run --help as many servers don't support it
+    const verifyCommand = `npm view ${packageRef} version`;
+    await execAsync(verifyCommand, { timeout: 5000 });
 
-    // Even if --help fails, the package might be valid if it was downloaded
-    // Check if NPX can resolve the package
-    const testCommand = "npx --version"; // Test NPX itself works
-    await execAsync(testCommand, { timeout: 5000 });
+    // Pre-download the package with npx to cache it
+    // Use a dummy command that will download but not hang
+    try {
+      const cacheCommand = `npx --yes ${packageRef} --version 2>/dev/null || true`;
+      await execAsync(cacheCommand, { timeout: 5000 });
+    } catch {
+      // Ignore errors - package is cached even if --version fails
+    }
 
     const installResult: ServerInstallResult = {
       success: true,
       packageName,
-      command: getServerCommand(packageName)
+      command: getServerCommand(packageName),
+      version: version
     };
-
-    // Try to extract version info (optional, don't fail if this doesn't work)
-    try {
-      const versionCommand = `npx --yes ${packageRef} --version`;
-      const versionOutput = await execAsync(versionCommand, { timeout: 10000 });
-      if (versionOutput.stdout && versionOutput.stdout.trim()) {
-        installResult.version = versionOutput.stdout.trim();
-      }
-    } catch {
-      // Version extraction failed, but that's okay
-    }
 
     return installResult;
   } catch (error) {
@@ -110,7 +101,7 @@ export async function validateInstallation(
  */
 export async function batchInstallServers(
   packages: Array<{ name: string; version?: string }>,
-  concurrency = 2
+  concurrency = 4
 ): Promise<ServerInstallResult[]> {
   const results: ServerInstallResult[] = [];
 
@@ -135,9 +126,9 @@ export async function batchInstallServers(
     const batchResults = await Promise.all(batchPromises);
     results.push(...batchResults);
 
-    // Small delay between batches to be kind to NPM registry
+    // Reduce delay between batches from 2s to 500ms
     if (i + concurrency < packages.length) {
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 500));
     }
   }
 
