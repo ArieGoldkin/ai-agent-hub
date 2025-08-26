@@ -1,0 +1,92 @@
+# Claude AI
+CLAUDE.md
+.claude/
+
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.yarn/
+
+# Testing
+coverage/
+*.lcov
+.nyc_output/
+
+# Production builds
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Operating System
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+
+# Temporary files
+*.log
+*.pid
+*.seed
+*.pid.lock
+tmp/
+temp/
+
+# Docker
+*.dockerignore
+docker-compose.override.yml
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+data/
+
+# Cache
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+.vuepress/dist/
+.serverless/
+.fusebox/
+
+# Package manager locks (keep one based on your choice)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Project specific
+/orchestration/logs/
+/security/audit-logs/
+.agent-context/
+*.bak
+*.tmp
