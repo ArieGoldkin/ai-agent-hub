@@ -1,7 +1,7 @@
 /**
  * Unified Configuration Manager
- * 
- * Provides a unified interface for managing both Claude Desktop (global) 
+ *
+ * Provides a unified interface for managing both Claude Desktop (global)
  * and Claude Code (project-level) configurations.
  */
 
@@ -74,7 +74,7 @@ export async function detectConfigTargets(): Promise<UnifiedConfigState> {
   try {
     const desktopPath = detectClaudeConfig();
     const desktopConfig = await readClaudeConfig(desktopPath);
-    
+
     targets.push({
       type: "desktop",
       name: "Claude Desktop",
@@ -110,7 +110,7 @@ export async function detectConfigTargets(): Promise<UnifiedConfigState> {
     try {
       const hasCodeConfig = await hasMCPConfig();
       const codePath = `${projectInfo.projectRoot}/.mcp.json`;
-      
+
       targets.push({
         type: "code",
         name: "Claude Code",
@@ -168,7 +168,7 @@ export async function removeServerFromConfigs(
 ): Promise<RemovalResult> {
   const result: RemovalResult = {};
   const state = await detectConfigTargets();
-  
+
   // If no targets specified, remove from all where it exists
   if (!targets) {
     targets = state.servers.all
@@ -220,11 +220,11 @@ export function getServerLocationString(
   const serverLocations = locations
     .filter(l => l.serverId === serverId)
     .map(l => l.configType);
-  
+
   if (serverLocations.length === 0) {
     return "";
   }
-  
+
   return `[${serverLocations.join(", ")}]`;
 }
 

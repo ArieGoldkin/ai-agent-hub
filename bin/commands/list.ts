@@ -11,8 +11,7 @@ import { createLogger } from "../utils/logger.js";
 import {
   detectConfigTargets,
   getAllServersWithLocations,
-  getServerLocationString,
-  type ServerLocation
+  getServerLocationString
 } from "../../src/config-manager.js";
 import {
   SERVER_REGISTRY,
@@ -47,20 +46,25 @@ export const listCommand = new Command("list")
       // Get all configurations using unified manager
       const configState = await detectConfigTargets();
       const allServerLocations = await getAllServersWithLocations();
-      const uniqueServers = [...new Set(allServerLocations.map(s => s.serverId))];
+      const uniqueServers = [
+        ...new Set(allServerLocations.map(s => s.serverId))
+      ];
 
       // Show detected configurations
       console.log("📂 Detected configurations:");
       configState.targets.forEach(target => {
         const status = target.exists ? chalk.green("✅") : chalk.dim("○");
-        const count = target.type === 'desktop' 
-          ? configState.servers.desktop.length 
-          : configState.servers.code.length;
+        const count =
+          target.type === "desktop"
+            ? configState.servers.desktop.length
+            : configState.servers.code.length;
         console.log(`   ${status} ${target.name} (${count} servers)`);
       });
 
       console.log(
-        chalk.green(`\n✅ ${uniqueServers.length} unique server(s) across all configs\n`)
+        chalk.green(
+          `\n✅ ${uniqueServers.length} unique server(s) across all configs\n`
+        )
       );
 
       // Handle JSON output
@@ -91,7 +95,7 @@ export const listCommand = new Command("list")
         uniqueServers.forEach(name => {
           const server = SERVER_REGISTRY[name];
           const locationStr = getServerLocationString(name, allServerLocations);
-          
+
           if (server) {
             console.log(
               `   ${chalk.green("●")} ${chalk.bold(name)} - ${server.name} ${chalk.dim(locationStr)}`
@@ -135,19 +139,19 @@ export const listCommand = new Command("list")
       // Show configured servers by configuration type
       if (uniqueServers.length > 0) {
         console.log(chalk.bold("🟢 Configured Servers:"));
-        
+
         // Group by configuration type for clearer display
         if (configState.servers.desktop.length > 0) {
           console.log(chalk.dim("   Claude Desktop (Global):"));
           configState.servers.desktop.forEach(name => {
-            showConfiguredServer(name, allServerLocations);
+            showConfiguredServer(name);
           });
         }
-        
+
         if (configState.servers.code.length > 0) {
           console.log(chalk.dim("   Claude Code (Project):"));
           configState.servers.code.forEach(name => {
-            showConfiguredServer(name, allServerLocations);
+            showConfiguredServer(name);
           });
         }
         console.log();
@@ -177,9 +181,9 @@ export const listCommand = new Command("list")
     }
   });
 
-function showConfiguredServer(name: string, _allLocations: ServerLocation[]): void {
+function showConfiguredServer(name: string): void {
   const server = SERVER_REGISTRY[name];
-  
+
   if (server) {
     console.log(
       `     ${chalk.green("●")} ${chalk.bold(name)} - ${server.name}`
@@ -188,9 +192,7 @@ function showConfiguredServer(name: string, _allLocations: ServerLocation[]): vo
 
     // Check environment status
     if (server.requiredEnv.length > 0) {
-      const missingEnv = server.requiredEnv.filter(
-        env => !process.env[env]
-      );
+      const missingEnv = server.requiredEnv.filter(env => !process.env[env]);
       if (missingEnv.length > 0) {
         console.log(
           `       ${chalk.yellow("⚠️  Missing env:")} ${chalk.red(missingEnv.join(", "))}`

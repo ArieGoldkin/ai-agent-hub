@@ -45,8 +45,12 @@ export const removeCommand = new Command("remove")
 
       console.log(chalk.blue("🔍 Environment Detection:"));
       configState.targets.forEach(target => {
-        const status = target.exists ? chalk.green("Exists") : chalk.dim("Not found");
-        console.log(`${target.type === 'desktop' ? '📂' : '📄'} ${target.name}: ${status}`);
+        const status = target.exists
+          ? chalk.green("Exists")
+          : chalk.dim("Not found");
+        console.log(
+          `${target.type === "desktop" ? "📂" : "📄"} ${target.name}: ${status}`
+        );
       });
 
       // Check if any configurations exist
@@ -59,7 +63,9 @@ export const removeCommand = new Command("remove")
 
       // Get all configured servers with their locations
       const allServerLocations = await getAllServersWithLocations();
-      const configuredServers = [...new Set(allServerLocations.map(s => s.serverId))];
+      const configuredServers = [
+        ...new Set(allServerLocations.map(s => s.serverId))
+      ];
 
       if (configuredServers.length === 0) {
         console.log(
@@ -135,7 +141,7 @@ export const removeCommand = new Command("remove")
       serversToRemove.forEach(name => {
         const server = SERVER_REGISTRY[name];
         const locations = allServerLocations.filter(s => s.serverId === name);
-        const locationStr = locations.map(l => l.configType).join(', ');
+        const locationStr = locations.map(l => l.configType).join(", ");
         console.log(
           `   • ${chalk.red(name)}${server ? ` (${server.name})` : ""} ${chalk.dim(`[${locationStr}]`)}`
         );
@@ -160,13 +166,18 @@ export const removeCommand = new Command("remove")
       const spinner = createSpinner("Updating configurations");
       spinner.start();
 
-      const results = { desktop: { removed: [] as string[] }, code: { removed: [] as string[] } };
+      const results = {
+        desktop: { removed: [] as string[] },
+        code: { removed: [] as string[] }
+      };
       let totalRemoved = 0;
 
       for (const serverName of serversToRemove) {
-        const serverLocations = allServerLocations.filter(s => s.serverId === serverName);
+        const serverLocations = allServerLocations.filter(
+          s => s.serverId === serverName
+        );
         const targets = serverLocations.map(s => s.configType);
-        
+
         if (targets.length > 0) {
           const result = await removeServerFromConfigs(serverName, targets);
           if (result.desktop?.removed && result.desktop.removed.length > 0) {
@@ -181,7 +192,9 @@ export const removeCommand = new Command("remove")
       }
 
       if (totalRemoved > 0) {
-        spinner.succeed(`Removed ${totalRemoved} server(s) from configurations`);
+        spinner.succeed(
+          `Removed ${totalRemoved} server(s) from configurations`
+        );
       } else {
         spinner.succeed("No servers were removed (already not configured)");
       }
@@ -189,7 +202,7 @@ export const removeCommand = new Command("remove")
       // Show results by configuration type
       if (totalRemoved > 0) {
         console.log(chalk.green("\n✅ Successfully removed:"));
-        
+
         if (results.desktop.removed.length > 0) {
           console.log(chalk.dim("   From Claude Desktop:"));
           results.desktop.removed.forEach(name => {
@@ -199,7 +212,7 @@ export const removeCommand = new Command("remove")
             );
           });
         }
-        
+
         if (results.code.removed.length > 0) {
           console.log(chalk.dim("   From Claude Code:"));
           results.code.removed.forEach(name => {

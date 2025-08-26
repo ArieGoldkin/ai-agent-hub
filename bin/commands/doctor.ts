@@ -11,9 +11,7 @@ import {
   readClaudeConfig,
   validateClaudeConfig
 } from "../../src/claude-config.js";
-import {
-  validateMCPConfig
-} from "../../src/claude-code-config.js";
+import { validateMCPConfig } from "../../src/claude-code-config.js";
 import {
   detectConfigTargets,
   getAllServersWithLocations
@@ -95,37 +93,47 @@ export const doctorCommand = new Command("doctor")
 
       const configState = await detectConfigTargets();
       const allServerLocations = await getAllServersWithLocations();
-      const uniqueServers = [...new Set(allServerLocations.map(s => s.serverId))];
+      const uniqueServers = [
+        ...new Set(allServerLocations.map(s => s.serverId))
+      ];
 
       // Check each configuration target
       for (const target of configState.targets) {
         console.log(`   ${target.name}:`);
         console.log(`     Path: ${chalk.cyan(target.path)}`);
-        
+
         if (target.exists) {
           console.log(`     ${chalk.green("✅")} Configuration file exists`);
-          
+
           // Validate format based on type
-          if (target.type === 'desktop') {
+          if (target.type === "desktop") {
             const config = await readClaudeConfig(target.path);
             if (config.config && validateClaudeConfig(config.config)) {
-              console.log(`     ${chalk.green("✅")} Configuration format is valid`);
+              console.log(
+                `     ${chalk.green("✅")} Configuration format is valid`
+              );
             } else {
-              console.log(`     ${chalk.red("❌")} Configuration format is invalid`);
+              console.log(
+                `     ${chalk.red("❌")} Configuration format is invalid`
+              );
               hasErrors = true;
             }
-          } else if (target.type === 'code') {
+          } else if (target.type === "code") {
             const validation = await validateMCPConfig();
             if (validation.valid) {
-              console.log(`     ${chalk.green("✅")} Configuration format is valid`);
+              console.log(
+                `     ${chalk.green("✅")} Configuration format is valid`
+              );
             } else {
-              console.log(`     ${chalk.red("❌")} Configuration format is invalid`);
+              console.log(
+                `     ${chalk.red("❌")} Configuration format is invalid`
+              );
               validation.errors.forEach(error => {
                 console.log(`       ${chalk.dim(error)}`);
               });
               hasErrors = true;
             }
-            
+
             if (validation.warnings.length > 0) {
               validation.warnings.forEach(warning => {
                 console.log(`     ${chalk.yellow("⚠️ ")} ${warning}`);
@@ -133,21 +141,27 @@ export const doctorCommand = new Command("doctor")
               hasWarnings = true;
             }
           }
-          
-          const serverCount = target.type === 'desktop' 
-            ? configState.servers.desktop.length 
-            : configState.servers.code.length;
-          console.log(`     Configured servers: ${chalk.cyan(serverCount.toString())}`);
-          
+
+          const serverCount =
+            target.type === "desktop"
+              ? configState.servers.desktop.length
+              : configState.servers.code.length;
+          console.log(
+            `     Configured servers: ${chalk.cyan(serverCount.toString())}`
+          );
         } else {
-          console.log(`     ${chalk.yellow("⚠️ ")} Configuration file does not exist`);
-          if (target.type === 'desktop') {
+          console.log(
+            `     ${chalk.yellow("⚠️ ")} Configuration file does not exist`
+          );
+          if (target.type === "desktop") {
             hasWarnings = true;
           }
         }
       }
-      
-      console.log(`   Total unique servers: ${chalk.cyan(uniqueServers.length.toString())}`);
+
+      console.log(
+        `   Total unique servers: ${chalk.cyan(uniqueServers.length.toString())}`
+      );
       if (uniqueServers.length === 0) {
         console.log(`   ${chalk.yellow("⚠️ ")} No MCP servers configured`);
         hasWarnings = true;
@@ -165,9 +179,13 @@ export const doctorCommand = new Command("doctor")
           const server = SERVER_REGISTRY[serverName];
 
           if (server) {
-            const locations = allServerLocations.filter(s => s.serverId === serverName);
-            const locationStr = locations.map(s => s.configType).join(', ');
-            console.log(`   ${chalk.bold(serverName)} (${server.name}) ${chalk.dim(`[${locationStr}]`)}:`);
+            const locations = allServerLocations.filter(
+              s => s.serverId === serverName
+            );
+            const locationStr = locations.map(s => s.configType).join(", ");
+            console.log(
+              `   ${chalk.bold(serverName)} (${server.name}) ${chalk.dim(`[${locationStr}]`)}:`
+            );
 
             // Check environment variables
             if (server.requiredEnv.length > 0) {
@@ -331,7 +349,9 @@ export const doctorCommand = new Command("doctor")
                 console.log(JSON.stringify(config.config, null, 2));
               }
             } else if (target.type === "code") {
-              const { loadMCPConfig } = await import("../../src/claude-code-config.js");
+              const { loadMCPConfig } = await import(
+                "../../src/claude-code-config.js"
+              );
               const config = await loadMCPConfig();
               if (config) {
                 console.log(JSON.stringify(config, null, 2));
