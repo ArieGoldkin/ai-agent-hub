@@ -26,6 +26,7 @@ export {
 export * from "./config-manager.js";
 export * from "./mcp-installer.js";
 export * from "./server-registry.js";
+export * from "./agent-installer.js";
 
 // Export type definitions
 export * from "./types/index.js";

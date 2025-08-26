@@ -17,6 +17,9 @@ import {
   SERVER_REGISTRY,
   SERVER_CATEGORIES
 } from "../../src/server-registry.js";
+import {
+  getInstalledAgents
+} from "../../src/agent-installer.js";
 
 const logger = createLogger("list");
 
@@ -159,6 +162,23 @@ export const listCommand = new Command("list")
 
       // Show available servers by category
       showAvailableServers(uniqueServers, options.category);
+
+      // Show installed agent personalities
+      const installedAgents = await getInstalledAgents();
+      if (installedAgents.length > 0) {
+        console.log(chalk.bold("🤖 Installed Agent Personalities:"));
+        console.log(chalk.dim("   Location: .claude/agents/"));
+        installedAgents.forEach(agent => {
+          console.log(`   ${chalk.green("●")} ${agent}`);
+        });
+        console.log();
+      } else if (!options.configured) {
+        console.log(chalk.bold("🤖 Agent Personalities:"));
+        console.log(
+          chalk.dim(`   No agents installed. Run ${chalk.cyan("ai-agent-hub init")} to install them.`)
+        );
+        console.log();
+      }
 
       // Show usage hints
       console.log(chalk.bold("💡 Usage:"));
