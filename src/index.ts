@@ -9,6 +9,20 @@ export const version = "1.0.0";
 
 // Export core modules
 export * from "./claude-config.js";
+export {
+  detectProjectInfo,
+  createMCPConfigFromServers,
+  hasMCPConfig,
+  getMCPJsonPath,
+  loadMCPConfig,
+  saveMCPConfig,
+  addServerToMCPConfig,
+  removeServerFromMCPConfig,
+  listMCPConfiguredServers,
+  validateMCPConfig,
+  type ProjectInfo,
+  type MCPCodeConfig
+} from "./claude-code-config.js";
 export * from "./mcp-installer.js";
 export * from "./server-registry.js";
 
