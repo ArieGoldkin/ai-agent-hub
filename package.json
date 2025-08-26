@@ -42,12 +42,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/YOUR_GITHUB_USERNAME/ai-agent-hub.git"
+    "url": "git+https://github.com/ArieGoldkin/ai-agent-hub.git"
   },
   "bugs": {
-    "url": "https://github.com/YOUR_GITHUB_USERNAME/ai-agent-hub/issues"
+    "url": "https://github.com/ArieGoldkin/ai-agent-hub/issues"
   },
-  "homepage": "https://github.com/YOUR_GITHUB_USERNAME/ai-agent-hub#readme",
+  "homepage": "https://github.com/ArieGoldkin/ai-agent-hub#readme",
   "keywords": [
     "mcp",
     "claude",
