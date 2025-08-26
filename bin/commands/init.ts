@@ -371,7 +371,10 @@ async function installAgentPersonalities(
       totalInstalled += globalResult.installed.length;
       totalSkipped += globalResult.skipped.length;
       allErrors.push(...globalResult.errors);
-      if (globalResult.installed.length > 0 || globalResult.skipped.length > 0) {
+      if (
+        globalResult.installed.length > 0 ||
+        globalResult.skipped.length > 0
+      ) {
         locations.push("~/.claude/agents/ (global)");
       }
     }
@@ -384,15 +387,16 @@ async function installAgentPersonalities(
       totalInstalled += projectResult.installed.length;
       totalSkipped += projectResult.skipped.length;
       allErrors.push(...projectResult.errors);
-      if (projectResult.installed.length > 0 || projectResult.skipped.length > 0) {
+      if (
+        projectResult.installed.length > 0 ||
+        projectResult.skipped.length > 0
+      ) {
         locations.push(".claude/agents/ (project)");
       }
     }
 
     if (totalInstalled > 0) {
-      spinner.succeed(
-        `Installed ${totalInstalled} agent personalities`
-      );
+      spinner.succeed(`Installed ${totalInstalled} agent personalities`);
       if (locations.length > 0) {
         console.log(chalk.dim(`   Locations: ${locations.join(", ")}`));
       }
