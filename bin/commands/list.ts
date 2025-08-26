@@ -17,9 +17,7 @@ import {
   SERVER_REGISTRY,
   SERVER_CATEGORIES
 } from "../../src/server-registry.js";
-import {
-  getInstalledAgents
-} from "../../src/agent-installer.js";
+import { getInstalledAgents } from "../../src/agent-installer.js";
 
 const logger = createLogger("list");
 
@@ -175,7 +173,9 @@ export const listCommand = new Command("list")
       } else if (!options.configured) {
         console.log(chalk.bold("🤖 Agent Personalities:"));
         console.log(
-          chalk.dim(`   No agents installed. Run ${chalk.cyan("ai-agent-hub init")} to install them.`)
+          chalk.dim(
+            `   No agents installed. Run ${chalk.cyan("ai-agent-hub init")} to install them.`
+          )
         );
         console.log();
       }

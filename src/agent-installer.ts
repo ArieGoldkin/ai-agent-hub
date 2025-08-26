@@ -33,7 +33,7 @@ function getPackageAgentsPath(): string {
   // When running from NPX/production, __dirname will be in dist/src
   // Go up two levels from dist/src to package root, then to agents
   const distPath = path.resolve(__dirname, "..", "..", "agents");
-  
+
   // Check if we're in production (dist directory exists)
   try {
     fsSync.accessSync(distPath);
@@ -51,9 +51,7 @@ export async function getAvailableAgents(): Promise<string[]> {
   try {
     const agentsPath = getPackageAgentsPath();
     const files = await fs.readdir(agentsPath);
-    return files
-      .filter(f => f.endsWith(".md"))
-      .map(f => f.replace(".md", ""));
+    return files.filter(f => f.endsWith(".md")).map(f => f.replace(".md", ""));
   } catch (error) {
     console.error("Error reading agents directory:", error);
     return [];
@@ -75,11 +73,13 @@ export async function installAgentFiles(
   try {
     // Detect project info
     const projectInfo = await detectProjectInfo();
-    
+
     // Determine target directory
-    const targetDir = options.targetDir || 
-      (projectInfo.isProject ? path.join(projectInfo.projectRoot, ".claude", "agents") : 
-       path.join(process.cwd(), ".claude", "agents"));
+    const targetDir =
+      options.targetDir ||
+      (projectInfo.isProject
+        ? path.join(projectInfo.projectRoot, ".claude", "agents")
+        : path.join(process.cwd(), ".claude", "agents"));
 
     // Create target directory if it doesn't exist
     await fs.mkdir(targetDir, { recursive: true });
@@ -90,7 +90,7 @@ export async function installAgentFiles(
 
     // Copy agent files
     const sourceDir = getPackageAgentsPath();
-    
+
     for (const agent of agentsToInstall) {
       if (!availableAgents.includes(agent)) {
         result.errors.push(`Agent '${agent}' not found`);
@@ -102,8 +102,11 @@ export async function installAgentFiles(
 
       try {
         // Check if file already exists
-        const exists = await fs.access(targetFile).then(() => true).catch(() => false);
-        
+        const exists = await fs
+          .access(targetFile)
+          .then(() => true)
+          .catch(() => false);
+
         if (exists && !options.overwrite) {
           result.skipped.push(agent);
           continue;
@@ -120,7 +123,7 @@ export async function installAgentFiles(
     // Also copy the agent templates JSON for reference
     const templatesSource = path.join(__dirname, "agent-templates.json");
     const templatesTarget = path.join(targetDir, "..", "agent-templates.json");
-    
+
     try {
       await fs.copyFile(templatesSource, templatesTarget);
     } catch (error) {
@@ -141,9 +144,11 @@ export async function installAgentFiles(
 export async function areAgentsInstalled(targetDir?: string): Promise<boolean> {
   try {
     const projectInfo = await detectProjectInfo();
-    const checkDir = targetDir || 
-      (projectInfo.isProject ? path.join(projectInfo.projectRoot, ".claude", "agents") : 
-       path.join(process.cwd(), ".claude", "agents"));
+    const checkDir =
+      targetDir ||
+      (projectInfo.isProject
+        ? path.join(projectInfo.projectRoot, ".claude", "agents")
+        : path.join(process.cwd(), ".claude", "agents"));
 
     await fs.access(checkDir);
     const files = await fs.readdir(checkDir);
@@ -156,17 +161,19 @@ export async function areAgentsInstalled(targetDir?: string): Promise<boolean> {
 /**
  * Get list of installed agents
  */
-export async function getInstalledAgents(targetDir?: string): Promise<string[]> {
+export async function getInstalledAgents(
+  targetDir?: string
+): Promise<string[]> {
   try {
     const projectInfo = await detectProjectInfo();
-    const checkDir = targetDir || 
-      (projectInfo.isProject ? path.join(projectInfo.projectRoot, ".claude", "agents") : 
-       path.join(process.cwd(), ".claude", "agents"));
+    const checkDir =
+      targetDir ||
+      (projectInfo.isProject
+        ? path.join(projectInfo.projectRoot, ".claude", "agents")
+        : path.join(process.cwd(), ".claude", "agents"));
 
     const files = await fs.readdir(checkDir);
-    return files
-      .filter(f => f.endsWith(".md"))
-      .map(f => f.replace(".md", ""));
+    return files.filter(f => f.endsWith(".md")).map(f => f.replace(".md", ""));
   } catch {
     return [];
   }

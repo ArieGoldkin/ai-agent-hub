@@ -27,13 +27,8 @@ import {
   batchInstallServers,
   checkNPXAvailable
 } from "../../src/mcp-installer.js";
-import {
-  SERVER_REGISTRY,
-  DEFAULT_SERVERS
-} from "../../src/server-registry.js";
-import {
-  installAgentFiles
-} from "../../src/agent-installer.js";
+import { SERVER_REGISTRY, DEFAULT_SERVERS } from "../../src/server-registry.js";
+import { installAgentFiles } from "../../src/agent-installer.js";
 
 const logger = createLogger("init");
 
@@ -48,7 +43,9 @@ export const initCommand = new Command("init")
     try {
       // Welcome message
       console.log(chalk.blue("🚀 AI Agent Hub - MCP Server Installer"));
-      console.log(chalk.dim("Setting up Claude Desktop with essential MCP servers\n"));
+      console.log(
+        chalk.dim("Setting up Claude Desktop with essential MCP servers\n")
+      );
 
       // Check prerequisites
       const spinner = createSpinner("Checking prerequisites");
@@ -89,23 +86,34 @@ export const initCommand = new Command("init")
       // Show success message
       console.log(chalk.green("\n✅ Setup completed successfully!"));
       console.log(chalk.bold("\n📋 Next steps:"));
-      
+
       let stepCounter = 1;
       if (configTargets.desktop) {
-        console.log(`   ${stepCounter++}. ${chalk.cyan("Restart Claude Desktop")} to load the new servers`);
+        console.log(
+          `   ${stepCounter++}. ${chalk.cyan("Restart Claude Desktop")} to load the new servers`
+        );
       }
       if (configTargets.code) {
-        console.log(`   ${stepCounter++}. ${chalk.cyan("Restart Claude Code")} or reload your project to use .mcp.json`);
+        console.log(
+          `   ${stepCounter++}. ${chalk.cyan("Restart Claude Code")} or reload your project to use .mcp.json`
+        );
       }
-      
-      console.log(`   ${stepCounter++}. Run ${chalk.cyan("ai-agent-hub list")} to verify installed servers`);
-      console.log(`   ${stepCounter++}. Run ${chalk.cyan("ai-agent-hub doctor")} to validate your setup`);
+
+      console.log(
+        `   ${stepCounter++}. Run ${chalk.cyan("ai-agent-hub list")} to verify installed servers`
+      );
+      console.log(
+        `   ${stepCounter++}. Run ${chalk.cyan("ai-agent-hub doctor")} to validate your setup`
+      );
 
       // Show GITHUB_TOKEN reminder if not set
       if (!process.env.GITHUB_TOKEN) {
-        console.log(chalk.yellow("\n💡 Tip: Set GITHUB_TOKEN environment variable to enable GitHub integration"));
+        console.log(
+          chalk.yellow(
+            "\n💡 Tip: Set GITHUB_TOKEN environment variable to enable GitHub integration"
+          )
+        );
       }
-
     } catch (error) {
       logger.error("Init command failed:", error);
       console.error(
@@ -116,12 +124,16 @@ export const initCommand = new Command("init")
     }
   });
 
-async function selectConfigurationTargets(projectInfo: any): Promise<ConfigurationTargets> {
+async function selectConfigurationTargets(projectInfo: {
+  isProject: boolean;
+}): Promise<ConfigurationTargets> {
   const enquirer = await getEnquirer();
 
   if (!projectInfo.isProject) {
     // Not in a project directory, only offer Desktop configuration
-    console.log(chalk.dim("Not in a project directory - configuring Claude Desktop only"));
+    console.log(
+      chalk.dim("Not in a project directory - configuring Claude Desktop only")
+    );
     return { desktop: true, code: false };
   }
 
@@ -138,11 +150,11 @@ async function selectConfigurationTargets(projectInfo: any): Promise<Configurati
       },
       {
         name: "Claude Desktop only",
-        value: "desktop", 
+        value: "desktop",
         hint: "Global configuration for Claude Desktop app"
       },
       {
-        name: "Claude Code only", 
+        name: "Claude Code only",
         value: "code",
         hint: "Project-specific .mcp.json file for Claude Code"
       }
@@ -164,10 +176,14 @@ async function selectConfigurationTargets(projectInfo: any): Promise<Configurati
 async function checkGitHubToken(): Promise<void> {
   if (!process.env.GITHUB_TOKEN) {
     const enquirer = await getEnquirer();
-    
-    console.log(chalk.yellow("\n⚠️  GITHUB_TOKEN not found in environment variables"));
-    console.log(chalk.dim("This is optional but recommended for GitHub integration"));
-    
+
+    console.log(
+      chalk.yellow("\n⚠️  GITHUB_TOKEN not found in environment variables")
+    );
+    console.log(
+      chalk.dim("This is optional but recommended for GitHub integration")
+    );
+
     const { setToken } = (await enquirer.prompt({
       type: "confirm",
       name: "setToken",
@@ -185,11 +201,17 @@ async function checkGitHubToken(): Promise<void> {
       if (token.trim()) {
         process.env.GITHUB_TOKEN = token.trim();
         console.log(chalk.green("✅ GitHub token set for this session"));
-        console.log(chalk.dim("Add 'export GITHUB_TOKEN=your_token' to your shell profile to make it permanent"));
+        console.log(
+          chalk.dim(
+            "Add 'export GITHUB_TOKEN=your_token' to your shell profile to make it permanent"
+          )
+        );
       }
     }
   } else {
-    console.log(chalk.green("✅ GITHUB_TOKEN found - GitHub integration will be enabled"));
+    console.log(
+      chalk.green("✅ GITHUB_TOKEN found - GitHub integration will be enabled")
+    );
   }
 }
 
@@ -222,7 +244,7 @@ async function installServers(
       failed.forEach(result => {
         console.log(`   • ${result.packageName}: ${result.error}`);
       });
-      
+
       if (successful.length === 0) {
         console.error(chalk.red("No servers were installed successfully."));
         process.exit(1);
@@ -267,7 +289,9 @@ async function installServers(
 
     // Update Claude Desktop configuration if selected
     if (configTargets.desktop) {
-      const desktopSpinner = createSpinner("Updating Claude Desktop configuration");
+      const desktopSpinner = createSpinner(
+        "Updating Claude Desktop configuration"
+      );
       desktopSpinner.start();
 
       const serverConfigs: Record<string, MCPServerConfig> = {};
@@ -302,7 +326,9 @@ async function installServers(
 
     // Update Claude Code configuration if selected
     if (configTargets.code) {
-      const codeSpinner = createSpinner("Creating Claude Code .mcp.json configuration");
+      const codeSpinner = createSpinner(
+        "Creating Claude Code .mcp.json configuration"
+      );
       codeSpinner.start();
 
       try {
@@ -316,7 +342,6 @@ async function installServers(
         );
       }
     }
-
   } catch (error) {
     spinner.fail("Installation failed");
     throw error;
@@ -333,13 +358,17 @@ async function installAgentPersonalities(): Promise<void> {
     });
 
     if (agentResult.installed.length > 0) {
-      spinner.succeed(`Installed ${agentResult.installed.length} agent personalities to .claude/agents/`);
+      spinner.succeed(
+        `Installed ${agentResult.installed.length} agent personalities to .claude/agents/`
+      );
       console.log(chalk.dim("   Agents installed:"));
       agentResult.installed.forEach(agent => {
         console.log(`     • ${agent}`);
       });
     } else if (agentResult.skipped.length > 0) {
-      spinner.succeed(`Agent personalities already installed (${agentResult.skipped.length} found)`);
+      spinner.succeed(
+        `Agent personalities already installed (${agentResult.skipped.length} found)`
+      );
     } else {
       spinner.fail("No agents were installed");
     }

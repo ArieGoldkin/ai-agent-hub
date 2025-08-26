@@ -9,8 +9,9 @@
 ## The Problem
 
 Setting up MCP (Model Context Protocol) servers manually is tedious:
+
 - Finding and installing the right packages
-- Editing Claude Desktop's JSON configuration by hand  
+- Editing Claude Desktop's JSON configuration by hand
 - Managing environment variables and API keys
 - Troubleshooting connection issues
 
@@ -23,6 +24,7 @@ npx ai-agent-hub init
 ```
 
 **What happens next:**
+
 1. ✨ Detects your Claude Desktop installation automatically
 2. 🤔 Asks: "Global setup (all conversations) or project-specific?"
 3. ⚡ Installs 7 MCP servers + 9 AI agent personalities
@@ -32,6 +34,7 @@ npx ai-agent-hub init
 ## What You Get
 
 **7 Powerful MCP Servers:**
+
 - **filesystem** - Read/write files directly from Claude
 - **github** - Manage repos, create PRs, review code
 - **git** - Full version control operations
@@ -41,8 +44,9 @@ npx ai-agent-hub init
 - **memory** - Persistent context across conversations
 
 **9 Specialized AI Agents:**
+
 - AI/ML Engineer, Backend Architect, Frontend Developer
-- Code Quality Reviewer, UX Researcher, UI Designer  
+- Code Quality Reviewer, UX Researcher, UI Designer
 - Sprint Planner, Studio Coach, Whimsy Injector
 
 ## User Experience
@@ -62,7 +66,7 @@ $ npx ai-agent-hub init
 
 🔧 Installing MCP servers...
 ✅ @modelcontextprotocol/server-filesystem
-✅ @modelcontextprotocol/server-github  
+✅ @modelcontextprotocol/server-github
 ✅ @modelcontextprotocol/server-git
 ✅ @modelcontextprotocol/server-playwright
 ✅ @modelcontextprotocol/server-postgres
@@ -94,7 +98,7 @@ npx ai-agent-hub init
 # Add specific servers only
 npx ai-agent-hub add filesystem github git
 
-# Remove unwanted servers  
+# Remove unwanted servers
 npx ai-agent-hub remove postgres playwright
 
 # See what's currently configured
@@ -107,7 +111,7 @@ npx ai-agent-hub doctor
 ## Platform Support
 
 - ✅ **macOS** - `~/Library/Application Support/Claude/`
-- ✅ **Windows** - `%APPDATA%\Claude\`  
+- ✅ **Windows** - `%APPDATA%\Claude\`
 - ✅ **Linux** - `~/.config/Claude/`
 
 Auto-detects your platform and Claude installation.
