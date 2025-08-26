@@ -11,13 +11,15 @@ import { createLogger } from "../utils/logger.js";
 import {
   detectConfigTargets,
   getAllServersWithLocations,
-  getServerLocationString,
-  type ServerLocation
+  getServerLocationString
 } from "../../src/config-manager.js";
 import {
   SERVER_REGISTRY,
   SERVER_CATEGORIES
 } from "../../src/server-registry.js";
+import {
+  getInstalledAgents
+} from "../../src/agent-installer.js";
 
 const logger = createLogger("list");
 
@@ -47,20 +49,25 @@ export const listCommand = new Command("list")
       // Get all configurations using unified manager
       const configState = await detectConfigTargets();
       const allServerLocations = await getAllServersWithLocations();
-      const uniqueServers = [...new Set(allServerLocations.map(s => s.serverId))];
+      const uniqueServers = [
+        ...new Set(allServerLocations.map(s => s.serverId))
+      ];
 
       // Show detected configurations
       console.log("📂 Detected configurations:");
       configState.targets.forEach(target => {
         const status = target.exists ? chalk.green("✅") : chalk.dim("○");
-        const count = target.type === 'desktop' 
-          ? configState.servers.desktop.length 
-          : configState.servers.code.length;
+        const count =
+          target.type === "desktop"
+            ? configState.servers.desktop.length
+            : configState.servers.code.length;
         console.log(`   ${status} ${target.name} (${count} servers)`);
       });
 
       console.log(
-        chalk.green(`\n✅ ${uniqueServers.length} unique server(s) across all configs\n`)
+        chalk.green(
+          `\n✅ ${uniqueServers.length} unique server(s) across all configs\n`
+        )
       );
 
       // Handle JSON output
@@ -91,7 +98,7 @@ export const listCommand = new Command("list")
         uniqueServers.forEach(name => {
           const server = SERVER_REGISTRY[name];
           const locationStr = getServerLocationString(name, allServerLocations);
-          
+
           if (server) {
             console.log(
               `   ${chalk.green("●")} ${chalk.bold(name)} - ${server.name} ${chalk.dim(locationStr)}`
@@ -135,19 +142,19 @@ export const listCommand = new Command("list")
       // Show configured servers by configuration type
       if (uniqueServers.length > 0) {
         console.log(chalk.bold("🟢 Configured Servers:"));
-        
+
         // Group by configuration type for clearer display
         if (configState.servers.desktop.length > 0) {
           console.log(chalk.dim("   Claude Desktop (Global):"));
           configState.servers.desktop.forEach(name => {
-            showConfiguredServer(name, allServerLocations);
+            showConfiguredServer(name);
           });
         }
-        
+
         if (configState.servers.code.length > 0) {
           console.log(chalk.dim("   Claude Code (Project):"));
           configState.servers.code.forEach(name => {
-            showConfiguredServer(name, allServerLocations);
+            showConfiguredServer(name);
           });
         }
         console.log();
@@ -155,6 +162,23 @@ export const listCommand = new Command("list")
 
       // Show available servers by category
       showAvailableServers(uniqueServers, options.category);
+
+      // Show installed agent personalities
+      const installedAgents = await getInstalledAgents();
+      if (installedAgents.length > 0) {
+        console.log(chalk.bold("🤖 Installed Agent Personalities:"));
+        console.log(chalk.dim("   Location: .claude/agents/"));
+        installedAgents.forEach(agent => {
+          console.log(`   ${chalk.green("●")} ${agent}`);
+        });
+        console.log();
+      } else if (!options.configured) {
+        console.log(chalk.bold("🤖 Agent Personalities:"));
+        console.log(
+          chalk.dim(`   No agents installed. Run ${chalk.cyan("ai-agent-hub init")} to install them.`)
+        );
+        console.log();
+      }
 
       // Show usage hints
       console.log(chalk.bold("💡 Usage:"));
@@ -177,9 +201,9 @@ export const listCommand = new Command("list")
     }
   });
 
-function showConfiguredServer(name: string, _allLocations: ServerLocation[]): void {
+function showConfiguredServer(name: string): void {
   const server = SERVER_REGISTRY[name];
-  
+
   if (server) {
     console.log(
       `     ${chalk.green("●")} ${chalk.bold(name)} - ${server.name}`
@@ -188,9 +212,7 @@ function showConfiguredServer(name: string, _allLocations: ServerLocation[]): vo
 
     // Check environment status
     if (server.requiredEnv.length > 0) {
-      const missingEnv = server.requiredEnv.filter(
-        env => !process.env[env]
-      );
+      const missingEnv = server.requiredEnv.filter(env => !process.env[env]);
       if (missingEnv.length > 0) {
         console.log(
           `       ${chalk.yellow("⚠️  Missing env:")} ${chalk.red(missingEnv.join(", "))}`

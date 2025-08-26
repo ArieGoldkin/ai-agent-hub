@@ -5,6 +5,19 @@
  * for installation and configuration.
  */
 
+/**
+ * Default servers installed by init command
+ */
+export const DEFAULT_SERVERS = [
+  "filesystem",
+  "git",
+  "github",
+  "sequential-thinking",
+  "memory",
+  "context7",
+  "playwright"
+];
+
 export interface ServerDefinition {
   name: string;
   package: string;

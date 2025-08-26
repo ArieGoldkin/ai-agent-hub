@@ -2,7 +2,7 @@
   "name": "ai-agent-hub",
   "version": "1.0.0-beta.1",
   "type": "module",
-  "description": "Simple NPX installer for Claude Desktop MCP servers - Configure AI tools with one command",
+  "description": "One-command developer environment setup for Claude Desktop - MCP servers + AI agents",
   "author": "Arie Goldkin",
   "license": "MIT",
   "engines": {
@@ -37,17 +37,18 @@
   },
   "files": [
     "dist/",
+    "agents/",
     "README.md",
     "LICENSE"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/YOUR_GITHUB_USERNAME/ai-agent-hub.git"
+    "url": "git+https://github.com/ArieGoldkin/ai-agent-hub.git"
   },
   "bugs": {
-    "url": "https://github.com/YOUR_GITHUB_USERNAME/ai-agent-hub/issues"
+    "url": "https://github.com/ArieGoldkin/ai-agent-hub/issues"
   },
-  "homepage": "https://github.com/YOUR_GITHUB_USERNAME/ai-agent-hub#readme",
+  "homepage": "https://github.com/ArieGoldkin/ai-agent-hub#readme",
   "keywords": [
     "mcp",
     "claude",
