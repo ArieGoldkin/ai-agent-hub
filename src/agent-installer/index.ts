@@ -7,14 +7,14 @@ import * as fs from "fs/promises";
 import * as path from "path";
 import { detectProjectInfo } from "../claude-code-config/index.js";
 import { AGENT_TEMPLATES } from "./templates.js";
-import { 
-  getPackageAgentsPath, 
+import {
+  getPackageAgentsPath,
   getGlobalClaudeAgentsPath,
   getAvailableAgents,
   areAgentsInstalled,
   getInstalledAgents,
   type AgentInstallOptions,
-  type AgentInstallResult 
+  type AgentInstallResult
 } from "./utils.js";
 
 // Re-export types and utilities
@@ -97,7 +97,10 @@ export async function installAgentFiles(
     // Create settings.local.json for Claude Code configuration reference
     const settingsFile = path.join(targetDir, "..", "settings.local.json");
     try {
-      const settingsExists = await fs.access(settingsFile).then(() => true).catch(() => false);
+      const settingsExists = await fs
+        .access(settingsFile)
+        .then(() => true)
+        .catch(() => false);
       if (!settingsExists) {
         const defaultSettings = {
           agentPersonalities: {
@@ -108,7 +111,11 @@ export async function installAgentFiles(
             configFile: "./.mcp.json"
           }
         };
-        await fs.writeFile(settingsFile, JSON.stringify(defaultSettings, null, 2), "utf-8");
+        await fs.writeFile(
+          settingsFile,
+          JSON.stringify(defaultSettings, null, 2),
+          "utf-8"
+        );
       }
     } catch (error) {
       console.debug("Could not create settings file:", error);
@@ -128,7 +135,11 @@ export async function installAgentFiles(
           agents: Object.keys(AGENT_TEMPLATES),
           description: "AI Agent Hub - Agent personalities for Claude Code"
         };
-        await fs.writeFile(templatesTarget, JSON.stringify(minimalTemplates, null, 2), "utf-8");
+        await fs.writeFile(
+          templatesTarget,
+          JSON.stringify(minimalTemplates, null, 2),
+          "utf-8"
+        );
       } catch {
         // Even this failed, but it's non-critical
         console.debug("Could not create agent templates file");

@@ -1,6 +1,6 @@
 /**
  * Project Detection Module
- * 
+ *
  * Detects if the current directory is a project and gathers project information
  */
 

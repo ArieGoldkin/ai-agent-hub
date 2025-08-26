@@ -1,6 +1,6 @@
 /**
  * Configuration Detection Module
- * 
+ *
  * Detects and analyzes available configuration targets (Desktop and Code)
  */
 
@@ -116,7 +116,9 @@ export async function detectConfigTargets(): Promise<UnifiedConfigState> {
  * Selects default configuration targets based on context
  * (From original config-manager.ts lines 234-242)
  */
-export function selectDefaultTargets(projectInfo: { isProject: boolean }): ConfigType[] {
+export function selectDefaultTargets(projectInfo: {
+  isProject: boolean;
+}): ConfigType[] {
   if (projectInfo.isProject) {
     // In a project, default to both Desktop and Code
     return ["desktop", "code"];

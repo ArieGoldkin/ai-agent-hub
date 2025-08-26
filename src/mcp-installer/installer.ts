@@ -1,6 +1,6 @@
 /**
  * Core Installation Module
- * 
+ *
  * Handles NPX-based installation of MCP servers
  */
 

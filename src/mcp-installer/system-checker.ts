@@ -1,6 +1,6 @@
 /**
  * System Checker Module
- * 
+ *
  * Checks system requirements and capabilities
  */
 

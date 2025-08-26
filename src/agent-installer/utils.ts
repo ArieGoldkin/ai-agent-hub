@@ -98,7 +98,9 @@ export function getGlobalClaudeAgentsPath(): string {
  */
 export async function areAgentsInstalled(targetDir?: string): Promise<boolean> {
   try {
-    const { detectProjectInfo } = await import("../claude-code-config/index.js");
+    const { detectProjectInfo } = await import(
+      "../claude-code-config/index.js"
+    );
     const projectInfo = await detectProjectInfo();
     const checkDir =
       targetDir ||
@@ -117,9 +119,13 @@ export async function areAgentsInstalled(targetDir?: string): Promise<boolean> {
 /**
  * Get list of installed agents (from original file)
  */
-export async function getInstalledAgents(targetDir?: string): Promise<string[]> {
+export async function getInstalledAgents(
+  targetDir?: string
+): Promise<string[]> {
   try {
-    const { detectProjectInfo } = await import("../claude-code-config/index.js");
+    const { detectProjectInfo } = await import(
+      "../claude-code-config/index.js"
+    );
     const projectInfo = await detectProjectInfo();
     const checkDir =
       targetDir ||

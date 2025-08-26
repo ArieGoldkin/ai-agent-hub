@@ -1,6 +1,6 @@
 /**
  * Configuration Update Module
- * 
+ *
  * Handles updating and removing servers from Claude Desktop configuration
  */
 

@@ -1,6 +1,6 @@
 /**
  * Configuration Generator Module
- * 
+ *
  * Generates configuration for MCP servers
  */
 

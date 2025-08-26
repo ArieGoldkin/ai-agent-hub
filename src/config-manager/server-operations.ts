@@ -1,6 +1,6 @@
 /**
  * Server Operations Module
- * 
+ *
  * Handles server listing, removal, and location tracking
  */
 
@@ -9,9 +9,7 @@ import {
   removeServersFromConfig as removeFromDesktop
 } from "../claude-config/index.js";
 
-import {
-  removeServerFromMCPConfig as removeFromCode
-} from "../claude-code-config/index.js";
+import { removeServerFromMCPConfig as removeFromCode } from "../claude-code-config/index.js";
 
 import { detectConfigTargets } from "./detector.js";
 import type { ServerLocation, RemovalResult, ConfigType } from "./types.js";

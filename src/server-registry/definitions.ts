@@ -1,6 +1,6 @@
 /**
  * MCP Server Definitions
- * 
+ *
  * Registry of all available MCP servers with their configurations
  */
 
