@@ -37,21 +37,27 @@ npx ai-agent-hub init
 
 ## What You Get
 
-**7 Powerful MCP Servers:**
+**🤖 9 Specialized AI Agents** (the main event!):
 
-- **filesystem** - Read/write files directly from Claude
-- **github** - Manage repos, create PRs, review code
-- **git** - Full version control operations
-- **playwright** - Browser automation and web scraping
-- **postgres** - Database queries and management
-- **sequential-thinking** - Enhanced reasoning for complex problems
-- **memory** - Persistent context across conversations
+- 🧠 **AI/ML Engineer** - Machine learning implementation specialist
+- 🏗️ **Backend System Architect** - Scalable server-side systems expert
+- 💻 **Frontend UI Developer** - Modern JavaScript frameworks specialist
+- 🔍 **Code Quality Reviewer** - Code review and security expert
+- 👥 **UX Researcher** - User behavior and usability specialist
+- 🎨 **Rapid UI Designer** - Fast UI design with modern systems
+- 📋 **Sprint Planner** - Agile project management specialist
+- 🏆 **Studio Coach** - Team development and collaboration coach
+- ✨ **Whimsy Injector** - Creative UI elements and delight specialist
 
-**9 Specialized AI Agents:**
+**⚡ 7 Powerful MCP Servers** (automatically configured):
 
-- AI/ML Engineer, Backend Architect, Frontend Developer
-- Code Quality Reviewer, UX Researcher, UI Designer
-- Sprint Planner, Studio Coach, Whimsy Injector
+- 📁 **File system access** - Read/write files directly from Claude
+- 🔧 **Git commands** - Full version control operations
+- 🐙 **GitHub integration** - Manage repos, create PRs, review code
+- 🌐 **Browser automation** - Playwright for testing and web scraping
+- 🧮 **Enhanced reasoning** - Sequential thinking for complex problems
+- 💾 **Persistent memory** - Context that remembers across chats
+- 📚 **Documentation search** - Context7 for code examples and docs
 
 ## How to Use
 
@@ -81,30 +87,6 @@ Choose based on your needs:
 ### Step 3: Restart Claude
 
 Close and reopen Claude Desktop to activate the new tools.
-
-### What Gets Installed
-
-**🤖 9 Specialized AI Agents** (the main event!):
-
-- 🧠 **AI/ML Engineer** - Machine learning implementation specialist
-- 🏗️ **Backend System Architect** - Scalable server-side systems expert
-- 💻 **Frontend UI Developer** - Modern JavaScript frameworks specialist
-- 🔍 **Code Quality Reviewer** - Code review and security expert
-- 👥 **UX Researcher** - User behavior and usability specialist
-- 🎨 **Rapid UI Designer** - Fast UI design with modern systems
-- 📋 **Sprint Planner** - Agile project management specialist
-- 🏆 **Studio Coach** - Team development and collaboration coach
-- ✨ **Whimsy Injector** - Creative UI elements and delight specialist
-
-**⚡ 7 Powerful MCP Servers** (automatically configured):
-
-- 📁 **File system access** - Read/write files directly from Claude
-- 🔧 **Git commands** - Full version control operations
-- 🐙 **GitHub integration** - Manage repos, create PRs, review code
-- 🌐 **Browser automation** - Playwright for testing and web scraping
-- 🧮 **Enhanced reasoning** - Sequential thinking for complex problems
-- 💾 **Persistent memory** - Context that remembers across chats
-- 📚 **Documentation search** - Context7 for code examples and docs
 
 ## GitHub Integration (Optional)
 
