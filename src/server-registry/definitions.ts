@@ -201,10 +201,8 @@ export const SERVER_REGISTRY: Record<string, ServerDefinition> = {
  */
 export const DEFAULT_SERVERS = [
   "filesystem",
-  "git",
   "github",
   "sequential-thinking",
   "memory",
-  "context7",
-  "playwright"
+  "context7"
 ];

@@ -13,12 +13,12 @@ export const SERVER_CATEGORIES: Record<string, ServerCategory> = {
   core: {
     name: "Core Servers",
     description: "Essential servers for basic development workflow",
-    servers: ["filesystem", "github", "git"]
+    servers: ["filesystem", "github"]
   },
   "dev-tools": {
     name: "Development Tools",
-    description: "Servers for testing, databases, and deployment",
-    servers: ["playwright", "docker", "postgres", "sqlite"]
+    description: "Servers for databases and deployment",
+    servers: ["docker", "postgres", "sqlite"]
   },
   ai: {
     name: "AI Enhancement",
@@ -40,19 +40,19 @@ export const SERVER_COMBINATIONS: Record<string, ServerCombination> = {
   "basic-dev": {
     name: "Basic Development",
     description: "Essential servers for code development",
-    servers: ["filesystem", "git", "github"],
+    servers: ["filesystem", "github"],
     requiredEnv: ["GITHUB_TOKEN"]
   },
   "full-stack": {
     name: "Full Stack Development",
-    description: "Complete development stack with database and testing",
-    servers: ["filesystem", "git", "github", "postgres", "playwright"],
+    description: "Complete development stack with database",
+    servers: ["filesystem", "github", "postgres"],
     requiredEnv: ["GITHUB_TOKEN", "DATABASE_URL"]
   },
   "ai-enhanced": {
     name: "AI Enhanced Workflow",
     description: "Development with advanced AI reasoning and context",
-    servers: ["filesystem", "git", "github", "sequential-thinking", "memory"],
+    servers: ["filesystem", "github", "sequential-thinking", "memory"],
     requiredEnv: ["GITHUB_TOKEN"]
   },
   research: {
