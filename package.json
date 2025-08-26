@@ -1,0 +1,46 @@
+{
+  "name": "ai-agent-hub",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Enhanced AI Agent Hub - MCP server orchestration system",
+  "author": "Arie Goldkin",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "bin": {
+    "ai-agent-hub": "./dist/bin/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/index.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "type-check": "tsc --noEmit",
+    "test": "node --test --import tsx tests/**/*.test.ts",
+    "clean": "rm -rf dist",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "tsx": "^4.16.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.12",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.8.0",
+    "husky": "^9.1.4",
+    "lint-staged": "^15.2.7",
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4"
+  },
+  "packageManager": "pnpm@9.6.0",
+  "keywords": [
+    "mcp",
+    "ai",
+    "agent",
+    "orchestration",
+    "model-context-protocol"
+  ]
+}

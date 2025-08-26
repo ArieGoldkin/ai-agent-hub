@@ -1,0 +1,158 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ai-agent-hub.com/schemas/server-registry.schema.json",
+  "title": "MCP Server Registry",
+  "description": "Registry of available MCP servers with their configurations",
+  "type": "object",
+  "properties": {
+    "servers": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z][a-z0-9-]*$": {
+          "$ref": "#/$defs/ServerDefinition"
+        }
+      },
+      "additionalProperties": false
+    },
+    "categories": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z][a-z0-9-]*$": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1
+            },
+            "servers": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9-]*$"
+              }
+            }
+          },
+          "required": ["name", "description", "servers"],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["servers", "categories"],
+  "additionalProperties": false,
+  "$defs": {
+    "ServerDefinition": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-readable server name"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Server description and capabilities"
+        },
+        "package": {
+          "type": "string",
+          "pattern": "^(@[a-z0-9-~][a-z0-9-._~]*/)?[a-z0-9-~][a-z0-9-._~]*(@[a-z0-9-~][a-z0-9-._~]*)?$",
+          "description": "NPM package name with optional version"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(\\^|~|>=|>|<|<=|=)?\\d+\\.\\d+\\.\\d+(-[a-z0-9-]+)?$|^latest$|^beta$|^alpha$",
+          "description": "Package version or semver range"
+        },
+        "transport": {
+          "type": "string",
+          "enum": ["stdio", "http"],
+          "description": "Communication transport protocol"
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "filesystem", "git", "github", "browser", "documentation", 
+              "reasoning", "analysis", "code-generation", "testing"
+            ]
+          },
+          "uniqueItems": true,
+          "description": "Server capability categories"
+        },
+        "tools": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1
+              },
+              "security": {
+                "type": "string",
+                "enum": ["none", "sandboxed", "authenticated", "restricted"]
+              }
+            },
+            "required": ["name", "description"],
+            "additionalProperties": false
+          },
+          "description": "Available tools provided by this server"
+        },
+        "security": {
+          "type": "object",
+          "properties": {
+            "sandboxed": {
+              "type": "boolean",
+              "description": "Whether server operates in sandbox"
+            },
+            "requiresAuth": {
+              "type": "boolean",
+              "description": "Whether server requires authentication"
+            },
+            "permissions": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["read", "write", "execute", "network", "filesystem", "git", "github"]
+              },
+              "uniqueItems": true,
+              "description": "Required permissions"
+            },
+            "environmentVariables": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Z][A-Z0-9_]*$"
+              },
+              "description": "Required environment variables"
+            }
+          },
+          "additionalProperties": false
+        },
+        "defaultConfig": {
+          "type": "object",
+          "description": "Default configuration for server",
+          "additionalProperties": true
+        },
+        "category": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$",
+          "description": "Server category identifier"
+        }
+      },
+      "required": ["name", "description", "package", "transport", "capabilities", "category"],
+      "additionalProperties": false
+    }
+  }
+}
