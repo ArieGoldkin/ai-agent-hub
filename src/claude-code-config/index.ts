@@ -4,7 +4,7 @@
  * Handles project-level .mcp.json configuration files for Claude Code integration.
  * Unlike Claude Desktop which uses a global config, Claude Code uses project-specific
  * .mcp.json files in the current working directory.
- * 
+ *
  * This is a refactored version of the original claude-code-config.ts,
  * split into smaller, focused modules for better maintainability.
  */

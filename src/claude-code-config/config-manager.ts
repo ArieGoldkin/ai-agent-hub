@@ -1,6 +1,6 @@
 /**
  * Configuration Manager Module
- * 
+ *
  * Handles loading, saving, and validating .mcp.json configurations
  */
 
@@ -64,7 +64,9 @@ export async function listMCPConfiguredServers(
  * Validates .mcp.json configuration
  * (From original claude-code-config.ts lines 187-240)
  */
-export async function validateMCPConfig(cwd: string = process.cwd()): Promise<ValidationResult> {
+export async function validateMCPConfig(
+  cwd: string = process.cwd()
+): Promise<ValidationResult> {
   const result: ValidationResult = {
     valid: true,
     errors: [],

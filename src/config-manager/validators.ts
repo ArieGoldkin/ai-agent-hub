@@ -1,6 +1,6 @@
 /**
  * Validation Module
- * 
+ *
  * Validates both Desktop and Code configurations
  */
 

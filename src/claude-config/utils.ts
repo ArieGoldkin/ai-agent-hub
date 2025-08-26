@@ -1,6 +1,6 @@
 /**
  * Utility Functions Module
- * 
+ *
  * Backup and validation utilities for Claude Desktop configuration
  */
 

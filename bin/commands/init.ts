@@ -27,7 +27,10 @@ import {
   batchInstallServers,
   checkNPXAvailable
 } from "../../src/mcp-installer/index.js";
-import { SERVER_REGISTRY, DEFAULT_SERVERS } from "../../src/server-registry/index.js";
+import {
+  SERVER_REGISTRY,
+  DEFAULT_SERVERS
+} from "../../src/server-registry/index.js";
 import {
   installAgentFiles,
   installAgentFilesGlobally
@@ -43,7 +46,7 @@ interface ConfigurationTargets {
 export const initCommand = new Command("init")
   .description("Set up Claude Desktop with essential MCP servers")
   .option("--dry-run", "Preview what would be installed without making changes")
-  .action(async (options) => {
+  .action(async options => {
     try {
       // Welcome message
       console.log(chalk.blue("🚀 AI Agent Hub - MCP Server Installer"));
@@ -249,7 +252,7 @@ async function installServers(
       });
       return;
     }
-    
+
     const results = await batchInstallServers(packages, 2);
 
     const successful = results.filter(r => r.success);
@@ -326,7 +329,9 @@ async function installServers(
       }
 
       if (dryRun) {
-        desktopSpinner.succeed("[DRY RUN] Would update Claude Desktop configuration");
+        desktopSpinner.succeed(
+          "[DRY RUN] Would update Claude Desktop configuration"
+        );
         console.log(chalk.dim("Servers that would be configured:"));
         Object.keys(serverConfigs).forEach(name => {
           console.log(`   • ${name}`);
@@ -337,17 +342,18 @@ async function installServers(
           undefined,
           true // always create backup
         );
-        
+
         if (updateResult.updated) {
           desktopSpinner.succeed("Claude Desktop configuration updated");
           if (updateResult.backupPath) {
-            console.log(chalk.dim(`💾 Backup saved: ${updateResult.backupPath}`));
+            console.log(
+              chalk.dim(`💾 Backup saved: ${updateResult.backupPath}`)
+            );
           }
         } else {
           desktopSpinner.succeed("Claude Desktop configuration unchanged");
         }
       }
-
     }
 
     // Update Claude Code configuration if selected
@@ -358,7 +364,9 @@ async function installServers(
       codeSpinner.start();
 
       if (dryRun) {
-        codeSpinner.succeed("[DRY RUN] Would create Claude Code .mcp.json configuration");
+        codeSpinner.succeed(
+          "[DRY RUN] Would create Claude Code .mcp.json configuration"
+        );
         console.log(chalk.dim("Servers that would be configured:"));
         successfulServerNames.forEach(name => {
           console.log(`   • ${name}`);
@@ -401,7 +409,7 @@ async function installAgentPersonalities(
       }
       return;
     }
-    
+
     let totalInstalled = 0;
     let totalSkipped = 0;
     const allErrors: string[] = [];

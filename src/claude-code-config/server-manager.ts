@@ -1,6 +1,6 @@
 /**
  * Server Manager Module
- * 
+ *
  * Handles adding, removing, and managing servers in .mcp.json
  */
 

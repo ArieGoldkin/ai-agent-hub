@@ -1,6 +1,6 @@
 /**
  * Configuration Detection and Reading Module
- * 
+ *
  * Handles detecting Claude Desktop config location and reading the config file
  */
 

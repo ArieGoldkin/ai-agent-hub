@@ -1,6 +1,6 @@
 /**
  * Server Categories and Combinations
- * 
+ *
  * Grouping and preset configurations for MCP servers
  */
 
