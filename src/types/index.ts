@@ -1,17 +1,27 @@
 /**
- * Core type definitions for AI Agent Hub
+ * Core type definitions for AI Agent Hub NPX Installer
  */
 
+// MCP Server types
 export interface MCPServer {
-  id: string
-  name: string
-  enabled: boolean
-  config: Record<string, unknown>
+  id: string;
+  name: string;
+  package: string;
+  description: string;
+  requiredEnv?: string[];
+  optionalEnv?: string[];
+  capabilities?: string[];
 }
 
-export interface AgentProfile {
-  name: string
-  description: string
-  servers: string[]
-  capabilities: string[]
+// Agent template types
+export interface AgentTemplate {
+  name: string;
+  description: string;
+  prompt: string;
+  recommendedServers: string[];
+  capabilities: string[];
+  tools?: string[];
 }
+
+// Re-export Claude config types from claude-config module
+export { ClaudeConfig, MCPServerConfig } from "../claude-config.js";

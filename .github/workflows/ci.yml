@@ -2,13 +2,13 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
   pull_request:
-    branches: [main, develop]
+    branches: [main]
 
 jobs:
-  test:
-    name: Test on Node.js ${{ matrix.node-version }}
+  build:
+    name: Build on Node.js ${{ matrix.node-version }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -18,28 +18,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Lint code
-        run: pnpm lint
-
-      - name: Type check
-        run: pnpm type-check
+        run: npm install
 
       - name: Build project
-        run: pnpm build
+        run: npm run build
 
-      - name: Run tests
-        run: pnpm test
+      - name: Test CLI commands
+        run: |
+          echo "Testing CLI help..."
+          node dist/bin/cli.js --help
+          echo "Testing CLI version..."
+          node dist/bin/cli.js --version
+          echo "Testing list command..."
+          node dist/bin/cli.js list --help
+          echo "Testing doctor command..."
+          node dist/bin/cli.js doctor --help

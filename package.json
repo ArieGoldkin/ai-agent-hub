@@ -1,8 +1,8 @@
 {
   "name": "ai-agent-hub",
-  "version": "0.1.0",
+  "version": "1.0.0-beta.1",
   "type": "module",
-  "description": "Enhanced AI Agent Hub - MCP server orchestration system",
+  "description": "Simple NPX installer for Claude Desktop MCP servers - Configure AI tools with one command",
   "author": "Arie Goldkin",
   "license": "MIT",
   "engines": {
@@ -13,34 +13,53 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "tsx watch src/index.ts",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "type-check": "tsc --noEmit",
-    "test": "node --test --import tsx tests/**/*.test.ts",
     "clean": "rm -rf dist",
-    "prepare": "husky"
+    "lint": "eslint src bin --ext .ts",
+    "lint:fix": "eslint src bin --ext .ts --fix",
+    "format": "prettier --write \"src/**/*.ts\" \"bin/**/*.ts\" \"*.json\" \"*.md\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"bin/**/*.ts\" \"*.json\" \"*.md\"",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run clean && npm run typecheck && npm run lint && npm run format:check && npm run build"
   },
   "dependencies": {
-    "ajv": "^8.17.1",
-    "tsx": "^4.16.2"
+    "chalk": "^5.6.0",
+    "commander": "^14.0.0",
+    "enquirer": "^2.4.1",
+    "ora": "^8.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.14.12",
-    "@typescript-eslint/eslint-plugin": "^8.0.0",
-    "@typescript-eslint/parser": "^8.0.0",
-    "eslint": "^9.8.0",
-    "husky": "^9.1.4",
-    "lint-staged": "^15.2.7",
+    "@typescript-eslint/eslint-plugin": "^8.8.0",
+    "@typescript-eslint/parser": "^8.8.0",
+    "eslint": "^9.11.1",
     "prettier": "^3.3.3",
     "typescript": "^5.5.4"
   },
-  "packageManager": "pnpm@9.6.0",
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/ai-agent-hub.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/ai-agent-hub/issues"
+  },
+  "homepage": "https://github.com/yourusername/ai-agent-hub#readme",
   "keywords": [
     "mcp",
+    "claude",
+    "claude-desktop",
     "ai",
-    "agent",
-    "orchestration",
-    "model-context-protocol"
+    "installer",
+    "npx",
+    "model-context-protocol",
+    "anthropic",
+    "desktop",
+    "tools",
+    "configuration",
+    "mcp-server"
   ]
 }
