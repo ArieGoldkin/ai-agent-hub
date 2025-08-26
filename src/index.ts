@@ -23,6 +23,7 @@ export {
   type ProjectInfo,
   type MCPCodeConfig
 } from "./claude-code-config.js";
+export * from "./config-manager.js";
 export * from "./mcp-installer.js";
 export * from "./server-registry.js";
 
