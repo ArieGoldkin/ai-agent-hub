@@ -19,8 +19,8 @@ import {
   detectConfigTargets,
   removeServerFromConfigs,
   getAllServersWithLocations
-} from "../../src/config-manager.js";
-import { SERVER_REGISTRY } from "../../src/server-registry.js";
+} from "../../src/config-manager/index.js";
+import { SERVER_REGISTRY } from "../../src/server-registry/index.js";
 
 const logger = createLogger("remove");
 

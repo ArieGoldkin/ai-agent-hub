@@ -12,12 +12,12 @@ import {
   detectConfigTargets,
   getAllServersWithLocations,
   getServerLocationString
-} from "../../src/config-manager.js";
+} from "../../src/config-manager/index.js";
 import {
   SERVER_REGISTRY,
   SERVER_CATEGORIES
-} from "../../src/server-registry.js";
-import { getInstalledAgents } from "../../src/agent-installer.js";
+} from "../../src/server-registry/index.js";
+import { getInstalledAgents } from "../../src/agent-installer/index.js";
 
 const logger = createLogger("list");
 
@@ -166,7 +166,7 @@ export const listCommand = new Command("list")
       if (installedAgents.length > 0) {
         console.log(chalk.bold("🤖 Installed Agent Personalities:"));
         console.log(chalk.dim("   Location: .claude/agents/"));
-        installedAgents.forEach(agent => {
+        installedAgents.forEach((agent: string) => {
           console.log(`   ${chalk.green("●")} ${agent}`);
         });
         console.log();

@@ -1,36 +1,10 @@
 /**
- * MCP Server Registry
- *
- * Simplified registry of available MCP servers with metadata
- * for installation and configuration.
+ * MCP Server Definitions
+ * 
+ * Registry of all available MCP servers with their configurations
  */
 
-/**
- * Default servers installed by init command
- */
-export const DEFAULT_SERVERS = [
-  "filesystem",
-  "git",
-  "github",
-  "sequential-thinking",
-  "memory",
-  "context7",
-  "playwright"
-];
-
-export interface ServerDefinition {
-  name: string;
-  package: string;
-  description: string;
-  category: "core" | "dev-tools" | "ai" | "optional";
-  requiredEnv: string[];
-  optionalEnv: string[];
-  defaultArgs: string[];
-  defaultEnv: Record<string, string>;
-  capabilities: string[];
-  version?: string;
-  runner?: "npx" | "uvx";
-}
+import type { ServerDefinition } from "./types.js";
 
 /**
  * Registry of available MCP servers
@@ -223,126 +197,14 @@ export const SERVER_REGISTRY: Record<string, ServerDefinition> = {
 };
 
 /**
- * Server categories with descriptions
+ * Default servers installed by init command
  */
-export const SERVER_CATEGORIES = {
-  core: {
-    name: "Core Servers",
-    description: "Essential servers for basic development workflow",
-    servers: ["filesystem", "github", "git"]
-  },
-  "dev-tools": {
-    name: "Development Tools",
-    description: "Servers for testing, databases, and deployment",
-    servers: ["playwright", "docker", "postgres", "sqlite"]
-  },
-  ai: {
-    name: "AI Enhancement",
-    description:
-      "Servers that enhance AI capabilities with reasoning and context",
-    servers: ["sequential-thinking", "context7", "memory"]
-  },
-  optional: {
-    name: "Optional Utilities",
-    description: "Additional servers for specific use cases",
-    servers: ["fetch", "slack", "puppeteer"]
-  }
-};
-
-/**
- * Get server definition by name
- */
-export function getServerDefinition(
-  serverName: string
-): ServerDefinition | undefined {
-  return SERVER_REGISTRY[serverName];
-}
-
-/**
- * Get all servers in a category
- */
-export function getServersByCategory(
-  category: keyof typeof SERVER_CATEGORIES
-): ServerDefinition[] {
-  return SERVER_CATEGORIES[category].servers
-    .map(serverName => SERVER_REGISTRY[serverName])
-    .filter(Boolean);
-}
-
-/**
- * Get all available server names
- */
-export function getAllServerNames(): string[] {
-  return Object.keys(SERVER_REGISTRY);
-}
-
-/**
- * Get servers that require specific environment variables
- */
-export function getServersRequiringEnv(envVar: string): ServerDefinition[] {
-  return Object.values(SERVER_REGISTRY).filter(
-    server =>
-      server.requiredEnv.includes(envVar) || server.optionalEnv.includes(envVar)
-  );
-}
-
-/**
- * Validate server name exists in registry
- */
-export function isValidServerName(serverName: string): boolean {
-  return serverName in SERVER_REGISTRY;
-}
-
-/**
- * Get recommended server combinations for common workflows
- */
-export const SERVER_COMBINATIONS = {
-  "basic-dev": {
-    name: "Basic Development",
-    description: "Essential servers for code development",
-    servers: ["filesystem", "git", "github"],
-    requiredEnv: ["GITHUB_TOKEN"]
-  },
-  "full-stack": {
-    name: "Full Stack Development",
-    description: "Complete development stack with database and testing",
-    servers: ["filesystem", "git", "github", "postgres", "playwright"],
-    requiredEnv: ["GITHUB_TOKEN", "DATABASE_URL"]
-  },
-  "ai-enhanced": {
-    name: "AI Enhanced Workflow",
-    description: "Development with advanced AI reasoning and context",
-    servers: ["filesystem", "git", "github", "sequential-thinking", "memory"],
-    requiredEnv: ["GITHUB_TOKEN"]
-  },
-  research: {
-    name: "Research and Documentation",
-    description: "Servers optimized for research and documentation work",
-    servers: ["filesystem", "fetch", "context7", "sequential-thinking"],
-    requiredEnv: ["CONTEXT7_API_KEY"]
-  }
-};
-
-/**
- * Get server combination by name
- */
-export function getServerCombination(
-  combinationName: string
-): (typeof SERVER_COMBINATIONS)[keyof typeof SERVER_COMBINATIONS] | undefined {
-  return SERVER_COMBINATIONS[
-    combinationName as keyof typeof SERVER_COMBINATIONS
-  ];
-}
-
-/**
- * Get all available combinations
- */
-export function getAllCombinations(): Array<{
-  name: string;
-  combination: (typeof SERVER_COMBINATIONS)[keyof typeof SERVER_COMBINATIONS];
-}> {
-  return Object.entries(SERVER_COMBINATIONS).map(([name, combination]) => ({
-    name,
-    combination
-  }));
-}
+export const DEFAULT_SERVERS = [
+  "filesystem",
+  "git",
+  "github",
+  "sequential-thinking",
+  "memory",
+  "context7",
+  "playwright"
+];

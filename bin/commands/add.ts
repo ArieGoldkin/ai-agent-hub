@@ -19,22 +19,22 @@ import {
   detectClaudeConfig,
   readClaudeConfig,
   updateClaudeConfig
-} from "../../src/claude-config.js";
+} from "../../src/claude-config/index.js";
 import {
   detectProjectInfo,
   addServerToMCPConfig,
   hasMCPConfig,
   listMCPConfiguredServers
-} from "../../src/claude-code-config.js";
+} from "../../src/claude-code-config/index.js";
 import {
   installMCPServer,
   generateServerConfig,
   checkNPXAvailable
-} from "../../src/mcp-installer.js";
+} from "../../src/mcp-installer/index.js";
 import {
   SERVER_REGISTRY,
   isValidServerName
-} from "../../src/server-registry.js";
+} from "../../src/server-registry/index.js";
 
 const logger = createLogger("add");
 
