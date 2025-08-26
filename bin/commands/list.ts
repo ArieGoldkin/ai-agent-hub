@@ -9,10 +9,11 @@ import { createLogger } from "../utils/logger.js";
 
 // Import new modules
 import {
-  detectClaudeConfig,
-  readClaudeConfig,
-  listConfiguredServers
-} from "../../src/claude-config.js";
+  detectConfigTargets,
+  getAllServersWithLocations,
+  getServerLocationString,
+  type ServerLocation
+} from "../../src/config-manager.js";
 import {
   SERVER_REGISTRY,
   SERVER_CATEGORIES
@@ -43,32 +44,31 @@ export const listCommand = new Command("list")
     try {
       console.log(chalk.blue("📋 MCP Servers\n"));
 
-      // Get Claude configuration
-      const claudeConfigPath = detectClaudeConfig();
-      const existingConfig = await readClaudeConfig(claudeConfigPath);
+      // Get all configurations using unified manager
+      const configState = await detectConfigTargets();
+      const allServerLocations = await getAllServersWithLocations();
+      const uniqueServers = [...new Set(allServerLocations.map(s => s.serverId))];
 
-      console.log(`📂 Claude config: ${chalk.cyan(claudeConfigPath)}`);
+      // Show detected configurations
+      console.log("📂 Detected configurations:");
+      configState.targets.forEach(target => {
+        const status = target.exists ? chalk.green("✅") : chalk.dim("○");
+        const count = target.type === 'desktop' 
+          ? configState.servers.desktop.length 
+          : configState.servers.code.length;
+        console.log(`   ${status} ${target.name} (${count} servers)`);
+      });
 
-      const configuredServers = existingConfig.exists
-        ? await listConfiguredServers(claudeConfigPath)
-        : [];
-
-      if (existingConfig.exists) {
-        console.log(
-          chalk.green(
-            `✅ ${configuredServers.length} server(s) currently configured\n`
-          )
-        );
-      } else {
-        console.log(chalk.dim("⚠️  No Claude Desktop configuration found\n"));
-      }
+      console.log(
+        chalk.green(`\n✅ ${uniqueServers.length} unique server(s) across all configs\n`)
+      );
 
       // Handle JSON output
       if (options.format === "json") {
         const output = {
-          claudeConfigPath,
-          configExists: existingConfig.exists,
-          configuredServers,
+          configState,
+          allServerLocations,
+          uniqueConfiguredServers: uniqueServers,
           availableServers: Object.keys(SERVER_REGISTRY),
           registry: SERVER_REGISTRY,
           categories: SERVER_CATEGORIES
@@ -79,7 +79,7 @@ export const listCommand = new Command("list")
 
       // Handle configured-only view
       if (options.configured) {
-        if (configuredServers.length === 0) {
+        if (uniqueServers.length === 0) {
           console.log(chalk.yellow("No servers currently configured."));
           console.log(
             chalk.dim(`Run ${chalk.cyan("ai-agent-hub init")} to get started.`)
@@ -88,11 +88,13 @@ export const listCommand = new Command("list")
         }
 
         console.log(chalk.bold("🟢 Configured Servers:"));
-        configuredServers.forEach(name => {
+        uniqueServers.forEach(name => {
           const server = SERVER_REGISTRY[name];
+          const locationStr = getServerLocationString(name, allServerLocations);
+          
           if (server) {
             console.log(
-              `   ${chalk.green("●")} ${chalk.bold(name)} - ${server.name}`
+              `   ${chalk.green("●")} ${chalk.bold(name)} - ${server.name} ${chalk.dim(locationStr)}`
             );
             console.log(`     ${chalk.dim(server.description)}`);
             console.log(`     Package: ${chalk.cyan(server.package)}`);
@@ -114,7 +116,7 @@ export const listCommand = new Command("list")
             console.log();
           } else {
             console.log(
-              `   ${chalk.yellow("●")} ${chalk.bold(name)} ${chalk.dim("(unknown server)")}`
+              `   ${chalk.yellow("●")} ${chalk.bold(name)} ${chalk.dim(`(unknown server) [${locationStr}]`)}`
             );
             console.log();
           }
@@ -124,47 +126,35 @@ export const listCommand = new Command("list")
 
       // Handle available-only view
       if (options.available) {
-        showAvailableServers(configuredServers, options.category);
+        showAvailableServers(uniqueServers, options.category);
         return;
       }
 
       // Default: Show both configured and available
 
-      // Show configured servers
-      if (configuredServers.length > 0) {
+      // Show configured servers by configuration type
+      if (uniqueServers.length > 0) {
         console.log(chalk.bold("🟢 Configured Servers:"));
-        configuredServers.forEach(name => {
-          const server = SERVER_REGISTRY[name];
-          if (server) {
-            console.log(
-              `   ${chalk.green("●")} ${chalk.bold(name)} - ${server.name}`
-            );
-            console.log(`     ${chalk.dim(server.description)}`);
-
-            // Check environment status
-            if (server.requiredEnv.length > 0) {
-              const missingEnv = server.requiredEnv.filter(
-                env => !process.env[env]
-              );
-              if (missingEnv.length > 0) {
-                console.log(
-                  `     ${chalk.yellow("⚠️  Missing env:")} ${chalk.red(missingEnv.join(", "))}`
-                );
-              } else {
-                console.log(`     ${chalk.green("✅ Environment OK")}`);
-              }
-            }
-          } else {
-            console.log(
-              `   ${chalk.yellow("●")} ${chalk.bold(name)} ${chalk.dim("(unknown server)")}`
-            );
-          }
-        });
+        
+        // Group by configuration type for clearer display
+        if (configState.servers.desktop.length > 0) {
+          console.log(chalk.dim("   Claude Desktop (Global):"));
+          configState.servers.desktop.forEach(name => {
+            showConfiguredServer(name, allServerLocations);
+          });
+        }
+        
+        if (configState.servers.code.length > 0) {
+          console.log(chalk.dim("   Claude Code (Project):"));
+          configState.servers.code.forEach(name => {
+            showConfiguredServer(name, allServerLocations);
+          });
+        }
         console.log();
       }
 
       // Show available servers by category
-      showAvailableServers(configuredServers, options.category);
+      showAvailableServers(uniqueServers, options.category);
 
       // Show usage hints
       console.log(chalk.bold("💡 Usage:"));
@@ -186,6 +176,35 @@ export const listCommand = new Command("list")
       process.exit(1);
     }
   });
+
+function showConfiguredServer(name: string, _allLocations: ServerLocation[]): void {
+  const server = SERVER_REGISTRY[name];
+  
+  if (server) {
+    console.log(
+      `     ${chalk.green("●")} ${chalk.bold(name)} - ${server.name}`
+    );
+    console.log(`       ${chalk.dim(server.description)}`);
+
+    // Check environment status
+    if (server.requiredEnv.length > 0) {
+      const missingEnv = server.requiredEnv.filter(
+        env => !process.env[env]
+      );
+      if (missingEnv.length > 0) {
+        console.log(
+          `       ${chalk.yellow("⚠️  Missing env:")} ${chalk.red(missingEnv.join(", "))}`
+        );
+      } else {
+        console.log(`       ${chalk.green("✅ Environment OK")}`);
+      }
+    }
+  } else {
+    console.log(
+      `     ${chalk.yellow("●")} ${chalk.bold(name)} ${chalk.dim("(unknown server)")}`
+    );
+  }
+}
 
 function showAvailableServers(
   configuredServers: string[],

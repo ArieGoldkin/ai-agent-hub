@@ -8,11 +8,16 @@ import { createLogger } from "../utils/logger.js";
 
 // Import new modules
 import {
-  detectClaudeConfig,
   readClaudeConfig,
-  validateClaudeConfig,
-  listConfiguredServers
+  validateClaudeConfig
 } from "../../src/claude-config.js";
+import {
+  validateMCPConfig
+} from "../../src/claude-code-config.js";
+import {
+  detectConfigTargets,
+  getAllServersWithLocations
+} from "../../src/config-manager.js";
 import {
   getSystemInfo,
   validateInstallation
@@ -85,60 +90,84 @@ export const doctorCommand = new Command("doctor")
 
       console.log();
 
-      // Claude Desktop Configuration
-      console.log(chalk.bold("🖥️  Claude Desktop Configuration:"));
+      // All Configurations
+      console.log(chalk.bold("🖥️  Configurations:"));
 
-      const claudeConfigPath = detectClaudeConfig();
-      console.log(`   Config path: ${chalk.cyan(claudeConfigPath)}`);
+      const configState = await detectConfigTargets();
+      const allServerLocations = await getAllServersWithLocations();
+      const uniqueServers = [...new Set(allServerLocations.map(s => s.serverId))];
 
-      const existingConfig = await readClaudeConfig(claudeConfigPath);
-
-      if (existingConfig.exists) {
-        console.log(`   ${chalk.green("✅")} Configuration file exists`);
-
-        // Validate config format
-        if (
-          existingConfig.config &&
-          validateClaudeConfig(existingConfig.config)
-        ) {
-          console.log(`   ${chalk.green("✅")} Configuration format is valid`);
+      // Check each configuration target
+      for (const target of configState.targets) {
+        console.log(`   ${target.name}:`);
+        console.log(`     Path: ${chalk.cyan(target.path)}`);
+        
+        if (target.exists) {
+          console.log(`     ${chalk.green("✅")} Configuration file exists`);
+          
+          // Validate format based on type
+          if (target.type === 'desktop') {
+            const config = await readClaudeConfig(target.path);
+            if (config.config && validateClaudeConfig(config.config)) {
+              console.log(`     ${chalk.green("✅")} Configuration format is valid`);
+            } else {
+              console.log(`     ${chalk.red("❌")} Configuration format is invalid`);
+              hasErrors = true;
+            }
+          } else if (target.type === 'code') {
+            const validation = await validateMCPConfig();
+            if (validation.valid) {
+              console.log(`     ${chalk.green("✅")} Configuration format is valid`);
+            } else {
+              console.log(`     ${chalk.red("❌")} Configuration format is invalid`);
+              validation.errors.forEach(error => {
+                console.log(`       ${chalk.dim(error)}`);
+              });
+              hasErrors = true;
+            }
+            
+            if (validation.warnings.length > 0) {
+              validation.warnings.forEach(warning => {
+                console.log(`     ${chalk.yellow("⚠️ ")} ${warning}`);
+              });
+              hasWarnings = true;
+            }
+          }
+          
+          const serverCount = target.type === 'desktop' 
+            ? configState.servers.desktop.length 
+            : configState.servers.code.length;
+          console.log(`     Configured servers: ${chalk.cyan(serverCount.toString())}`);
+          
         } else {
-          console.log(`   ${chalk.red("❌")} Configuration format is invalid`);
-          hasErrors = true;
+          console.log(`     ${chalk.yellow("⚠️ ")} Configuration file does not exist`);
+          if (target.type === 'desktop') {
+            hasWarnings = true;
+          }
         }
-
-        // Check configured servers
-        const configuredServers = await listConfiguredServers(claudeConfigPath);
-        console.log(
-          `   Configured servers: ${chalk.cyan(configuredServers.length.toString())}`
-        );
-
-        if (configuredServers.length === 0) {
-          console.log(`   ${chalk.yellow("⚠️ ")} No MCP servers configured`);
-          hasWarnings = true;
-        } else {
-          console.log(`   ${chalk.green("✅")} MCP servers are configured`);
-        }
-      } else {
-        console.log(
-          `   ${chalk.yellow("⚠️ ")} Configuration file does not exist`
-        );
+      }
+      
+      console.log(`   Total unique servers: ${chalk.cyan(uniqueServers.length.toString())}`);
+      if (uniqueServers.length === 0) {
+        console.log(`   ${chalk.yellow("⚠️ ")} No MCP servers configured`);
         hasWarnings = true;
+      } else {
+        console.log(`   ${chalk.green("✅")} MCP servers are configured`);
       }
 
       console.log();
 
       // MCP Server Validation
-      if (existingConfig.exists && existingConfig.config?.mcpServers) {
+      if (uniqueServers.length > 0) {
         console.log(chalk.bold("🔧 MCP Server Status:"));
 
-        const configuredServers = await listConfiguredServers(claudeConfigPath);
-
-        for (const serverName of configuredServers) {
+        for (const serverName of uniqueServers) {
           const server = SERVER_REGISTRY[serverName];
 
           if (server) {
-            console.log(`   ${chalk.bold(serverName)} (${server.name}):`);
+            const locations = allServerLocations.filter(s => s.serverId === serverName);
+            const locationStr = locations.map(s => s.configType).join(', ');
+            console.log(`   ${chalk.bold(serverName)} (${server.name}) ${chalk.dim(`[${locationStr}]`)}:`);
 
             // Check environment variables
             if (server.requiredEnv.length > 0) {
@@ -257,11 +286,7 @@ export const doctorCommand = new Command("doctor")
         console.log("   2. Ensure Node.js >= 20.0.0 and NPX are installed");
       }
 
-      if (
-        !existingConfig.exists ||
-        (existingConfig.config?.mcpServers &&
-          Object.keys(existingConfig.config.mcpServers).length === 0)
-      ) {
+      if (allServerLocations.length === 0) {
         console.log(
           `   • Run ${chalk.cyan("ai-agent-hub init")} to set up MCP servers`
         );
@@ -296,9 +321,23 @@ export const doctorCommand = new Command("doctor")
         console.log(`   Working Directory: ${process.cwd()}`);
         console.log(`   PATH: ${process.env.PATH?.split(":").length} entries`);
 
-        if (existingConfig.exists && existingConfig.config) {
-          console.log("\n📄 Configuration Contents:");
-          console.log(JSON.stringify(existingConfig.config, null, 2));
+        // Show configuration contents for each target that exists
+        for (const target of configState.targets) {
+          if (target.exists) {
+            console.log(`\n📄 ${target.name} Configuration Contents:`);
+            if (target.type === "desktop") {
+              const config = await readClaudeConfig(target.path);
+              if (config.config) {
+                console.log(JSON.stringify(config.config, null, 2));
+              }
+            } else if (target.type === "code") {
+              const { loadMCPConfig } = await import("../../src/claude-code-config.js");
+              const config = await loadMCPConfig();
+              if (config) {
+                console.log(JSON.stringify(config, null, 2));
+              }
+            }
+          }
         }
       }
 

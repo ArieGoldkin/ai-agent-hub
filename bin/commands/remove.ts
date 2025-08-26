@@ -16,15 +16,10 @@ import { createSpinner } from "../utils/spinner.js";
 
 // Import new modules
 import {
-  detectClaudeConfig,
-  readClaudeConfig,
-  removeServersFromConfig,
-  listConfiguredServers
-} from "../../src/claude-config.js";
-import {
-  detectProjectInfo,
-  hasMCPConfig
-} from "../../src/claude-code-config.js";
+  detectConfigTargets,
+  removeServerFromConfigs,
+  getAllServersWithLocations
+} from "../../src/config-manager.js";
 import { SERVER_REGISTRY } from "../../src/server-registry.js";
 
 const logger = createLogger("remove");
@@ -45,35 +40,26 @@ export const removeCommand = new Command("remove")
     try {
       console.log(chalk.blue("🗑️  Removing MCP servers\n"));
 
-      // Detect environments
-      const projectInfo = await detectProjectInfo();
-      const claudeConfigPath = detectClaudeConfig();
-      const existingDesktopConfig = await readClaudeConfig(claudeConfigPath);
-      const hasCodeConfig = await hasMCPConfig();
+      // Detect all configurations using unified manager
+      const configState = await detectConfigTargets();
 
       console.log(chalk.blue("🔍 Environment Detection:"));
-      console.log(`📂 Claude Desktop: ${chalk.cyan(claudeConfigPath)}`);
-
-      if (projectInfo.isProject) {
-        console.log(`📁 Project Directory: ${chalk.green("Yes")}`);
-        console.log(
-          `📄 Claude Code (.mcp.json): ${hasCodeConfig ? chalk.green("Exists") : chalk.dim("Not found")}`
-        );
-      } else {
-        console.log(`📁 Project Directory: ${chalk.dim("No")}`);
-      }
+      configState.targets.forEach(target => {
+        const status = target.exists ? chalk.green("Exists") : chalk.dim("Not found");
+        console.log(`${target.type === 'desktop' ? '📂' : '📄'} ${target.name}: ${status}`);
+      });
 
       // Check if any configurations exist
-      const hasDesktop = existingDesktopConfig.exists;
-      const hasCode = hasCodeConfig;
-
-      if (!hasDesktop && !hasCode) {
+      const hasAnyConfig = configState.targets.some(t => t.exists);
+      if (!hasAnyConfig) {
         console.log(chalk.yellow("\n⚠️  No Claude configurations found."));
         console.log(chalk.dim("Nothing to remove."));
         process.exit(0);
       }
 
-      const configuredServers = await listConfiguredServers(claudeConfigPath);
+      // Get all configured servers with their locations
+      const allServerLocations = await getAllServersWithLocations();
+      const configuredServers = [...new Set(allServerLocations.map(s => s.serverId))];
 
       if (configuredServers.length === 0) {
         console.log(
@@ -144,12 +130,14 @@ export const removeCommand = new Command("remove")
         process.exit(0);
       }
 
-      // Show what will be removed
+      // Show what will be removed with locations
       console.log(chalk.blue("\n🗑️  Servers to remove:"));
       serversToRemove.forEach(name => {
         const server = SERVER_REGISTRY[name];
+        const locations = allServerLocations.filter(s => s.serverId === name);
+        const locationStr = locations.map(l => l.configType).join(', ');
         console.log(
-          `   • ${chalk.red(name)}${server ? ` (${server.name})` : ""}`
+          `   • ${chalk.red(name)}${server ? ` (${server.name})` : ""} ${chalk.dim(`[${locationStr}]`)}`
         );
       });
 
@@ -159,7 +147,7 @@ export const removeCommand = new Command("remove")
         const { confirmed } = (await enquirer.prompt({
           type: "confirm",
           name: "confirmed",
-          message: `Remove ${serversToRemove.length} server(s) from Claude Desktop configuration?`
+          message: `Remove ${serversToRemove.length} server(s) from configurations?`
         })) as { confirmed: boolean };
 
         if (!confirmed) {
@@ -168,45 +156,69 @@ export const removeCommand = new Command("remove")
         }
       }
 
-      // Remove servers
-      const spinner = createSpinner("Updating Claude Desktop configuration");
+      // Remove servers from all applicable configs
+      const spinner = createSpinner("Updating configurations");
       spinner.start();
 
-      const result = await removeServersFromConfig(
-        serversToRemove,
-        claudeConfigPath,
-        true // create backup
-      );
+      const results = { desktop: { removed: [] as string[] }, code: { removed: [] as string[] } };
+      let totalRemoved = 0;
 
-      if (result.removed.length > 0) {
-        spinner.succeed(
-          `Removed ${result.removed.length} server(s) from configuration`
-        );
-        if (result.backupPath) {
-          console.log(chalk.dim(`💾 Backup saved: ${result.backupPath}`));
+      for (const serverName of serversToRemove) {
+        const serverLocations = allServerLocations.filter(s => s.serverId === serverName);
+        const targets = serverLocations.map(s => s.configType);
+        
+        if (targets.length > 0) {
+          const result = await removeServerFromConfigs(serverName, targets);
+          if (result.desktop?.removed && result.desktop.removed.length > 0) {
+            results.desktop.removed.push(...result.desktop.removed);
+            totalRemoved += result.desktop.removed.length;
+          }
+          if (result.code?.removed && result.code.removed.length > 0) {
+            results.code.removed.push(...result.code.removed);
+            totalRemoved += result.code.removed.length;
+          }
         }
+      }
+
+      if (totalRemoved > 0) {
+        spinner.succeed(`Removed ${totalRemoved} server(s) from configurations`);
       } else {
         spinner.succeed("No servers were removed (already not configured)");
       }
 
-      // Show results
-      if (result.removed.length > 0) {
+      // Show results by configuration type
+      if (totalRemoved > 0) {
         console.log(chalk.green("\n✅ Successfully removed:"));
-        result.removed.forEach(name => {
-          const server = SERVER_REGISTRY[name];
-          console.log(
-            `   • ${chalk.red(name)}${server ? ` (${server.name})` : ""}`
-          );
-        });
+        
+        if (results.desktop.removed.length > 0) {
+          console.log(chalk.dim("   From Claude Desktop:"));
+          results.desktop.removed.forEach(name => {
+            const server = SERVER_REGISTRY[name];
+            console.log(
+              `     • ${chalk.red(name)}${server ? ` (${server.name})` : ""}`
+            );
+          });
+        }
+        
+        if (results.code.removed.length > 0) {
+          console.log(chalk.dim("   From Claude Code:"));
+          results.code.removed.forEach(name => {
+            const server = SERVER_REGISTRY[name];
+            console.log(
+              `     • ${chalk.red(name)}${server ? ` (${server.name})` : ""}`
+            );
+          });
+        }
       }
 
+      const allRemoved = [...results.desktop.removed, ...results.code.removed];
       const notRemoved = serversToRemove.filter(
-        name => !result.removed.includes(name)
+        name => !allRemoved.includes(name)
       );
       if (notRemoved.length > 0) {
         console.log(chalk.yellow("\n⚠️  Could not remove:"));
         notRemoved.forEach(name => {
-          console.log(`   • ${name} (not found in configuration)`);
+          console.log(`   • ${name} (not found in any configuration)`);
         });
       }
 
@@ -220,13 +232,11 @@ export const removeCommand = new Command("remove")
       );
 
       // Show recovery info
-      if (result.backupPath) {
-        console.log(
-          chalk.dim(
-            `\n💡 To restore: copy ${result.backupPath} back to ${result.path}`
-          )
-        );
-      }
+      console.log(
+        chalk.dim(
+          "\n💡 To restore: Use git to revert changes or manually restore from backup"
+        )
+      );
     } catch (error) {
       logger.error("Remove command failed:", error);
       console.error(
