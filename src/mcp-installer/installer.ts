@@ -42,7 +42,7 @@ export async function installMCPServer(
       success: true,
       packageName,
       command: getServerCommand(packageName),
-      version: version
+      version
     };
 
     return installResult;
