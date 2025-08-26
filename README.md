@@ -6,8 +6,6 @@
 
 **NPX Tool**: Transform Claude Desktop into a complete development environment in 30 seconds.
 
-> ⚠️ **Don't install with `npm i`!** This is an NPX tool - run it directly:
-
 ```bash
 npx ai-agent-hub init
 ```
@@ -86,20 +84,27 @@ Close and reopen Claude Desktop to activate the new tools.
 
 ### What Gets Installed
 
-**7 MCP Servers** (automatically configured):
+**🤖 9 Specialized AI Agents** (the main event!):
 
-- File system access
-- Git commands
-- GitHub integration
-- Browser automation (Playwright)
-- Enhanced reasoning (Sequential Thinking)
-- Persistent memory across chats
-- Documentation search (Context7)
+- 🧠 **AI/ML Engineer** - Machine learning implementation specialist
+- 🏗️ **Backend System Architect** - Scalable server-side systems expert
+- 💻 **Frontend UI Developer** - Modern JavaScript frameworks specialist
+- 🔍 **Code Quality Reviewer** - Code review and security expert
+- 👥 **UX Researcher** - User behavior and usability specialist
+- 🎨 **Rapid UI Designer** - Fast UI design with modern systems
+- 📋 **Sprint Planner** - Agile project management specialist
+- 🏆 **Studio Coach** - Team development and collaboration coach
+- ✨ **Whimsy Injector** - Creative UI elements and delight specialist
 
-**9 AI Personalities** (in `.claude/agents/`):
+**⚡ 7 Powerful MCP Servers** (automatically configured):
 
-- Specialized agents for different development tasks
-- Automatically available to Claude
+- 📁 **File system access** - Read/write files directly from Claude
+- 🔧 **Git commands** - Full version control operations
+- 🐙 **GitHub integration** - Manage repos, create PRs, review code
+- 🌐 **Browser automation** - Playwright for testing and web scraping
+- 🧮 **Enhanced reasoning** - Sequential thinking for complex problems
+- 💾 **Persistent memory** - Context that remembers across chats
+- 📚 **Documentation search** - Context7 for code examples and docs
 
 ## GitHub Integration (Optional)
 
