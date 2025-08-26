@@ -1,26 +1,30 @@
 #!/usr/bin/env node
 
 /**
- * AI Agent Hub - Enhanced MCP Server Orchestration System
- * Entry point for the application
+ * AI Agent Hub - NPX Installer for Claude MCP Configuration
+ * Simple installer that configures Claude Desktop with MCP servers
  */
 
-export const version = '0.1.0'
+export const version = "1.0.0";
 
-// Export configuration system
-export * from './config/index.js'
+// Export core modules
+export * from "./claude-config.js";
+export * from "./mcp-installer.js";
+export * from "./server-registry.js";
 
 // Export type definitions
-export * from './types/index.js'
+export * from "./types/index.js";
+
+// Export agent templates
+export { default as agentTemplates } from "./agent-templates.json" with { type: "json" };
 
 export function main(): void {
-  // eslint-disable-next-line no-console
-  console.log(`AI Agent Hub v${version}`)
-  // eslint-disable-next-line no-console
-  console.log('MCP Server Orchestration System')
+  console.log(`AI Agent Hub v${version}`);
+  console.log("NPX Installer for Claude MCP Configuration");
+  console.log("Use: npx ai-agent-hub init");
 }
 
 // Run if called directly
 if (import.meta.url === `file://${process.argv[1]}`) {
-  main()
+  main();
 }
