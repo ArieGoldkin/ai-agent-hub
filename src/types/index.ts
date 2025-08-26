@@ -24,4 +24,4 @@ export interface AgentTemplate {
 }
 
 // Re-export Claude config types from claude-config module
-export { ClaudeConfig, MCPServerConfig } from "../claude-config.js";
+export { ClaudeConfig, MCPServerConfig } from "../claude-config/index.js";

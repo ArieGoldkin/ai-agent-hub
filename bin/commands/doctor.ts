@@ -10,17 +10,17 @@ import { createLogger } from "../utils/logger.js";
 import {
   readClaudeConfig,
   validateClaudeConfig
-} from "../../src/claude-config.js";
-import { validateMCPConfig } from "../../src/claude-code-config.js";
+} from "../../src/claude-config/index.js";
+import { validateMCPConfig } from "../../src/claude-code-config/index.js";
 import {
   detectConfigTargets,
   getAllServersWithLocations
-} from "../../src/config-manager.js";
+} from "../../src/config-manager/index.js";
 import {
   getSystemInfo,
   validateInstallation
-} from "../../src/mcp-installer.js";
-import { SERVER_REGISTRY } from "../../src/server-registry.js";
+} from "../../src/mcp-installer/index.js";
+import { SERVER_REGISTRY } from "../../src/server-registry/index.js";
 
 const logger = createLogger("doctor");
 
@@ -350,7 +350,7 @@ export const doctorCommand = new Command("doctor")
               }
             } else if (target.type === "code") {
               const { loadMCPConfig } = await import(
-                "../../src/claude-code-config.js"
+                "../../src/claude-code-config/index.js"
               );
               const config = await loadMCPConfig();
               if (config) {

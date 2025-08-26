@@ -17,21 +17,21 @@ import { createSpinner } from "../utils/spinner.js";
 import {
   updateClaudeConfig,
   type MCPServerConfig
-} from "../../src/claude-config.js";
+} from "../../src/claude-config/index.js";
 import {
   detectProjectInfo,
   createMCPConfigFromServers
-} from "../../src/claude-code-config.js";
+} from "../../src/claude-code-config/index.js";
 import {
   generateServerConfig,
   batchInstallServers,
   checkNPXAvailable
-} from "../../src/mcp-installer.js";
-import { SERVER_REGISTRY, DEFAULT_SERVERS } from "../../src/server-registry.js";
+} from "../../src/mcp-installer/index.js";
+import { SERVER_REGISTRY, DEFAULT_SERVERS } from "../../src/server-registry/index.js";
 import {
   installAgentFiles,
   installAgentFilesGlobally
-} from "../../src/agent-installer.js";
+} from "../../src/agent-installer/index.js";
 
 const logger = createLogger("init");
 
@@ -42,10 +42,14 @@ interface ConfigurationTargets {
 
 export const initCommand = new Command("init")
   .description("Set up Claude Desktop with essential MCP servers")
-  .action(async () => {
+  .option("--dry-run", "Preview what would be installed without making changes")
+  .action(async (options) => {
     try {
       // Welcome message
       console.log(chalk.blue("🚀 AI Agent Hub - MCP Server Installer"));
+      if (options.dryRun) {
+        console.log(chalk.yellow("[DRY RUN MODE] - No changes will be made"));
+      }
       console.log(
         chalk.dim("Setting up Claude Desktop with essential MCP servers\n")
       );
@@ -81,10 +85,10 @@ export const initCommand = new Command("init")
       });
 
       // Install the servers
-      await installServers(DEFAULT_SERVERS, configTargets);
+      await installServers(DEFAULT_SERVERS, configTargets, options.dryRun);
 
       // Install agent personalities
-      await installAgentPersonalities(configTargets);
+      await installAgentPersonalities(configTargets, options.dryRun);
 
       // Show success message
       console.log(chalk.green("\n✅ Setup completed successfully!"));
@@ -220,7 +224,8 @@ async function checkGitHubToken(): Promise<void> {
 
 async function installServers(
   serverNames: string[],
-  configTargets: ConfigurationTargets
+  configTargets: ConfigurationTargets,
+  dryRun = false
 ): Promise<void> {
   const spinner = createSpinner("Installing MCP servers");
   spinner.start();
@@ -236,7 +241,16 @@ async function installServers(
     });
 
     // Batch install servers
-    const results = await batchInstallServers(packages, 3);
+    if (dryRun) {
+      spinner.succeed(`[DRY RUN] Would install ${packages.length} servers`);
+      console.log(chalk.dim("Packages that would be installed:"));
+      packages.forEach(pkg => {
+        console.log(`   • ${pkg.name}@${pkg.version}`);
+      });
+      return;
+    }
+    
+    const results = await batchInstallServers(packages, 2);
 
     const successful = results.filter(r => r.success);
     const failed = results.filter(r => !r.success);
@@ -311,20 +325,29 @@ async function installServers(
         }
       }
 
-      const updateResult = await updateClaudeConfig(
-        serverConfigs,
-        undefined,
-        true // always create backup
-      );
-
-      if (updateResult.updated) {
-        desktopSpinner.succeed("Claude Desktop configuration updated");
-        if (updateResult.backupPath) {
-          console.log(chalk.dim(`💾 Backup saved: ${updateResult.backupPath}`));
-        }
+      if (dryRun) {
+        desktopSpinner.succeed("[DRY RUN] Would update Claude Desktop configuration");
+        console.log(chalk.dim("Servers that would be configured:"));
+        Object.keys(serverConfigs).forEach(name => {
+          console.log(`   • ${name}`);
+        });
       } else {
-        desktopSpinner.succeed("Claude Desktop configuration unchanged");
+        const updateResult = await updateClaudeConfig(
+          serverConfigs,
+          undefined,
+          true // always create backup
+        );
+        
+        if (updateResult.updated) {
+          desktopSpinner.succeed("Claude Desktop configuration updated");
+          if (updateResult.backupPath) {
+            console.log(chalk.dim(`💾 Backup saved: ${updateResult.backupPath}`));
+          }
+        } else {
+          desktopSpinner.succeed("Claude Desktop configuration unchanged");
+        }
       }
+
     }
 
     // Update Claude Code configuration if selected
@@ -334,15 +357,23 @@ async function installServers(
       );
       codeSpinner.start();
 
-      try {
-        await createMCPConfigFromServers(successfulServerNames, env);
-        codeSpinner.succeed("Claude Code .mcp.json configuration created");
-      } catch (error) {
-        codeSpinner.fail("Failed to create Claude Code configuration");
-        console.error(
-          chalk.red("Error:"),
-          error instanceof Error ? error.message : "Unknown error"
-        );
+      if (dryRun) {
+        codeSpinner.succeed("[DRY RUN] Would create Claude Code .mcp.json configuration");
+        console.log(chalk.dim("Servers that would be configured:"));
+        successfulServerNames.forEach(name => {
+          console.log(`   • ${name}`);
+        });
+      } else {
+        try {
+          await createMCPConfigFromServers(successfulServerNames, env);
+          codeSpinner.succeed("Claude Code .mcp.json configuration created");
+        } catch (error) {
+          codeSpinner.fail("Failed to create Claude Code configuration");
+          console.error(
+            chalk.red("Error:"),
+            error instanceof Error ? error.message : "Unknown error"
+          );
+        }
       }
     }
   } catch (error) {
@@ -352,12 +383,25 @@ async function installServers(
 }
 
 async function installAgentPersonalities(
-  configTargets: ConfigurationTargets
+  configTargets: ConfigurationTargets,
+  dryRun = false
 ): Promise<void> {
   const spinner = createSpinner("Installing agent personalities");
   spinner.start();
 
   try {
+    if (dryRun) {
+      spinner.succeed("[DRY RUN] Would install agent personalities");
+      console.log(chalk.dim("Locations that would be used:"));
+      if (configTargets.desktop) {
+        console.log("   • ~/.claude/agents/ (global)");
+      }
+      if (configTargets.code) {
+        console.log("   • .claude/agents/ (project)");
+      }
+      return;
+    }
+    
     let totalInstalled = 0;
     let totalSkipped = 0;
     const allErrors: string[] = [];

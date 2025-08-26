@@ -8,7 +8,7 @@
 export const version = "1.0.0";
 
 // Export core modules
-export * from "./claude-config.js";
+export * from "./claude-config/index.js";
 export {
   detectProjectInfo,
   createMCPConfigFromServers,
@@ -22,11 +22,11 @@ export {
   validateMCPConfig,
   type ProjectInfo,
   type MCPCodeConfig
-} from "./claude-code-config.js";
-export * from "./config-manager.js";
-export * from "./mcp-installer.js";
-export * from "./server-registry.js";
-export * from "./agent-installer.js";
+} from "./claude-code-config/index.js";
+export * from "./config-manager/index.js";
+export * from "./mcp-installer/index.js";
+export * from "./server-registry/index.js";
+export * from "./agent-installer/index.js";
 
 // Export type definitions
 export * from "./types/index.js";
