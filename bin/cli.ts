@@ -20,6 +20,7 @@ import { listConfiguredServers } from "./commands/list-servers.js";
 import { addServer } from "./commands/add-server.js";
 import { removeServerCommand } from "./commands/remove-server.js";
 import { setupDefault } from "./commands/setup-default.js";
+import { handleSessionCommand } from "./commands/session/index.js";
 import { InstallationChoice } from "./utils/prompt.js";
 
 // Parse arguments
@@ -56,6 +57,13 @@ async function main() {
     // Remove server
     if (command === "--remove" && args[1]) {
       await removeServerCommand(args[1]);
+      return;
+    }
+
+    // Session commands
+    if (command === "--session" || command === "session") {
+      const subcommand = args[1];
+      await handleSessionCommand(subcommand, args.slice(2));
       return;
     }
 

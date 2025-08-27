@@ -20,6 +20,7 @@ Usage:
   ai-agent-hub --list       List configured servers
   ai-agent-hub <server>     Add a specific server
   ai-agent-hub --remove <server>  Remove a server
+  ai-agent-hub session <cmd>  Manage agent collaboration sessions
   ai-agent-hub --help       Show this help
 
 AI Agents (Installed to .claude/agents/):
@@ -45,6 +46,13 @@ MCP Servers (Auto-configured based on context):
   
   * Claude Code has native filesystem and GitHub support
 
+Session Commands:
+  session start [name]    Start a new collaboration session
+  session show            Display current session context
+  session clear           Clear and archive current session
+  session list            Show last 5 archived sessions
+  session help            Show session command help
+
 Examples:
   ai-agent-hub              # Interactive setup (asks where to install)
   ai-agent-hub --both       # Install everywhere (non-interactive)
@@ -52,5 +60,6 @@ Examples:
   ai-agent-hub --desktop-only  # Desktop only (MCP servers)
   ai-agent-hub --list-agents  # See all agents
   ai-agent-hub supabase     # Add Supabase server
+  ai-agent-hub session start  # Start new session
 `);
 }
