@@ -1,0 +1,41 @@
+/**
+ * File Operations
+ * 
+ * Basic file I/O operations for configuration management.
+ */
+
+import { writeFile, readFile, mkdir } from "fs/promises";
+import { existsSync } from "fs";
+import { dirname } from "path";
+
+/**
+ * Load configuration from JSON file
+ */
+export async function loadConfig(path: string): Promise<any> {
+  try {
+    if (!existsSync(path)) {
+      return null;
+    }
+    const content = await readFile(path, "utf-8");
+    return JSON.parse(content);
+  } catch (error) {
+    console.error(`Failed to load config from ${path}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Save configuration to JSON file
+ */
+export async function saveConfig(path: string, config: any): Promise<void> {
+  const dir = dirname(path);
+  await mkdir(dir, { recursive: true });
+  await writeFile(path, JSON.stringify(config, null, 2));
+}
+
+/**
+ * Check if file exists
+ */
+export function fileExists(path: string): boolean {
+  return existsSync(path);
+}
