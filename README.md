@@ -47,6 +47,9 @@ Transform Claude with expert agents, each with unique skills:
 
 Unlock Claude's full potential with these capabilities:
 
+#### 📁 **Claude Code MCP Servers** (Created in `.mcp.json`)
+These 5 servers are configured for your project:
+
 | Server                     | Enhancement                    | Use Case                         |
 | -------------------------- | ------------------------------ | -------------------------------- |
 | 🧠 **memory**              | Persistent conversation memory | Remember context across sessions |
@@ -54,10 +57,16 @@ Unlock Claude's full potential with these capabilities:
 | 📚 **context7**            | Advanced context management    | Large-scale projects             |
 | 🎭 **playwright**          | Browser automation             | Testing, web scraping            |
 | 🗄️ **supabase**            | Database integration           | Direct DB operations             |
-| 📁 **filesystem**          | File operations                | Local file management\*          |
-| 🐙 **github**              | Repository access              | Code management\*                |
 
-<sub>\*Claude Code has native filesystem and GitHub support, so these are only added to Claude Desktop</sub>
+#### 🖥️ **Claude Desktop MCP Servers** (Global configuration)
+All 7 servers, including the above 5 plus:
+
+| Server                     | Enhancement                    | Use Case                            |
+| -------------------------- | ------------------------------ | ----------------------------------- |
+| 📁 **filesystem**          | File operations                | Local file management               |
+| 🐙 **github**              | Repository access              | Code management across all projects |
+
+<sub>💡 **Note:** Claude Code has native filesystem and GitHub support built-in, so these two are only needed for Claude Desktop</sub>
 
 ---
 
@@ -254,15 +263,15 @@ Some MCP servers need API keys. The tool:
 
 </details>
 
-### 🎯 **Context-Aware Installation**
+### 🎯 **Context-Aware File Creation**
 
 The tool intelligently adapts to your environment:
 
-| Environment               | What Gets Created      | Why                                         |
-| ------------------------- | ---------------------- | ------------------------------------------- |
-| **Project + Claude Code** | Agents + 5 MCP servers | Excludes filesystem/github (native support) |
-| **Claude Desktop Only**   | 7 MCP servers globally | Full desktop enhancement                    |
-| **Both Detected**         | Everything optimized   | Best of both worlds                         |
+| Environment               | What Gets Created                   | Details                                                |
+| ------------------------- | ----------------------------------- | ------------------------------------------------------ |
+| **Claude Code (in repo)** | • 9 AI agents<br>• 5 MCP servers   | `.claude/agents/` + `.mcp.json`<br>Excludes filesystem/github (native support) |
+| **Claude Desktop Only**   | • 7 MCP servers globally           | All servers including filesystem & github             |
+| **Both**                  | • 9 AI agents<br>• All MCP servers | Agents in repo + 5 servers in `.mcp.json`<br>+ 7 servers in Claude Desktop |
 
 ### 🖥️ **Cross-Platform Support**
 
