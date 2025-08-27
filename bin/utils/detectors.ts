@@ -6,7 +6,7 @@ import { existsSync } from "fs";
 import { getClaudeDesktopConfigPath } from "../../lib/paths.js";
 
 export function isInProject(): boolean {
-  return existsSync("package.json") || existsSync(".git");
+  return true;
 }
 
 export function hasClaudeDesktop(): boolean {

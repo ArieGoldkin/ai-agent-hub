@@ -12,7 +12,10 @@ Highlights:
   • Zero dependencies, instant setup
 
 Usage:
-  ai-agent-hub              Install agents & configure servers
+  ai-agent-hub              Interactive setup (asks where to install)
+  ai-agent-hub --project-only   Install only to current project
+  ai-agent-hub --desktop-only   Install only to Claude Desktop
+  ai-agent-hub --both          Install to both project and desktop
   ai-agent-hub --list-agents  Show available AI agents
   ai-agent-hub --list       List configured servers
   ai-agent-hub <server>     Add a specific server
@@ -43,7 +46,10 @@ MCP Servers (Auto-configured based on context):
   * Claude Code has native filesystem and GitHub support
 
 Examples:
-  ai-agent-hub              # Full setup with agents
+  ai-agent-hub              # Interactive setup (asks where to install)
+  ai-agent-hub --both       # Install everywhere (non-interactive)
+  ai-agent-hub --project-only  # Project only (agents + MCP)
+  ai-agent-hub --desktop-only  # Desktop only (MCP servers)
   ai-agent-hub --list-agents  # See all agents
   ai-agent-hub supabase     # Add Supabase server
 `);

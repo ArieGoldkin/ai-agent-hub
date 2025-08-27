@@ -4,21 +4,35 @@
  * Handles all path-related operations for Claude configurations.
  */
 
-import { join } from "path";
+import { join, dirname } from "path";
 import { homedir } from "os";
+import { existsSync } from "fs";
 
 /**
  * Get Claude Desktop config path based on OS
  */
 export function getClaudeDesktopConfigPath(): string {
   const platform = process.platform;
+  const home = homedir();
   
-  if (platform === "darwin") {
-    return join(homedir(), "Library/Application Support/Claude/claude_desktop_config.json");
-  } else if (platform === "win32") {
-    return join(process.env.APPDATA || homedir(), "Claude/claude_desktop_config.json");
-  } else {
-    return join(homedir(), ".config/Claude/claude_desktop_config.json");
+  switch (platform) {
+    case "darwin":
+      // macOS: ~/Library/Application Support/Claude/claude_desktop_config.json
+      return join(home, "Library", "Application Support", "Claude", "claude_desktop_config.json");
+    
+    case "win32":
+      // Windows: %APPDATA%\Claude\claude_desktop_config.json
+      const appdata = process.env.APPDATA;
+      if (appdata) {
+        return join(appdata, "Claude", "claude_desktop_config.json");
+      } else {
+        // Fallback for Windows if APPDATA is not set
+        return join(home, "AppData", "Roaming", "Claude", "claude_desktop_config.json");
+      }
+    
+    default:
+      // Linux and other Unix-like systems: ~/.config/Claude/claude_desktop_config.json
+      return join(home, ".config", "Claude", "claude_desktop_config.json");
   }
 }
 
@@ -41,4 +55,36 @@ export function getEnvPath(): string {
  */
 export function getClaudeSettingsPath(): string {
   return join(process.cwd(), ".claude/settings.local.json");
+}
+
+/**
+ * Get human-readable description of Claude Desktop config path
+ */
+export function getClaudeDesktopConfigDescription(): string {
+  const platform = process.platform;
+  
+  switch (platform) {
+    case "darwin":
+      return "~/Library/Application Support/Claude/claude_desktop_config.json";
+    case "win32":
+      return "%APPDATA%\\Claude\\claude_desktop_config.json";
+    default:
+      return "~/.config/Claude/claude_desktop_config.json";
+  }
+}
+
+/**
+ * Check if the Claude Desktop config directory exists
+ */
+export function claudeDesktopConfigDirectoryExists(): boolean {
+  const configPath = getClaudeDesktopConfigPath();
+  const configDir = dirname(configPath);
+  return existsSync(configDir);
+}
+
+/**
+ * Get the Claude Desktop config directory path
+ */
+export function getClaudeDesktopConfigDirectory(): string {
+  return dirname(getClaudeDesktopConfigPath());
 }
