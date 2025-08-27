@@ -13,7 +13,7 @@
   </p>
   
   ```bash
-  npx ai-agent-hub
+  npx ai-agent-hub@latest
   ```
   
   <sub>One command. Zero config. Instant superpowers. 🎯</sub>
@@ -28,33 +28,33 @@
 
 Transform Claude with expert agents, each with unique skills:
 
-| Agent | Superpower | Perfect For |
-|-------|------------|------------|
-| 🧠 **ai-ml-engineer** | AI/ML implementation expert | LLMs, computer vision, ML pipelines |
-| 🏗️ **backend-system-architect** | System design & scaling | APIs, databases, microservices |
-| ✅ **code-quality-reviewer** | Automated code review | Best practices, testing, refactoring |
-| 💻 **frontend-ui-developer** | React/Vue/Angular master | Components, responsive design, performance |
-| 🎨 **rapid-ui-designer** | Lightning-fast prototyping | Design systems, mockups, UI/UX |
-| 📊 **sprint-prioritizer** | Agile planning wizard | Sprint planning, feature prioritization |
-| 🎯 **studio-coach** | Peak performance coach | Team coordination, productivity |
-| 🔍 **ux-researcher** | User insights specialist | Research, testing, journey mapping |
-| ✨ **whimsy-injector** | Creative enhancement | Delightful experiences, memorable moments |
+| Agent                           | Superpower                  | Perfect For                                |
+| ------------------------------- | --------------------------- | ------------------------------------------ |
+| 🧠 **ai-ml-engineer**           | AI/ML implementation expert | LLMs, computer vision, ML pipelines        |
+| 🏗️ **backend-system-architect** | System design & scaling     | APIs, databases, microservices             |
+| ✅ **code-quality-reviewer**    | Automated code review       | Best practices, testing, refactoring       |
+| 💻 **frontend-ui-developer**    | React/Vue/Angular master    | Components, responsive design, performance |
+| 🎨 **rapid-ui-designer**        | Lightning-fast prototyping  | Design systems, mockups, UI/UX             |
+| 📊 **sprint-prioritizer**       | Agile planning wizard       | Sprint planning, feature prioritization    |
+| 🎯 **studio-coach**             | Peak performance coach      | Team coordination, productivity            |
+| 🔍 **ux-researcher**            | User insights specialist    | Research, testing, journey mapping         |
+| ✨ **whimsy-injector**          | Creative enhancement        | Delightful experiences, memorable moments  |
 
 ### ⚙️ **Powerful MCP Server Integration**
 
 Unlock Claude's full potential with these capabilities:
 
-| Server | Enhancement | Use Case |
-|--------|-------------|----------|
-| 🧠 **memory** | Persistent conversation memory | Remember context across sessions |
-| 🤔 **sequential-thinking** | Step-by-step reasoning | Complex problem solving |
-| 📚 **context7** | Advanced context management | Large-scale projects |
-| 🎭 **playwright** | Browser automation | Testing, web scraping |
-| 🗄️ **supabase** | Database integration | Direct DB operations |
-| 📁 **filesystem** | File operations | Local file management* |
-| 🐙 **github** | Repository access | Code management* |
+| Server                     | Enhancement                    | Use Case                         |
+| -------------------------- | ------------------------------ | -------------------------------- |
+| 🧠 **memory**              | Persistent conversation memory | Remember context across sessions |
+| 🤔 **sequential-thinking** | Step-by-step reasoning         | Complex problem solving          |
+| 📚 **context7**            | Advanced context management    | Large-scale projects             |
+| 🎭 **playwright**          | Browser automation             | Testing, web scraping            |
+| 🗄️ **supabase**            | Database integration           | Direct DB operations             |
+| 📁 **filesystem**          | File operations                | Local file management\*          |
+| 🐙 **github**              | Repository access              | Code management\*                |
 
-<sub>*Claude Code has native filesystem and GitHub support, so these are only added to Claude Desktop</sub>
+<sub>\*Claude Code has native filesystem and GitHub support, so these are only added to Claude Desktop</sub>
 
 ---
 
@@ -62,12 +62,15 @@ Unlock Claude's full potential with these capabilities:
 
 ### 📦 **Installation (It's This Easy!)**
 
+> **💡 Important:** Always use `@latest` to ensure you get the correct version with all features!
+
 ```bash
 # Run this command in your project directory
-npx ai-agent-hub
+npx ai-agent-hub@latest
 ```
 
 **That's literally it!** ✨ The tool will:
+
 - 🤖 Install 9 AI agent personalities
 - ⚙️ Configure MCP servers based on your environment
 - 📄 Set up all configuration files
@@ -83,15 +86,16 @@ npx ai-agent-hub
 
 🤖 AI Agent Personalities
    ✅ Installed 9 agents to .claude/agents/
-   
-⚙️  MCP Server Configuration  
+
+⚙️  MCP Server Configuration
    ✅ Created .mcp.json with 5 servers
    ✅ Environment template created
-   
+
 🎉 Setup complete! Restart Claude to activate.
 ```
 
 **Files created:**
+
 ```
 your-project/
 ├── .claude/
@@ -100,6 +104,7 @@ your-project/
 ├── .mcp.json            # MCP configuration
 └── .env.example         # API key template
 ```
+
 </details>
 
 <details>
@@ -111,11 +116,12 @@ your-project/
 ⚙️  Global Configuration
    ✅ Updated with 7 MCP servers
    ✅ All capabilities enabled
-   
+
 🎉 Setup complete! Restart Claude Desktop.
 ```
 
 **Updates:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+
 </details>
 
 <details>
@@ -127,12 +133,13 @@ your-project/
 🤖 Project Setup
    ✅ Agents installed to .claude/agents/
    ✅ Created .mcp.json (5 servers)
-   
-💻 Desktop Setup   
+
+💻 Desktop Setup
    ✅ Updated config (7 servers)
-   
+
 🎉 Maximum power unlocked!
 ```
+
 </details>
 
 ---
@@ -141,18 +148,19 @@ your-project/
 
 ### 🎮 **Command Reference**
 
-| Command | Description | When to Use |
-|---------|-------------|-------------|
-| `npx ai-agent-hub` | **Full installation** | First time setup (recommended) |
-| `npx ai-agent-hub --list-agents` | View all 9 agents | See available personalities |
-| `npx ai-agent-hub --list` | Show configured servers | Check current setup |
-| `npx ai-agent-hub <server>` | Add specific server | Need one capability |
-| `npx ai-agent-hub --remove <server>` | Remove a server | Cleanup unwanted servers |
-| `npx ai-agent-hub --help` | Display help | See all commands |
+| Command                                     | Description             | When to Use                    |
+| ------------------------------------------- | ----------------------- | ------------------------------ |
+| `npx ai-agent-hub@latest`                   | **Full installation**   | First time setup (recommended) |
+| `npx ai-agent-hub@latest --list-agents`     | View all 9 agents       | See available personalities    |
+| `npx ai-agent-hub@latest --list`            | Show configured servers | Check current setup            |
+| `npx ai-agent-hub@latest <server>`          | Add specific server     | Need one capability            |
+| `npx ai-agent-hub@latest --remove <server>` | Remove a server         | Cleanup unwanted servers       |
+| `npx ai-agent-hub@latest --help`            | Display help            | See all commands               |
 
 ### 💡 **Pro Usage Examples**
 
 #### 🎯 Using AI Agents in Claude
+
 Once installed, simply ask Claude to use specific agents:
 
 ```markdown
@@ -166,15 +174,15 @@ Once installed, simply ask Claude to use specific agents:
 
 ```bash
 # Add specific capabilities
-npx ai-agent-hub memory          # Add conversation memory
-npx ai-agent-hub playwright      # Add browser automation
-npx ai-agent-hub supabase        # Add database access
+npx ai-agent-hub@latest memory          # Add conversation memory
+npx ai-agent-hub@latest playwright      # Add browser automation
+npx ai-agent-hub@latest supabase        # Add database access
 
 # Remove unwanted servers
-npx ai-agent-hub --remove docker
+npx ai-agent-hub@latest --remove docker
 
 # Check what's configured
-npx ai-agent-hub --list
+npx ai-agent-hub@latest --list
 ```
 
 ---
@@ -184,6 +192,7 @@ npx ai-agent-hub --list
 ### 🔐 **Environment Variables**
 
 Some MCP servers need API keys. The tool:
+
 - ✅ **Never overwrites** existing `.env` files
 - 📋 Creates `.env.example` as a template
 - 🔍 Reports missing variables clearly
@@ -192,12 +201,12 @@ Some MCP servers need API keys. The tool:
 <details>
 <summary><b>Required API Keys</b></summary>
 
-| Variable | Required For | How to Get |
-|----------|--------------|------------|
-| `GITHUB_TOKEN` | GitHub server | [Create token](https://github.com/settings/tokens) |
-| `SUPABASE_ACCESS_TOKEN` | Supabase server | [Get from dashboard](https://app.supabase.com) |
-| `SUPABASE_PROJECT_REF` | Supabase server | Your project reference |
-| `BRAVE_API_KEY` | Brave search | [Get API key](https://brave.com/search/api/) |
+| Variable                | Required For    | How to Get                                         |
+| ----------------------- | --------------- | -------------------------------------------------- |
+| `GITHUB_TOKEN`          | GitHub server   | [Create token](https://github.com/settings/tokens) |
+| `SUPABASE_ACCESS_TOKEN` | Supabase server | [Get from dashboard](https://app.supabase.com)     |
+| `SUPABASE_PROJECT_REF`  | Supabase server | Your project reference                             |
+| `BRAVE_API_KEY`         | Brave search    | [Get API key](https://brave.com/search/api/)       |
 
 </details>
 
@@ -205,11 +214,11 @@ Some MCP servers need API keys. The tool:
 
 The tool intelligently adapts to your environment:
 
-| Environment | What Gets Installed | Why |
-|-------------|-------------------|-----|
+| Environment               | What Gets Installed    | Why                                         |
+| ------------------------- | ---------------------- | ------------------------------------------- |
 | **Project + Claude Code** | Agents + 5 MCP servers | Excludes filesystem/github (native support) |
-| **Claude Desktop Only** | 7 MCP servers globally | Full desktop enhancement |
-| **Both Detected** | Everything optimized | Best of both worlds |
+| **Claude Desktop Only**   | 7 MCP servers globally | Full desktop enhancement                    |
+| **Both Detected**         | Everything optimized   | Best of both worlds                         |
 
 ---
 
@@ -219,9 +228,11 @@ The tool intelligently adapts to your environment:
 <summary><b>💭 "Command not found"</b></summary>
 
 Make sure you have Node.js installed:
+
 ```bash
 node --version  # Should be 16+
 ```
+
 </details>
 
 <details>
@@ -291,7 +302,8 @@ We love contributions! Here's how to help:
 
 ### 🐛 **Report Issues**
 
-Found a bug? [Open an issue](https://github.com/your-username/ai-agent-hub/issues) with:
+Found a bug? [Open an issue](https://github.com/ArieGoldkin/ai-agent-hub/issues) with:
+
 - Your environment (OS, Claude version)
 - Command that failed
 - Error message
@@ -310,11 +322,11 @@ MIT © 2024 AI Agent Hub
   ### 🌟 **Ready to Supercharge Claude?** 🌟
   
   ```bash
-  npx ai-agent-hub
+  npx ai-agent-hub@latest
   ```
   
   <sub>Built with ❤️ to make Claude even more powerful</sub>
   
-  [Report Bug](https://github.com/your-username/ai-agent-hub/issues) · [Request Feature](https://github.com/your-username/ai-agent-hub/issues) · [Star on GitHub](https://github.com/your-username/ai-agent-hub)
+  [Report Bug](https://github.com/ArieGoldkin/ai-agent-hub/issues) · [Request Feature](https://github.com/ArieGoldkin/ai-agent-hub/issues) · [Star on GitHub](https://github.com/ArieGoldkin/ai-agent-hub)
   
 </div>
