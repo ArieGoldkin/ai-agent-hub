@@ -1,6 +1,6 @@
 {
   "name": "ai-agent-hub",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "type": "module",
   "description": "Add 9 specialized AI agent personalities and MCP servers to Claude with one command",
   "author": "Arie Goldkin",
