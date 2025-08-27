@@ -3,13 +3,16 @@
 <div align="center">
   
   ### ✨ Supercharge Claude with 9 AI Agents & MCP Servers in One Command ✨
+  ### 🖥️ Works on macOS, Windows & Linux
   
   [![npm version](https://img.shields.io/npm/v/ai-agent-hub?style=flat-square&color=blue)](https://www.npmjs.com/package/ai-agent-hub)
   [![Zero Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen?style=flat-square)](package.json)
+  [![Cross-Platform](https://img.shields.io/badge/platform-macOS%20|%20Windows%20|%20Linux-lightgrey?style=flat-square)](README.md)
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
   
   <p align="center">
-    <strong>Transform Claude into a powerhouse with specialized AI personalities and enhanced capabilities</strong>
+    <strong>Transform Claude into a powerhouse with specialized AI personalities and enhanced capabilities</strong><br>
+    <em>Compatible with macOS, Windows, and Linux</em>
   </p>
   
   ```bash
@@ -60,21 +63,56 @@ Unlock Claude's full potential with these capabilities:
 
 ## 🚀 Quick Start
 
-### 📦 **Installation (It's This Easy!)**
+### 📦 **Installation (Interactive Setup!)**
 
 > **💡 Important:** Always use `@latest` to ensure you get the correct version with all features!
 
 ```bash
-# Run this command in your project directory
+# Run this command and choose your installation preference
 npx ai-agent-hub@latest
 ```
 
-**That's literally it!** ✨ The tool will:
+**Interactive Setup** ✨ The tool will:
 
-- 🤖 Install 9 AI agent personalities
-- ⚙️ Configure MCP servers based on your environment
+- 🎯 **Ask where you want to create files** (Claude Code, Claude Desktop, or Both)
+- 🤖 Create 9 AI agent personalities where you choose
+- ⚙️ Configure MCP servers based on your selection
 - 📄 Set up all configuration files
 - 🔐 Create environment templates (never overwrites existing `.env`)
+
+### 🚀 **Non-Interactive Options**
+
+For automation or when you know exactly what you want:
+
+```bash
+# Create files in current directory only
+npx ai-agent-hub@latest --project-only
+
+# Create files in Claude Desktop only 
+npx ai-agent-hub@latest --desktop-only
+
+# Create files in both locations
+npx ai-agent-hub@latest --both
+```
+
+### 🤔 **Choose Where to Create Files**
+
+When you run `npx ai-agent-hub@latest`, you'll see an interactive menu:
+
+```
+🤖 Where would you like to create AI Agent Hub files?
+
+1. 🖥️  Claude Desktop
+   → Create MCP servers globally in Claude Desktop configuration
+
+2. 📁 Claude Code (in repo)
+   → Create AI agents + MCP servers in current directory (.claude/agents/ + .mcp.json)
+
+3. 🚀 Both
+   → Create agents in repo + MCP servers in both repo and Claude Desktop
+
+Please select an option (1-3):
+```
 
 ### 🎯 **What Happens Next**
 
@@ -120,7 +158,10 @@ your-project/
 🎉 Setup complete! Restart Claude Desktop.
 ```
 
-**Updates:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+**Updates Claude Desktop config:**
+- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`  
+- **Linux**: `~/.config/Claude/claude_desktop_config.json`
 
 </details>
 
@@ -148,20 +189,23 @@ your-project/
 
 ### 🎮 **Command Reference**
 
-| Command                                     | Description             | When to Use                    |
-| ------------------------------------------- | ----------------------- | ------------------------------ |
-| `npx ai-agent-hub@latest`                   | **Full installation**   | First time setup (recommended) |
-| `npx ai-agent-hub@latest --list-agents`     | View all 9 agents       | See available personalities    |
-| `npx ai-agent-hub@latest --list`            | Show configured servers | Check current setup            |
-| `npx ai-agent-hub@latest <server>`          | Add specific server     | Need one capability            |
-| `npx ai-agent-hub@latest --remove <server>` | Remove a server         | Cleanup unwanted servers       |
-| `npx ai-agent-hub@latest --help`            | Display help            | See all commands               |
+| Command                                     | Description                    | When to Use                    |
+| ------------------------------------------- | ------------------------------ | ------------------------------ |
+| `npx ai-agent-hub@latest`                   | **Interactive file creation**  | First time setup (recommended) |
+| `npx ai-agent-hub@latest --project-only`    | Create files in repo only      | Working on specific project    |
+| `npx ai-agent-hub@latest --desktop-only`    | Create files in Claude Desktop only | Global Claude enhancement      |
+| `npx ai-agent-hub@latest --both`            | Create files in both locations | Maximum functionality          |
+| `npx ai-agent-hub@latest --list-agents`     | View all 9 agents             | See available personalities    |
+| `npx ai-agent-hub@latest --list`            | Show configured servers        | Check current setup            |
+| `npx ai-agent-hub@latest <server>`          | Add specific server            | Need one capability            |
+| `npx ai-agent-hub@latest --remove <server>` | Remove a server                | Cleanup unwanted servers       |
+| `npx ai-agent-hub@latest --help`            | Display help                   | See all commands               |
 
 ### 💡 **Pro Usage Examples**
 
 #### 🎯 Using AI Agents in Claude
 
-Once installed, simply ask Claude to use specific agents:
+Once created, simply ask Claude to use specific agents:
 
 ```markdown
 "Use the ai-ml-engineer agent to implement this RAG system"
@@ -214,11 +258,23 @@ Some MCP servers need API keys. The tool:
 
 The tool intelligently adapts to your environment:
 
-| Environment               | What Gets Installed    | Why                                         |
+| Environment               | What Gets Created      | Why                                         |
 | ------------------------- | ---------------------- | ------------------------------------------- |
 | **Project + Claude Code** | Agents + 5 MCP servers | Excludes filesystem/github (native support) |
 | **Claude Desktop Only**   | 7 MCP servers globally | Full desktop enhancement                    |
 | **Both Detected**         | Everything optimized   | Best of both worlds                         |
+
+### 🖥️ **Cross-Platform Support**
+
+AI Agent Hub automatically detects your operating system and uses the correct Claude Desktop configuration paths:
+
+| Operating System | Claude Desktop Config Path |
+|------------------|----------------------------|
+| **macOS** | `~/Library/Application Support/Claude/claude_desktop_config.json` |
+| **Windows** | `%APPDATA%\Claude\claude_desktop_config.json` |
+| **Linux** | `~/.config/Claude/claude_desktop_config.json` |
+
+The tool works identically across all platforms - no OS-specific commands needed!
 
 ---
 
@@ -269,6 +325,7 @@ node --version  # Should be 16+
 - **🧠 Smart Detection** - Adapts to your environment automatically
 - **🔒 Safe Operations** - Never overwrites your files
 - **📦 No Installation** - Works directly with npx
+- **🖥️ Cross-Platform** - Works on macOS, Windows, and Linux
 - **🎭 9 Expert Agents** - Specialized personalities for every task
 - **⚙️ 7+ MCP Servers** - Enhanced capabilities out of the box
 

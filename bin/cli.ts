@@ -20,6 +20,7 @@ import { listConfiguredServers } from "./commands/list-servers.js";
 import { addServer } from "./commands/add-server.js";
 import { removeServerCommand } from "./commands/remove-server.js";
 import { setupDefault } from "./commands/setup-default.js";
+import { InstallationChoice } from "./utils/prompt.js";
 
 // Parse arguments
 const args = process.argv.slice(2);
@@ -58,13 +59,44 @@ async function main() {
       return;
     }
 
+    // Non-interactive installation modes
+    if (command === "--project-only") {
+      await setupDefault(__dirname, { 
+        target: 'project',
+        installAgents: true,
+        installProjectMCP: true,
+        installDesktopMCP: false
+      });
+      return;
+    }
+
+    if (command === "--desktop-only") {
+      await setupDefault(__dirname, {
+        target: 'desktop',
+        installAgents: false,
+        installProjectMCP: false,
+        installDesktopMCP: true
+      });
+      return;
+    }
+
+    if (command === "--both") {
+      await setupDefault(__dirname, {
+        target: 'both',
+        installAgents: true,
+        installProjectMCP: true,
+        installDesktopMCP: true
+      });
+      return;
+    }
+
     // Add specific server
     if (command && !command.startsWith("--")) {
       await addServer(command, __dirname);
       return;
     }
 
-    // Default: Full setup
+    // Default: Interactive setup
     await setupDefault(__dirname);
     
   } catch (error) {
