@@ -28,6 +28,12 @@ const command = args[0];
 // Main CLI router
 async function main() {
   try {
+    // Version
+    if (command === "--version" || command === "-v") {
+      console.log("2.0.0");
+      return;
+    }
+
     // Help
     if (command === "--help" || command === "-h") {
       showHelp();
