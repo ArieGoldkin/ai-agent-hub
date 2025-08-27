@@ -1,8 +1,8 @@
 {
   "name": "ai-agent-hub",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "type": "module",
-  "description": "Zero-dependency tool to configure MCP servers for Claude Desktop and Claude Code",
+  "description": "Add 9 specialized AI agent personalities and MCP servers to Claude with one command",
   "author": "Arie Goldkin",
   "license": "MIT",
   "engines": {
@@ -39,14 +39,17 @@
   },
   "homepage": "https://github.com/ArieGoldkin/ai-agent-hub#readme",
   "keywords": [
-    "mcp",
+    "ai-agents",
     "claude",
     "claude-desktop",
     "claude-code",
+    "mcp",
     "ai",
     "zero-dependency",
     "model-context-protocol",
     "anthropic",
-    "configuration"
+    "configuration",
+    "agent-personalities",
+    "ai-assistant"
   ]
 }
