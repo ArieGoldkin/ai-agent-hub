@@ -1,8 +1,8 @@
 {
   "name": "ai-agent-hub",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "type": "module",
-  "description": "NPX tool: Run 'npx ai-agent-hub init' to setup Claude Desktop with MCP servers + AI agents",
+  "description": "Zero-dependency tool to configure MCP servers for Claude Desktop and Claude Code",
   "author": "Arie Goldkin",
   "license": "MIT",
   "engines": {
@@ -14,30 +14,19 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist",
-    "lint": "eslint src bin --ext .ts",
-    "lint:fix": "eslint src bin --ext .ts --fix",
-    "format": "prettier --write \"src/**/*.ts\" \"bin/**/*.ts\" \"*.json\" \"*.md\"",
-    "format:check": "prettier --check \"src/**/*.ts\" \"bin/**/*.ts\" \"*.json\" \"*.md\"",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run clean && npm run typecheck && npm run lint && npm run format:check && npm run build"
-  },
-  "dependencies": {
-    "chalk": "^5.6.0",
-    "commander": "^14.0.0",
-    "enquirer": "^2.4.1",
-    "ora": "^8.2.0"
+    "test": "node dist/bin/cli.js --help",
+    "prepublishOnly": "npm run clean && npm run typecheck && npm run build"
   },
   "devDependencies": {
     "@types/node": "^20.14.12",
-    "@typescript-eslint/eslint-plugin": "^8.8.0",
-    "@typescript-eslint/parser": "^8.8.0",
-    "eslint": "^9.11.1",
-    "prettier": "^3.3.3",
     "typescript": "^5.5.4"
   },
   "files": [
     "dist/",
     "agents/",
+    "setup.sh",
+    ".env.example",
     "README.md",
     "LICENSE"
   ],
@@ -53,14 +42,11 @@
     "mcp",
     "claude",
     "claude-desktop",
+    "claude-code",
     "ai",
-    "installer",
-    "npx",
+    "zero-dependency",
     "model-context-protocol",
     "anthropic",
-    "desktop",
-    "tools",
-    "configuration",
-    "mcp-server"
+    "configuration"
   ]
 }

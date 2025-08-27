@@ -1,155 +1,204 @@
-# AI Agent Hub
+# 🤖 AI Agent Hub - Supercharge Claude with AI Agents & MCP Servers
 
-[![npm version](https://badge.fury.io/js/ai-agent-hub.svg)](https://www.npmjs.com/package/ai-agent-hub)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js Version](https://img.shields.io/node/v/ai-agent-hub)](https://nodejs.org/)
+Instantly add 9 specialized AI agent personalities and powerful MCP server capabilities to Claude Desktop and Claude Code with a single command.
 
-**NPX Tool**: Transform Claude Desktop into a complete development environment in 30 seconds.
+## ✨ What You Get
 
-```bash
-npx ai-agent-hub init
-```
+### 🎭 9 AI Agent Personalities (The Main Event!)
+Specialized agents that transform how Claude assists you:
+- **ai-ml-engineer** - AI/ML implementation expert for LLMs, computer vision
+- **backend-system-architect** - System design and scaling specialist  
+- **code-quality-reviewer** - Automated code review and best practices
+- **frontend-ui-developer** - React/Vue/Angular and responsive design
+- **rapid-ui-designer** - Quick prototyping and design systems
+- **sprint-prioritizer** - Agile planning and feature prioritization
+- **studio-coach** - Team coordination and peak performance
+- **ux-researcher** - User research, testing, journey mapping
+- **whimsy-injector** - Creative enhancement for delightful experiences
 
-## The Problem
+### ⚙️ Smart MCP Server Configuration
+Context-aware server setup that adapts to your environment:
+- **memory** - Persistent conversation memory
+- **sequential-thinking** - Step-by-step reasoning
+- **context7** - Advanced context management
+- **playwright** - Browser automation
+- **supabase** - Database integration
+- **filesystem** - Local file operations (Claude Desktop only*)
+- **github** - Repository access (Claude Desktop only*)
 
-Setting up MCP (Model Context Protocol) servers manually is tedious:
+_*Claude Code has native filesystem and GitHub support, so we don't duplicate them_
 
-- Finding and installing the right packages
-- Editing Claude Desktop's JSON configuration by hand
-- Managing environment variables and API keys
-- Troubleshooting connection issues
-
-## The Solution
-
-One command. One question. Done.
-
-```bash
-npx ai-agent-hub init
-```
-
-**What happens next:**
-
-1. ✨ Detects your Claude Desktop installation automatically
-2. 🤔 Asks: "Global setup (all conversations) or project-specific?"
-3. ⚡ Installs 7 MCP servers + 9 AI agent personalities
-4. 🔧 Updates your Claude configuration automatically
-5. 🚀 Restart Claude Desktop and start coding with superpowers
-
-## What You Get
-
-**🤖 9 Specialized AI Agents** (the main event!):
-
-- 🧠 **AI/ML Engineer** - Machine learning implementation specialist
-- 🏗️ **Backend System Architect** - Scalable server-side systems expert
-- 💻 **Frontend UI Developer** - Modern JavaScript frameworks specialist
-- 🔍 **Code Quality Reviewer** - Code review and security expert
-- 👥 **UX Researcher** - User behavior and usability specialist
-- 🎨 **Rapid UI Designer** - Fast UI design with modern systems
-- 📋 **Sprint Planner** - Agile project management specialist
-- 🏆 **Studio Coach** - Team development and collaboration coach
-- ✨ **Whimsy Injector** - Creative UI elements and delight specialist
-
-**⚡ 7 Powerful MCP Servers** (automatically configured):
-
-- 📁 **File system access** - Read/write files directly from Claude
-- 🔧 **Git commands** - Full version control operations
-- 🐙 **GitHub integration** - Manage repos, create PRs, review code
-- 🌐 **Browser automation** - Playwright for testing and web scraping
-- 🧮 **Enhanced reasoning** - Sequential thinking for complex problems
-- 💾 **Persistent memory** - Context that remembers across chats
-- 📚 **Documentation search** - Context7 for code examples and docs
-
-## How to Use
-
-### Step 1: Run Setup
+## 🚀 Installation
 
 ```bash
-npx ai-agent-hub init
+npx ai-agent-hub
 ```
 
-### Step 2: Choose Installation Type
+That's it! The installer will:
+1. ✅ Install 9 AI agent personalities to `.claude/agents/`
+2. ✅ Configure MCP servers based on your context
+3. ✅ Set up environment variables safely
+4. ✅ Create appropriate config files
 
-You'll see one question:
+## 📖 Usage Guide
 
-```
-Where would you like to configure MCP servers?
-  > Claude Desktop (Global - all projects)
-    Claude Code (This project only)
-    Both (Desktop + Code)
-```
-
-Choose based on your needs:
-
-- **Claude Desktop**: Tools available in all Claude conversations
-- **Claude Code**: Tools only for current project (creates `.mcp.json`)
-- **Both**: Installs in both locations
-
-### Step 3: Restart Claude
-
-Close and reopen Claude Desktop to activate the new tools.
-
-## GitHub Integration (Optional)
-
-For GitHub features, create a token at https://github.com/settings/tokens with permissions: `repo`, `workflow`, `gist`
-
+### Default Installation (Recommended)
 ```bash
-export GITHUB_TOKEN=ghp_xxxxxxxxxxxx
+npx ai-agent-hub
 ```
+This command will:
+- Detect if you're in a project (has `package.json` or `.git`)
+- Install agents to `.claude/agents/` if in a project
+- Configure MCP servers appropriately:
+  - **In a project**: Creates `.mcp.json` with 5 servers (excludes filesystem/github)
+  - **Claude Desktop**: Updates global config with all 7 servers
+  - **Both detected**: Configures both with context-aware defaults
 
-The installer will prompt you if needed - no manual configuration required.
-
-## All Commands
-
+### List Available Agents
 ```bash
-# Initial setup (main command)
-npx ai-agent-hub init
+npx ai-agent-hub --list-agents
+```
+Shows all 9 agent personalities with descriptions.
 
-# Add additional servers
-npx ai-agent-hub add <server-name>
+### List Configured Servers
+```bash
+npx ai-agent-hub --list
+```
+Shows which MCP servers are currently configured.
 
-# Remove servers
-npx ai-agent-hub remove <server-name>
+### Add Specific Server
+```bash
+npx ai-agent-hub memory
+npx ai-agent-hub supabase
+```
+Add a single MCP server to your configuration.
 
-# List configured servers
-npx ai-agent-hub list
+### Remove Server
+```bash
+npx ai-agent-hub --remove memory
+```
+Remove a server from all configurations.
 
-# Check configuration
-npx ai-agent-hub doctor
+## 🎯 Context-Aware Installation
+
+The tool intelligently adapts based on your environment:
+
+### In a Project Directory
+When you run the command in a directory with `package.json` or `.git`:
+```
+📁 Project detected
+
+🤖 Installing AI Agent Personalities...
+✅ Installed 9 AI agent personalities to .claude/agents/
+
+⚙️ Configuring MCP Servers...
+✅ Configured 5 MCP servers in .mcp.json
+   (filesystem & github omitted - Claude Code has native support)
 ```
 
-## Platform Support
+### With Claude Desktop Only
+When Claude Desktop is installed but you're not in a project:
+```
+🖥️ Configuring Claude Desktop
+✅ Updated Claude Desktop configuration with 7 servers
+```
 
-- ✅ **macOS** - `~/Library/Application Support/Claude/`
-- ✅ **Windows** - `%APPDATA%\Claude\`
-- ✅ **Linux** - `~/.config/Claude/`
+### Both Contexts
+When both Claude Desktop and a project are detected:
+```
+📁 Project detected
+✅ Installed agents to .claude/agents/
+✅ Configured 5 servers in .mcp.json
+✅ Updated Claude Desktop with all 7 servers
+```
 
-Auto-detects your platform and Claude installation.
+## 🔐 Environment Variables
 
-## Requirements
+Some MCP servers require API keys. The installer will:
+1. Never overwrite your existing `.env` file
+2. Create `.env` from template only if it doesn't exist
+3. Report missing environment variables
+4. Guide you on what needs to be added
 
-- **Node.js 18+** (for npx)
-- **Claude Desktop** installed
-- **API keys** (optional, prompted when needed)
+Required API keys:
+- `GITHUB_TOKEN` - For GitHub MCP server
+- `SUPABASE_ACCESS_TOKEN` - For Supabase integration
+- `SUPABASE_PROJECT_REF` - Your Supabase project reference
 
-## Why This Exists
+## 📁 What Gets Created
 
-Manual MCP setup takes 30+ minutes and is error-prone. This tool does it in 30 seconds with zero configuration knowledge required.
+### In Project Mode
+```
+your-project/
+├── .claude/
+│   ├── agents/           # 9 AI agent personalities
+│   │   ├── ai-ml-engineer.md
+│   │   ├── backend-system-architect.md
+│   │   └── ... (7 more agents)
+│   └── settings.local.json
+├── .mcp.json            # MCP server configuration
+└── .env                 # API keys (if it didn't exist)
+```
 
-**Before:** Edit JSON files, find package names, manage configs
-**After:** Run one command, answer one question, start coding
+### Claude Desktop Config
+Updates: `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS)
+Or equivalent on Windows/Linux
 
-## What This Is NOT
+## 🔄 After Installation
 
-- ❌ Not a background service or daemon
-- ❌ Not a server orchestration platform
-- ❌ Not a complex configuration manager
+1. **Restart Claude** - Either Claude Desktop or Claude Code
+2. **Add API Keys** - Update `.env` with your tokens
+3. **Start Using** - Agents are automatically available!
 
-**This is a simple installer.** It configures Claude Desktop once and gets out of your way.
+## 💡 Pro Tips
 
-## Contributing
+### Using AI Agents
+Once installed, agents become available in Claude automatically. Just ask Claude to use a specific agent:
+- "Use the ai-ml-engineer agent to help implement this ML feature"
+- "Have the sprint-prioritizer help plan our next sprint"
+- "Get the code-quality-reviewer to check this PR"
 
-Found a bug or want to add a server? [Open an issue](https://github.com/ArieGoldkin/ai-agent-hub/issues) or submit a PR.
+### MCP Server Benefits
+- **memory** - Claude remembers context across conversations
+- **sequential-thinking** - Better step-by-step problem solving
+- **playwright** - Automate browser testing and scraping
+- **supabase** - Direct database queries and operations
 
-## License
+## 🛠️ Troubleshooting
 
-MIT © [Arie Goldkin](https://github.com/ArieGoldkin)
+### "No Claude installation detected"
+- Install Claude Desktop from [claude.ai](https://claude.ai/download)
+- Or run the command in a project directory for Claude Code
+
+### Servers not showing in Claude
+- Restart Claude after installation
+- Check that `.mcp.json` was created (for projects)
+- Verify Claude Desktop config was updated
+
+### Missing environment variables
+- Check the `.env` file for required keys
+- Add your API tokens as instructed
+- Never commit `.env` to version control!
+
+## 📦 Zero Dependencies
+
+This tool has zero runtime dependencies and minimal install dependencies:
+- Installs instantly via NPX
+- No global installations required
+- No background processes
+- Pure configuration management
+
+## 🤝 Contributing
+
+PRs welcome! To add new MCP servers:
+1. Add to `lib/mcp-templates.ts`
+2. Update context defaults if needed
+3. Test with `npm run build && node dist/bin/cli.js`
+
+## 📄 License
+
+MIT
+
+---
+
+**Built with ❤️ to make Claude even more powerful**
