@@ -1,7 +1,7 @@
 /**
  * File Operations
  * 
- * Basic file I/O operations for configuration management.
+ * Essential file I/O operations for configuration management
  */
 
 import { writeFile, readFile, mkdir } from "fs/promises";
@@ -29,7 +29,9 @@ export async function loadConfig(path: string): Promise<any> {
  */
 export async function saveConfig(path: string, config: any): Promise<void> {
   const dir = dirname(path);
-  await mkdir(dir, { recursive: true });
+  if (!existsSync(dir)) {
+    await mkdir(dir, { recursive: true });
+  }
   await writeFile(path, JSON.stringify(config, null, 2));
 }
 
@@ -38,4 +40,30 @@ export async function saveConfig(path: string, config: any): Promise<void> {
  */
 export function fileExists(path: string): boolean {
   return existsSync(path);
+}
+
+/**
+ * Read text file content
+ */
+export async function readTextFile(path: string): Promise<string | null> {
+  try {
+    if (!existsSync(path)) {
+      return null;
+    }
+    return await readFile(path, "utf-8");
+  } catch (error) {
+    console.error(`Failed to read file ${path}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Write text file content
+ */
+export async function writeTextFile(path: string, content: string): Promise<void> {
+  const dir = dirname(path);
+  if (!existsSync(dir)) {
+    await mkdir(dir, { recursive: true });
+  }
+  await writeFile(path, content);
 }

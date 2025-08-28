@@ -1,83 +1,36 @@
 /**
- * Help command - Shows usage information
+ * Help Command - Show usage information
  */
 
 export function showHelp(): void {
   console.log(`
-🤖 AI Agent Hub - AI Agents & MCP Server Configuration
+🚀 AI Agent Hub - Orchestration System
 
-Highlights:
-  • 9 specialized AI agent personalities for Claude
-  • 7+ MCP servers for enhanced capabilities
-  • Zero dependencies, instant setup
+Transform Claude into a team of 9 specialized AI agents with one command.
 
 Usage:
-  ai-agent-hub              Interactive setup (asks where to install)
-  ai-agent-hub --project-only   Install only to current project
-  ai-agent-hub --desktop-only   Install only to Claude Desktop
-  ai-agent-hub --both          Install to both project and desktop
-  ai-agent-hub quick-setup [dir]  One-command complete setup
-  ai-agent-hub --list-agents  Show available AI agents
-  ai-agent-hub --list       List configured servers
-  ai-agent-hub <server>     Add a specific server
-  ai-agent-hub --remove <server>  Remove a server
-  ai-agent-hub session <cmd>  Manage agent collaboration sessions
-  ai-agent-hub doctor       Health check and setup validation
-  ai-agent-hub --help       Show this help
+  npx ai-agent-hub              Quick setup (installs everything)
+  npx ai-agent-hub session       Start orchestration session
+  npx ai-agent-hub doctor        Verify installation
+  npx ai-agent-hub help          Show this help
 
-AI Agents (Installed to .claude/agents/):
-  • ai-ml-engineer     - AI/ML implementation expert
-  • backend-architect  - System design specialist
-  • quality-reviewer   - Code review automation
-  • frontend-developer - UI/UX implementation
-  • ui-designer        - Quick prototyping
-  • sprint-prioritizer - Agile planning
-  • And 3 more specialized agents!
+Quick Start:
+  1. Run: npx ai-agent-hub
+  2. Open project in Claude Code
+  3. Edit START_SESSION.md with your request
+  4. Claude orchestrates agents to implement
 
-MCP Servers (Auto-configured based on context):
-  memory              Persistent conversation memory
-  sequential-thinking Step-by-step reasoning
-  context7            Context management (Upstash)
-  playwright          Browser automation
-  supabase            Database integration
-  filesystem          Local file operations (Desktop only*)
-  github              Repository access (Desktop only*)
-  docker              Container management
-  postgres            PostgreSQL access
-  brave-search        Web search
-  
-  * Claude Code has native filesystem and GitHub support
+AI Agents Installed:
+  🎭 Studio Coach         - Master orchestrator
+  🔍 UX Researcher        - Requirements & research  
+  🏗️ Backend Architect    - System design
+  🎨 UI Designer          - Interface design
+  🖥️ Frontend Developer   - UI implementation
+  🤖 AI/ML Engineer       - Intelligent features
+  🎪 Whimsy Injector      - Delightful interactions
+  🔬 Quality Reviewer     - Code review
+  🎯 Sprint Prioritizer   - Task planning
 
-Session Commands:
-  session start [name]    Start a new collaboration session
-  session show            Display current session context
-  session clear           Clear and archive current session
-  session list            Show last 5 archived sessions
-  session help            Show session command help
-
-Analyze Commands:
-  analyze                 Full workflow analysis with all insights
-  analyze performance     Agent performance metrics and timing
-  analyze handoffs        Handoff pattern analysis between agents
-  analyze bottlenecks     Detect workflow slowdowns and issues
-  analyze insights        Optimization suggestions and recommendations
-  analyze growth          Context accumulation and evolution tracking
-  analyze quality         Decision quality tracking and validation
-
-Health Check Commands:
-  doctor                  Comprehensive setup validation and health check
-                         Validates agents, session infrastructure, MCP config, environment
-
-Examples:
-  ai-agent-hub              # Interactive setup (asks where to install)
-  ai-agent-hub --both       # Install everywhere (non-interactive)
-  ai-agent-hub --project-only  # Project only (agents + MCP)
-  ai-agent-hub --desktop-only  # Desktop only (MCP servers)
-  ai-agent-hub --list-agents  # See all agents
-  ai-agent-hub supabase     # Add Supabase server
-  ai-agent-hub session start  # Start new session
-  ai-agent-hub analyze      # Analyze workflow performance
-  ai-agent-hub analyze bottlenecks  # Find workflow issues
-  ai-agent-hub doctor       # Validate complete setup
-`);
+Learn more: https://github.com/ArieGoldkin/ai-agent-hub
+  `);
 }

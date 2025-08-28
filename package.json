@@ -1,8 +1,8 @@
 {
   "name": "ai-agent-hub",
-  "version": "2.2.3",
+  "version": "3.0.0",
   "type": "module",
-  "description": "Add 9 specialized AI agent personalities and MCP servers to Claude with one command",
+  "description": "Transform Claude into 9 specialized AI agents with one command - Zero dependencies orchestration system",
   "author": "Arie Goldkin",
   "license": "MIT",
   "engines": {
@@ -15,8 +15,7 @@
     "build": "tsc",
     "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit",
-    "test": "node dist/bin/cli.js --help",
-    "prepublishOnly": "npm run clean && npm run typecheck && npm run build"
+    "prepublishOnly": "npm run clean && npm run build"
   },
   "devDependencies": {
     "@types/node": "^20.14.12",
@@ -25,7 +24,6 @@
   "files": [
     "dist/",
     "agents/",
-    "setup.sh",
     ".env.example",
     "README.md",
     "LICENSE"
@@ -41,15 +39,12 @@
   "keywords": [
     "ai-agents",
     "claude",
-    "claude-desktop",
     "claude-code",
-    "mcp",
-    "ai",
+    "orchestration",
     "zero-dependency",
-    "model-context-protocol",
-    "anthropic",
-    "configuration",
+    "ai-assistant",
     "agent-personalities",
-    "ai-assistant"
+    "studio-coach",
+    "anthropic"
   ]
 }

@@ -1,6 +1,6 @@
 /**
  * Context Types
- * 
+ *
  * Type definitions for the context management system that enables
  * agents to share information and make informed handoff decisions.
  */
@@ -39,7 +39,7 @@ export interface AgentContext {
  * Record of a single decision made by an agent
  */
 export interface DecisionRecord {
-  type: 'handoff' | 'continue' | 'escalate' | 'complete' | 'defer';
+  type: "handoff" | "continue" | "escalate" | "complete" | "defer";
   agentName: string;
   timestamp: Date;
   reason: string;
@@ -59,7 +59,7 @@ export interface HandoffSignal {
     summary: string;
     relevantFindings?: string[];
     suggestedApproach?: string;
-    priority?: 'low' | 'medium' | 'high' | 'critical';
+    priority?: "low" | "medium" | "high" | "critical";
     data?: Record<string, any>;
   };
   confidence: number;

@@ -1,149 +1,65 @@
 /**
- * Install agents - Installs AI agent personalities and session infrastructure
+ * Install agents - Simplified agent installer
  */
 
 import { existsSync, readdirSync } from "fs";
 import { mkdir, cp, writeFile } from "fs/promises";
 import { join, dirname } from "path";
-import { fileURLToPath } from "url";
-import { saveConfig } from "../../lib/file-ops.js";
-import { getClaudeSettingsPath } from "../../lib/paths.js";
 
-// Get the actual package root directory
+/**
+ * Find the package root directory containing agents
+ */
 async function findPackageRoot(currentDir: string): Promise<string> {
-  // Multiple potential paths when run via NPX vs local
+  // Check common paths for agents directory
   const possiblePaths = [
-    join(currentDir, "../.."),      // Local development
-    join(currentDir, "../../.."),   // Some NPX scenarios
-    join(currentDir, "../../../.."), // Deep NPX cache
+    currentDir,
+    join(currentDir, "../.."),
+    join(currentDir, "../../.."),
   ];
   
-  // Also try finding from node_modules structure
-  let checkDir = currentDir;
-  while (checkDir !== dirname(checkDir)) {
-    const packageJsonPath = join(checkDir, "package.json");
-    
-    if (existsSync(packageJsonPath)) {
-      try {
-        // Use fs.readFileSync instead of require for ESM compatibility
-        const { readFileSync } = await import('fs');
-        const packageContent = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
-        if (packageContent.name === "ai-agent-hub") {
-          return checkDir;
-        }
-      } catch (error) {
-        // Ignore JSON parse errors and continue searching
-      }
-    }
-    checkDir = dirname(checkDir);
-  }
-  
-  // Fallback to the original paths
   for (const path of possiblePaths) {
-    if (existsSync(join(path, "package.json"))) {
-      try {
-        const { readFileSync } = await import('fs');
-        const packageContent = JSON.parse(readFileSync(join(path, "package.json"), 'utf-8'));
-        if (packageContent.name === "ai-agent-hub") {
-          return path;
-        }
-      } catch (error) {
-        // Continue searching
+    const agentsPath = join(path, "agents");
+    if (existsSync(agentsPath)) {
+      const files = readdirSync(agentsPath);
+      if (files.some(f => f.endsWith('.md'))) {
+        return path;
       }
     }
   }
   
-  throw new Error(`Cannot locate ai-agent-hub package root from ${currentDir}`);
+  throw new Error("Cannot locate ai-agent-hub package with agents");
 }
 
 /**
- * Install session templates from package to project
+ * Install agents and session infrastructure
  */
-async function installSessionTemplates(packageRoot: string): Promise<void> {
-  const templatesSource = join(packageRoot, ".claude", "session-templates");
-  const templatesTarget = ".claude/session-templates";
-  
-  if (!existsSync(templatesSource)) {
-    console.log("⚠️  Session templates not found in package, skipping");
-    return;
-  }
-  
-  if (!existsSync(templatesTarget)) {
-    await mkdir(templatesTarget, { recursive: true });
-    
-    // Copy all template files
-    await cp(templatesSource, templatesTarget, {
-      recursive: true
-    });
-    
-    // Verify templates were copied
-    const templateFiles = readdirSync(templatesTarget).filter(f => f.endsWith('.json'));
-    console.log(`📋 Installed ${templateFiles.length} session templates:`);
-    templateFiles.forEach(file => {
-      const name = file.replace('.json', '').replace('-', ' ');
-      console.log(`   • ${name} workflow template`);
-    });
-  } else {
-    console.log("✅ Session templates already installed");
-  }
-}
-
-/**
- * Initialize session infrastructure files
- */
-async function initializeSessionInfrastructure(): Promise<void> {
-  console.log("🔧 Initializing session infrastructure...");
-  
-  // Create session-archive.json if it doesn't exist
-  const archivePath = ".claude/session-archive.json";
-  if (!existsSync(archivePath)) {
-    await writeFile(archivePath, JSON.stringify([], null, 2));
-    console.log("📊 Created session archive: .claude/session-archive.json");
-  }
-  
-  // Create placeholder session-context.json
-  const contextPath = ".claude/session-context.json";
-  if (!existsSync(contextPath)) {
-    await writeFile(contextPath, "null");
-    console.log("📝 Initialized session context: .claude/session-context.json");
-  }
-  
-  console.log("✅ Session infrastructure ready");
-}
-
 export async function installAgents(__dirname: string): Promise<boolean> {
   console.log("🤖 Installing AI Agent Personalities...");
 
   try {
-    // Create .claude directory if it doesn't exist
+    // Create .claude directory
     if (!existsSync(".claude")) {
       await mkdir(".claude", { recursive: true });
     }
 
-    // Check and install agents
+    // Install agents if not present
     if (!existsSync(".claude/agents")) {
       await mkdir(".claude/agents", { recursive: true });
 
-      // Find the package root directory
+      // Find package root
       const packageRoot = await findPackageRoot(__dirname);
       const agentsPath = join(packageRoot, "agents");
       console.log(`📁 Found package at: ${packageRoot}`);
-      
-      // Verify agents exist
-      const agentFiles = readdirSync(agentsPath).filter(f => f.endsWith('.md'));
-      if (agentFiles.length === 0) {
-        throw new Error(`No agent files found in ${agentsPath}`);
-      }
       
       // Copy agents
       await cp(agentsPath, ".claude/agents", {
         recursive: true
       });
       
-      // Verify files were actually copied
+      // Verify installation
       const copiedFiles = readdirSync(".claude/agents").filter(f => f.endsWith('.md'));
-      if (copiedFiles.length !== agentFiles.length) {
-        throw new Error(`File copy failed: expected ${agentFiles.length} files, got ${copiedFiles.length}`);
+      if (copiedFiles.length < 9) {
+        throw new Error(`Only ${copiedFiles.length} agents copied, expected 9`);
       }
       
       console.log("✅ Installed 9 AI agent personalities:");
@@ -156,38 +72,66 @@ export async function installAgents(__dirname: string): Promise<boolean> {
       console.log("   • studio-coach - Team coordination");
       console.log("   • ux-researcher - User research & testing");
       console.log("   • whimsy-injector - Creative enhancement");
+    } else {
+      console.log("✅ Agents already installed");
+    }
+    
+    // Install session templates
+    const templatesDir = ".claude/session-templates";
+    if (!existsSync(templatesDir)) {
+      await mkdir(templatesDir, { recursive: true });
       
-      // Install session templates
-      await installSessionTemplates(packageRoot);
+      // Create basic workflow templates
+      const templates = [
+        { name: "feature-development", description: "New feature workflow" },
+        { name: "bug-fix", description: "Bug resolution workflow" },
+        { name: "refactoring", description: "Code improvement workflow" },
+        { name: "performance-optimization", description: "Performance tuning workflow" }
+      ];
       
-      // Initialize session infrastructure
-      await initializeSessionInfrastructure();
+      for (const template of templates) {
+        const content = {
+          name: template.name,
+          description: template.description,
+          phases: ["analyze", "design", "implement", "review"]
+        };
+        await writeFile(
+          join(templatesDir, `${template.name}.json`),
+          JSON.stringify(content, null, 2)
+        );
+      }
       
-      // Create settings.local.json with proper Claude Code settings
-      // enableAllProjectMcpServers: automatically enables all MCP servers in .mcp.json
-      const settingsConfig = {
+      console.log(`📋 Installed ${templates.length} session templates`);
+    }
+    
+    // Initialize session infrastructure
+    console.log("🔧 Initializing session infrastructure...");
+    
+    const archivePath = ".claude/session-archive.json";
+    if (!existsSync(archivePath)) {
+      await writeFile(archivePath, JSON.stringify([], null, 2));
+      console.log("📊 Created session archive: .claude/session-archive.json");
+    }
+    
+    const contextPath = ".claude/session-context.json";
+    if (!existsSync(contextPath)) {
+      await writeFile(contextPath, "null");
+      console.log("📝 Initialized session context: .claude/session-context.json");
+    }
+    
+    // Create Claude Code settings
+    const settingsPath = ".claude/settings.local.json";
+    if (!existsSync(settingsPath)) {
+      const settings = {
         "enableAllProjectMcpServers": true
       };
-      
-      const settingsPath = getClaudeSettingsPath();
-      await saveConfig(settingsPath, settingsConfig);
+      await writeFile(settingsPath, JSON.stringify(settings, null, 2));
       console.log("📝 Created Claude Code settings in .claude/settings.local.json");
-      
-      return true;
-    } else {
-      // Verify existing installation
-      const existingFiles = readdirSync(".claude/agents").filter(f => f.endsWith('.md'));
-      if (existingFiles.length >= 9) {
-        console.log("✅ Agents already installed in .claude/agents/");
-        return true;
-      } else {
-        console.log(`⚠️  Only ${existingFiles.length} agents found, expected 9. Reinstalling...`);
-        // Remove partial installation and retry
-        const { rm } = await import('fs/promises');
-        await rm(".claude/agents", { recursive: true, force: true });
-        return await installAgents(__dirname); // Recursive call to reinstall
-      }
     }
+    
+    console.log("✅ Session infrastructure ready");
+    return true;
+    
   } catch (error) {
     console.error("❌ Failed to install agents:", error instanceof Error ? error.message : error);
     return false;

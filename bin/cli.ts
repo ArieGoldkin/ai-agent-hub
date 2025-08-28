@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 /**
- * AI Agent Hub CLI - Main entry point
+ * AI Agent Hub CLI - Simplified Main Entry Point
  * 
- * Simple orchestrator that delegates to command modules
+ * Minimal orchestrator for agent setup and session management
  */
 
 import { dirname } from "path";
@@ -13,18 +13,11 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Import commands
+// Import simplified commands
 import { showHelp } from "./commands/help.js";
-import { listAgents } from "./commands/list-agents.js";
-import { listConfiguredServers } from "./commands/list-servers.js";
-import { addServer } from "./commands/add-server.js";
-import { removeServerCommand } from "./commands/remove-server.js";
-import { setupDefault } from "./commands/setup-default.js";
-import { handleSessionCommand } from "./commands/session/index.js";
-import { handleAnalyzeCommand } from "./commands/analyze/index.js";
 import { runDoctorCommand } from "./commands/doctor.js";
 import { runQuickSetup } from "./commands/quick-setup.js";
-import { InstallationChoice } from "./utils/prompt.js";
+import { startSession } from "./commands/session-start.js";
 
 // Parse arguments
 const args = process.argv.slice(2);
@@ -33,102 +26,35 @@ const command = args[0];
 // Main CLI router
 async function main() {
   try {
-    // Version
-    if (command === "--version" || command === "-v") {
-      console.log("2.0.0");
-      return;
-    }
-
     // Help
-    if (command === "--help" || command === "-h") {
+    if (command === "--help" || command === "-h" || command === "help") {
       showHelp();
       return;
     }
 
-    // List agents
-    if (command === "--list-agents") {
-      listAgents();
-      return;
-    }
-
-    // List servers
-    if (command === "--list") {
-      await listConfiguredServers();
-      return;
-    }
-
-    // Remove server
-    if (command === "--remove" && args[1]) {
-      await removeServerCommand(args[1]);
-      return;
-    }
-
-    // Session commands
-    if (command === "--session" || command === "session") {
-      const subcommand = args[1];
-      await handleSessionCommand(subcommand, args.slice(2));
-      return;
-    }
-
-    // Analyze commands
-    if (command === "--analyze" || command === "analyze") {
-      const subcommand = args[1];
-      await handleAnalyzeCommand(subcommand);
-      return;
-    }
-
     // Doctor command (health check)
-    if (command === "--doctor" || command === "doctor") {
+    if (command === "doctor") {
       await runDoctorCommand();
       return;
     }
 
-    // Quick setup command
-    if (command === "--quick-setup" || command === "quick-setup") {
+    // Session command - start orchestration
+    if (command === "session") {
+      const sessionName = args[1];
+      await startSession(sessionName);
+      return;
+    }
+
+    // Default or explicit quick-setup
+    if (!command || command === "setup" || command === "quick-setup") {
       const targetDir = args[1] || process.cwd();
       await runQuickSetup(__dirname, targetDir);
       return;
     }
 
-    // Non-interactive installation modes
-    if (command === "--project-only") {
-      await setupDefault(__dirname, { 
-        target: 'project',
-        installAgents: true,
-        installProjectMCP: true,
-        installDesktopMCP: false
-      });
-      return;
-    }
-
-    if (command === "--desktop-only") {
-      await setupDefault(__dirname, {
-        target: 'desktop',
-        installAgents: false,
-        installProjectMCP: false,
-        installDesktopMCP: true
-      });
-      return;
-    }
-
-    if (command === "--both") {
-      await setupDefault(__dirname, {
-        target: 'both',
-        installAgents: true,
-        installProjectMCP: true,
-        installDesktopMCP: true
-      });
-      return;
-    }
-
-    // Add specific server
-    if (command && !command.startsWith("--")) {
-      await addServer(command, __dirname);
-      return;
-    }
-
-    // Default: Interactive setup
-    await setupDefault(__dirname);
+    // Unknown command
+    console.error(`❌ Unknown command: ${command}`);
+    console.log("Use 'ai-agent-hub --help' for available commands");
     
   } catch (error) {
     console.error("❌ Error:", error instanceof Error ? error.message : error);
