@@ -88,5 +88,6 @@ data/
 /orchestration/logs/
 /security/audit-logs/
 .agent-context/
+test-session/
 *.bak
 *.tmp
