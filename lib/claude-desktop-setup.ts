@@ -13,6 +13,7 @@ import {
   getPlatformName,
   isClaudeDesktopInstalled 
 } from "./platform-paths.js";
+import { getBaseMCPServers, getDesktopMCPServers } from "./mcp-config.js";
 
 /**
  * MCP server configuration for Claude Desktop
@@ -65,24 +66,15 @@ export async function setupClaudeDesktopMCP(): Promise<boolean> {
       config.mcpServers = {};
     }
     
-    // Add our recommended MCP servers
+    // Get MCP servers from centralized configuration
+    // Use only base servers for desktop (not conditional ones based on env vars)
+    // Desktop-specific servers are added separately
+    const baseServers = getBaseMCPServers();
+    const desktopServers = getDesktopMCPServers();
+    
     const serversToAdd = {
-      memory: {
-        command: "npx",
-        args: ["@modelcontextprotocol/server-memory"]
-      },
-      "sequential-thinking": {
-        command: "npx",
-        args: ["@modelcontextprotocol/server-sequential-thinking"]
-      },
-      filesystem: {
-        command: "npx",
-        args: ["@modelcontextprotocol/server-filesystem", "--read-only"]
-      },
-      github: {
-        command: "npx",
-        args: ["@modelcontextprotocol/server-github"]
-      }
+      ...baseServers,
+      ...desktopServers
     };
     
     // Merge servers (don't overwrite existing ones)

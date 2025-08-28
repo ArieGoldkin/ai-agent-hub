@@ -9,6 +9,7 @@ import { fileURLToPath } from "url";
 import { existsSync } from "fs";
 import { safeHandleEnvFile } from "./env-handler.js";
 import { saveConfig } from "./file-ops.js";
+import { getMCPConfig, getActiveMCPServers } from "./mcp-config.js";
 
 /**
  * Project information interface
@@ -38,30 +39,21 @@ export function detectProjectInfo(): ProjectInfo {
 export async function setupProjectMCP(__dirname?: string): Promise<void> {
   console.log("⚙️  Configuring MCP servers...");
 
-  // Basic MCP configuration for Claude Code
-  const mcpConfig = {
-    mcpServers: {
-      memory: {
-        command: "npx",
-        args: ["-y", "@modelcontextprotocol/server-memory"]
-      },
-      "sequential-thinking": {
-        command: "npx",
-        args: ["-y", "@modelcontextprotocol/server-sequential-thinking"]
-      },
-      context7: {
-        command: "npx",
-        args: ["-y", "@upstash/context7-mcp@latest"]
-      },
-      playwright: {
-        command: "npx",
-        args: ["-y", "@playwright/mcp@latest"]
-      }
-    }
-  };
+  // Get MCP configuration from centralized module
+  const mcpConfig = getMCPConfig();
 
   await saveConfig(".mcp.json", mcpConfig);
-  console.log("✅ Configured MCP servers in .mcp.json");
+
+  // Log active servers
+  const activeServers = getActiveMCPServers();
+  console.log("✅ Configured MCP servers in .mcp.json:");
+  activeServers.forEach(server => {
+    if (server.requiresEnv) {
+      console.log(`   - ${server.name} (activated via ${server.requiresEnv})`);
+    } else {
+      console.log(`   - ${server.name}`);
+    }
+  });
 
   // Handle .env file creation/update
   console.log();
