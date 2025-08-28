@@ -90,9 +90,6 @@ export function getProjectPaths() {
   return {
     claudeDir: '.claude',
     agentsDir: join('.claude', 'agents'),
-    sessionContext: join('.claude', 'session-context.json'),
-    sessionArchive: join('.claude', 'session-archive.json'),
-    sessionTemplates: join('.claude', 'session-templates'),
     settingsLocal: join('.claude', 'settings.local.json'),
     mcpConfig: '.mcp.json'
   };

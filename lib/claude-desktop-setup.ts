@@ -18,8 +18,8 @@ import {
  * MCP server configuration for Claude Desktop
  */
 interface ClaudeDesktopConfig {
-  mcpServers?: Record<string, any>;
-  [key: string]: any;
+  mcpServers?: Record<string, unknown>;
+  [key: string]: unknown;
 }
 
 /**
@@ -48,7 +48,7 @@ export async function setupClaudeDesktopMCP(): Promise<boolean> {
         const content = await readFile(configPath, 'utf-8');
         config = JSON.parse(content);
         console.log("📄 Found existing Claude Desktop configuration");
-      } catch (error) {
+      } catch {
         console.log("⚠️  Could not read Claude Desktop config, creating new one");
         config = {};
       }

@@ -11,7 +11,7 @@ import { dirname } from "path";
 /**
  * Load configuration from JSON file
  */
-export async function loadConfig(path: string): Promise<any> {
+export async function loadConfig(path: string): Promise<unknown> {
   try {
     if (!existsSync(path)) {
       return null;
@@ -27,7 +27,7 @@ export async function loadConfig(path: string): Promise<any> {
 /**
  * Save configuration to JSON file
  */
-export async function saveConfig(path: string, config: any): Promise<void> {
+export async function saveConfig(path: string, config: unknown): Promise<void> {
   const dir = dirname(path);
   if (!existsSync(dir)) {
     await mkdir(dir, { recursive: true });

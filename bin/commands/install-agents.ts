@@ -4,7 +4,7 @@
 
 import { existsSync, readdirSync } from "fs";
 import { mkdir, cp, writeFile } from "fs/promises";
-import { join, dirname } from "path";
+import { join } from "path";
 
 /**
  * Find the package root directory containing agents
@@ -76,49 +76,6 @@ export async function installAgents(__dirname: string): Promise<boolean> {
       console.log("✅ Agents already installed");
     }
     
-    // Install session templates
-    const templatesDir = ".claude/session-templates";
-    if (!existsSync(templatesDir)) {
-      await mkdir(templatesDir, { recursive: true });
-      
-      // Create basic workflow templates
-      const templates = [
-        { name: "feature-development", description: "New feature workflow" },
-        { name: "bug-fix", description: "Bug resolution workflow" },
-        { name: "refactoring", description: "Code improvement workflow" },
-        { name: "performance-optimization", description: "Performance tuning workflow" }
-      ];
-      
-      for (const template of templates) {
-        const content = {
-          name: template.name,
-          description: template.description,
-          phases: ["analyze", "design", "implement", "review"]
-        };
-        await writeFile(
-          join(templatesDir, `${template.name}.json`),
-          JSON.stringify(content, null, 2)
-        );
-      }
-      
-      console.log(`📋 Installed ${templates.length} session templates`);
-    }
-    
-    // Initialize session infrastructure
-    console.log("🔧 Initializing session infrastructure...");
-    
-    const archivePath = ".claude/session-archive.json";
-    if (!existsSync(archivePath)) {
-      await writeFile(archivePath, JSON.stringify([], null, 2));
-      console.log("📊 Created session archive: .claude/session-archive.json");
-    }
-    
-    const contextPath = ".claude/session-context.json";
-    if (!existsSync(contextPath)) {
-      await writeFile(contextPath, "null");
-      console.log("📝 Initialized session context: .claude/session-context.json");
-    }
-    
     // Create Claude Code settings
     const settingsPath = ".claude/settings.local.json";
     if (!existsSync(settingsPath)) {
@@ -126,10 +83,9 @@ export async function installAgents(__dirname: string): Promise<boolean> {
         "enableAllProjectMcpServers": true
       };
       await writeFile(settingsPath, JSON.stringify(settings, null, 2));
-      console.log("📝 Created Claude Code settings in .claude/settings.local.json");
+      console.log("✅ Created Claude Code settings in .claude/settings.local.json");
     }
     
-    console.log("✅ Session infrastructure ready");
     return true;
     
   } catch (error) {
