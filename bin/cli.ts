@@ -21,6 +21,7 @@ import { addServer } from "./commands/add-server.js";
 import { removeServerCommand } from "./commands/remove-server.js";
 import { setupDefault } from "./commands/setup-default.js";
 import { handleSessionCommand } from "./commands/session/index.js";
+import { handleAnalyzeCommand } from "./commands/analyze/index.js";
 import { InstallationChoice } from "./utils/prompt.js";
 
 // Parse arguments
@@ -64,6 +65,13 @@ async function main() {
     if (command === "--session" || command === "session") {
       const subcommand = args[1];
       await handleSessionCommand(subcommand, args.slice(2));
+      return;
+    }
+
+    // Analyze commands
+    if (command === "--analyze" || command === "analyze") {
+      const subcommand = args[1];
+      await handleAnalyzeCommand(subcommand);
       return;
     }
 

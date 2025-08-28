@@ -348,6 +348,50 @@ node --version  # Should be 16+
 
 ---
 
+## 🧠 Context-Aware Agents
+
+### 🔄 **Intelligent Agent Collaboration**
+
+All 9 AI agents now work together through a sophisticated context management system:
+
+- **📊 Session Management**: Track agent collaboration across tasks
+- **🤝 Smart Handoffs**: Agents automatically pass context to the right specialist
+- **📈 Performance Analytics**: Measure and optimize agent workflows
+- **🎯 Context Flow**: Information accumulates as agents work together
+
+### 📍 **Session Commands**
+
+Manage your agent collaboration sessions:
+
+```bash
+# Session management
+ai-agent-hub session start [name]  # Start new collaborative session
+ai-agent-hub session show          # Display current session status
+ai-agent-hub session clear         # Archive and clear current session
+ai-agent-hub session list          # View recent sessions
+
+# Performance analytics
+ai-agent-hub analyze               # Full workflow analysis
+ai-agent-hub analyze performance   # Agent performance metrics
+ai-agent-hub analyze handoffs      # Handoff pattern analysis
+ai-agent-hub analyze bottlenecks   # Detect workflow slowdowns
+ai-agent-hub analyze insights      # Get optimization suggestions
+```
+
+### 🌊 **Example Workflow**
+
+Here's how agents collaborate on building an authentication system:
+
+1. **🎯 Studio Coach** orchestrates the workflow
+2. **🔍 UX Researcher** gathers user requirements
+3. **🏗️ Backend Architect** designs API and database
+4. **💻 Frontend Developer** implements UI components
+5. **✅ Code Quality Reviewer** validates everything
+6. **✨ Whimsy Injector** adds delightful touches
+7. **📊 Analytics** provides performance insights
+
+Each agent reads context from previous agents and adds their own, creating a comprehensive solution with full traceability.
+
 ## 🤝 Contributing
 
 We love contributions! Here's how to help:
