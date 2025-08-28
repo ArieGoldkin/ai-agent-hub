@@ -23,6 +23,7 @@ import { setupDefault } from "./commands/setup-default.js";
 import { handleSessionCommand } from "./commands/session/index.js";
 import { handleAnalyzeCommand } from "./commands/analyze/index.js";
 import { runDoctorCommand } from "./commands/doctor.js";
+import { runQuickSetup } from "./commands/quick-setup.js";
 import { InstallationChoice } from "./utils/prompt.js";
 
 // Parse arguments
@@ -79,6 +80,13 @@ async function main() {
     // Doctor command (health check)
     if (command === "--doctor" || command === "doctor") {
       await runDoctorCommand();
+      return;
+    }
+
+    // Quick setup command
+    if (command === "--quick-setup" || command === "quick-setup") {
+      const targetDir = args[1] || process.cwd();
+      await runQuickSetup(__dirname, targetDir);
       return;
     }
 

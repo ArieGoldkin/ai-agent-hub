@@ -9,11 +9,12 @@ import { archiveSession } from "./archive.js";
 import { formatSessionDisplay } from "./display.js";
 import { generateSessionName, getDuration, formatDate } from "./utils.js";
 import { existsSync } from "fs";
-import { readFile } from "fs/promises";
+import { readFile, writeFile } from "fs/promises";
 import { join } from "path";
+import * as readline from 'readline';
 
 /**
- * Start a new session with optional name
+ * Start a new session with optional name and request
  */
 export async function startSession(manager: ContextManager, name?: string): Promise<void> {
   try {
@@ -29,8 +30,76 @@ export async function startSession(manager: ContextManager, name?: string): Prom
     // Initialize new session
     await manager.initSession(sessionName);
     
-    console.log(`✅ Started new session: ${sessionName}`);
-    console.log(`   Path: .claude/session-context.json`);
+    // Prompt for user request
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+    
+    console.log("\n🚀 AI Agent Orchestration Session");
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.log("What would you like to create?");
+    console.log("(e.g., 'Create a login form with email/password validation')");
+    console.log("");
+    
+    const userRequest = await new Promise<string>((resolve) => {
+      rl.question("> ", (answer) => {
+        rl.close();
+        resolve(answer);
+      });
+    });
+    
+    if (!userRequest.trim()) {
+      console.log("❌ No request provided. Session started but no trigger created.");
+      return;
+    }
+    
+    // Store user request as initial decision
+    await manager.addDecision({
+      type: 'continue',
+      agentName: 'user',
+      timestamp: new Date(),
+      reason: `User request: ${userRequest}`,
+      confidence: 1.0,
+      context: { userRequest }
+    });
+    
+    // Create/update START_SESSION.md trigger file
+    const triggerPath = "START_SESSION.md";
+    const triggerContent = `# Start AI Agent Session
+
+## Your Request
+${userRequest}
+
+## Session Information
+- Session ID: ${sessionName}
+- Started: ${new Date().toISOString()}
+- Status: Ready for orchestration
+
+## Instructions for Claude
+This session has been initialized with the above request.
+Please read CLAUDE.md for orchestration instructions and begin implementing the request using the agent workflow.
+
+### Next Steps:
+1. Use Studio Coach to analyze the request
+2. Follow the orchestration workflow in CLAUDE.md
+3. Update session-context.json as you progress
+4. Implement the solution using appropriate agents
+
+---
+*This file triggers AI agent orchestration*
+`;
+    
+    await writeFile(triggerPath, triggerContent);
+    
+    console.log("");
+    console.log(`✅ Session started: ${sessionName}`);
+    console.log(`📝 Request: ${userRequest}`);
+    console.log(`📋 Trigger created: START_SESSION.md`);
+    console.log(`🔄 Session context: .claude/session-context.json`);
+    console.log("");
+    console.log("💡 Claude will now orchestrate agents to implement your request");
+    console.log("   Open this project in Claude Code to begin!");
   } catch (error) {
     console.error("❌ Failed to start session:", error);
   }

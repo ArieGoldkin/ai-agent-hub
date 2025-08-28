@@ -16,6 +16,7 @@ Usage:
   ai-agent-hub --project-only   Install only to current project
   ai-agent-hub --desktop-only   Install only to Claude Desktop
   ai-agent-hub --both          Install to both project and desktop
+  ai-agent-hub quick-setup [dir]  One-command complete setup
   ai-agent-hub --list-agents  Show available AI agents
   ai-agent-hub --list       List configured servers
   ai-agent-hub <server>     Add a specific server
