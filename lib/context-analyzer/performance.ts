@@ -5,7 +5,7 @@
  */
 
 import type { SessionContext } from '../types/context.js';
-import type { PerformanceMetrics, AgentPerformance } from '../types/analytics.js';
+import type { PerformanceMetrics, AgentPerformance } from '../types/analytics/index.js';
 import {
   calculateAverageResponseTime,
   calculateProcessingSpeed,

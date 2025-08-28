@@ -5,7 +5,7 @@
  */
 
 import type { SessionContext, DecisionRecord } from '../types/context.js';
-import type { HandoffAnalysis, HandoffPath, HandoffStats } from '../types/analytics.js';
+import type { HandoffAnalysis, HandoffPath, HandoffStats } from '../types/analytics/index.js';
 import { findCircularDependencies } from './bottleneck.js';
 
 /**

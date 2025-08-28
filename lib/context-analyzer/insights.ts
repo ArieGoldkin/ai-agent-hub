@@ -13,7 +13,7 @@ import type {
   OptimizationOpportunity,
   Warning,
   ActionableRecommendation
-} from '../types/analytics.js';
+} from '../types/analytics/index.js';
 
 /**
  * Assess overall workflow health

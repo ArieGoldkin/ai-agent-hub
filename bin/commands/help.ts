@@ -53,6 +53,15 @@ Session Commands:
   session list            Show last 5 archived sessions
   session help            Show session command help
 
+Analyze Commands:
+  analyze                 Full workflow analysis with all insights
+  analyze performance     Agent performance metrics and timing
+  analyze handoffs        Handoff pattern analysis between agents
+  analyze bottlenecks     Detect workflow slowdowns and issues
+  analyze insights        Optimization suggestions and recommendations
+  analyze growth          Context accumulation and evolution tracking
+  analyze quality         Decision quality tracking and validation
+
 Examples:
   ai-agent-hub              # Interactive setup (asks where to install)
   ai-agent-hub --both       # Install everywhere (non-interactive)
@@ -61,5 +70,7 @@ Examples:
   ai-agent-hub --list-agents  # See all agents
   ai-agent-hub supabase     # Add Supabase server
   ai-agent-hub session start  # Start new session
+  ai-agent-hub analyze      # Analyze workflow performance
+  ai-agent-hub analyze bottlenecks  # Find workflow issues
 `);
 }

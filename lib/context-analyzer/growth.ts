@@ -5,7 +5,7 @@
  */
 
 import type { SessionContext } from '../types/context.js';
-import type { ContextGrowthAnalysis, AccumulationPattern } from '../types/analytics.js';
+import type { ContextGrowthAnalysis, AccumulationPattern } from '../types/analytics/index.js';
 import { calculateContextSize } from './utils.js';
 
 /**

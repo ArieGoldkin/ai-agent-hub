@@ -12,7 +12,7 @@ import type {
   BottleneckReport,
   InsightReport,
   ContextGrowthAnalysis
-} from '../types/analytics.js';
+} from '../types/analytics/index.js';
 
 import { analyzeWorkflowPerformance } from './performance.js';
 import { analyzeHandoffPatterns } from './handoff.js';
@@ -107,4 +107,4 @@ export type {
   BottleneckReport,
   InsightReport,
   ContextGrowthAnalysis
-} from '../types/analytics.js';
+} from '../types/analytics/index.js';

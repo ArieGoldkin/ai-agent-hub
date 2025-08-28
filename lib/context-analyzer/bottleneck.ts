@@ -5,7 +5,7 @@
  */
 
 import type { SessionContext } from '../types/context.js';
-import type { BottleneckReport, AgentBottleneck, ContextOverload, CircularDependency } from '../types/analytics.js';
+import type { BottleneckReport, AgentBottleneck, ContextOverload, CircularDependency } from '../types/analytics/index.js';
 import { calculateAverageResponseTime, calculateRedundancy } from './utils.js';
 
 /**
