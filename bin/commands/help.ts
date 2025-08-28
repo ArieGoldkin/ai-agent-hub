@@ -21,6 +21,7 @@ Usage:
   ai-agent-hub <server>     Add a specific server
   ai-agent-hub --remove <server>  Remove a server
   ai-agent-hub session <cmd>  Manage agent collaboration sessions
+  ai-agent-hub doctor       Health check and setup validation
   ai-agent-hub --help       Show this help
 
 AI Agents (Installed to .claude/agents/):
@@ -62,6 +63,10 @@ Analyze Commands:
   analyze growth          Context accumulation and evolution tracking
   analyze quality         Decision quality tracking and validation
 
+Health Check Commands:
+  doctor                  Comprehensive setup validation and health check
+                         Validates agents, session infrastructure, MCP config, environment
+
 Examples:
   ai-agent-hub              # Interactive setup (asks where to install)
   ai-agent-hub --both       # Install everywhere (non-interactive)
@@ -72,5 +77,6 @@ Examples:
   ai-agent-hub session start  # Start new session
   ai-agent-hub analyze      # Analyze workflow performance
   ai-agent-hub analyze bottlenecks  # Find workflow issues
+  ai-agent-hub doctor       # Validate complete setup
 `);
 }

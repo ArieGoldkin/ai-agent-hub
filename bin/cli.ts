@@ -22,6 +22,7 @@ import { removeServerCommand } from "./commands/remove-server.js";
 import { setupDefault } from "./commands/setup-default.js";
 import { handleSessionCommand } from "./commands/session/index.js";
 import { handleAnalyzeCommand } from "./commands/analyze/index.js";
+import { runDoctorCommand } from "./commands/doctor.js";
 import { InstallationChoice } from "./utils/prompt.js";
 
 // Parse arguments
@@ -72,6 +73,12 @@ async function main() {
     if (command === "--analyze" || command === "analyze") {
       const subcommand = args[1];
       await handleAnalyzeCommand(subcommand);
+      return;
+    }
+
+    // Doctor command (health check)
+    if (command === "--doctor" || command === "doctor") {
+      await runDoctorCommand();
       return;
     }
 

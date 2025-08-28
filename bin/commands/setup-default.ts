@@ -8,7 +8,7 @@ import { getClaudeDesktopConfigPath } from "../../lib/paths.js";
 import { loadConfig, saveConfig } from "../../lib/file-ops.js";
 import { getDefaultServersForContext } from "../../lib/server-config.js";
 import { addToClaudeDesktop, createMCPJson } from "../../lib/claude-ops.js";
-import { safeHandleEnvFile } from "../../lib/env-handler.js";
+import { safeHandleEnvFile, displayEnvironmentGuidance } from "../../lib/env-handler.js";
 import { isInProject, hasClaudeDesktop } from "../utils/detectors.js";
 import { installAgents } from "./install-agents.js";
 import { promptInstallationTarget, showInstallationPlan, confirmInstallation, InstallationChoice } from "../utils/prompt.js";
@@ -152,12 +152,9 @@ export async function setupDefault(__dirname: string, presetChoice?: Installatio
     console.log("");
   }
   
-  // Show environment configuration warning if applicable
-  if (choice.installProjectMCP && existsSync(".env")) {
-    console.log("⚠️  Important: Add your API keys to .env:");
-    console.log("   - GITHUB_TOKEN for GitHub access");
-    console.log("   - SUPABASE_ACCESS_TOKEN for Supabase");
-    console.log("   - Update YOUR_PROJECT_REF_HERE in .mcp.json for Supabase\n");
+  // Show environment configuration guidance if applicable
+  if (choice.installProjectMCP) {
+    await displayEnvironmentGuidance();
   }
   
   // Show restart instructions based on what was installed

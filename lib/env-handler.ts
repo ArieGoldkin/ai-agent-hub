@@ -87,3 +87,125 @@ export function parseEnvKeys(content: string): string[] {
   
   return keys;
 }
+
+/**
+ * Validate environment configuration and provide guidance
+ */
+export async function validateEnvironmentSetup(): Promise<{
+  isValid: boolean;
+  warnings: string[];
+  required: string[];
+  optional: string[];
+}> {
+  const warnings: string[] = [];
+  const required: string[] = [];
+  const optional: string[] = [];
+  
+  // Check for .env file
+  if (!existsSync(".env")) {
+    warnings.push("No .env file found - some MCP servers may not work");
+    return { isValid: false, warnings, required: ['Create .env file'], optional };
+  }
+  
+  // Read .env file
+  const envContent = await readFile(".env", "utf-8");
+  const envVars = parseEnvVars(envContent);
+  
+  // Check critical environment variables
+  const criticalVars = {
+    'GITHUB_TOKEN': 'GitHub integration (required for GitHub MCP server)',
+    'SUPABASE_ACCESS_TOKEN': 'Supabase integration (required for Supabase MCP server)'
+  };
+  
+  const optionalVars = {
+    'POSTGRES_CONNECTION_STRING': 'PostgreSQL database access',
+    'BRAVE_API_KEY': 'Brave search capabilities'
+  };
+  
+  // Check critical vars
+  for (const [varName, description] of Object.entries(criticalVars)) {
+    const value = envVars[varName];
+    if (!value || value.includes('your_') || value.includes('_here')) {
+      required.push(`${varName} - ${description}`);
+    }
+  }
+  
+  // Check optional vars
+  for (const [varName, description] of Object.entries(optionalVars)) {
+    const value = envVars[varName];
+    if (!value || value.includes('your_') || value.includes('_here')) {
+      optional.push(`${varName} - ${description}`);
+    }
+  }
+  
+  // Generate warnings
+  if (required.length > 0) {
+    warnings.push(`${required.length} critical environment variables need configuration`);
+  }
+  
+  if (optional.length > 0) {
+    warnings.push(`${optional.length} optional environment variables could be configured`);
+  }
+  
+  return {
+    isValid: required.length === 0,
+    warnings,
+    required,
+    optional
+  };
+}
+
+/**
+ * Parse environment variables from content into key-value pairs
+ */
+function parseEnvVars(content: string): Record<string, string> {
+  const vars: Record<string, string> = {};
+  const lines = content.split('\n');
+  
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (trimmed && !trimmed.startsWith('#')) {
+      const match = trimmed.match(/^([A-Z_]+[A-Z0-9_]*)=(.*)$/);
+      if (match) {
+        vars[match[1]] = match[2];
+      }
+    }
+  }
+  
+  return vars;
+}
+
+/**
+ * Display environment setup guidance
+ */
+export async function displayEnvironmentGuidance(): Promise<void> {
+  const validation = await validateEnvironmentSetup();
+  
+  if (validation.isValid) {
+    console.log("✅ Environment configuration complete");
+    return;
+  }
+  
+  console.log("\n🔧 Environment Configuration Needed");
+  console.log("=====================================");
+  
+  if (validation.required.length > 0) {
+    console.log("\n🚨 Required (MCP servers won't work without these):");
+    validation.required.forEach(item => {
+      console.log(`   ❌ ${item}`);
+    });
+  }
+  
+  if (validation.optional.length > 0) {
+    console.log("\n💡 Optional (enhanced functionality):");
+    validation.optional.forEach(item => {
+      console.log(`   ⚪ ${item}`);
+    });
+  }
+  
+  console.log("\n📝 Next Steps:");
+  console.log("   1. Edit your .env file with your API keys");
+  console.log("   2. Update YOUR_PROJECT_REF_HERE in .mcp.json (for Supabase)");
+  console.log("   3. Run: ai-agent-hub doctor (to validate setup)");
+  console.log("   4. Start your first session: ai-agent-hub session start");
+}
