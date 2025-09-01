@@ -17,7 +17,6 @@ const __dirname = dirname(__filename);
 import { showHelp } from "./commands/help.js";
 import { runSetup } from "./commands/setup.js";
 import { promptForInstallationTargets } from "./utils/prompt.js";
-import { detectProjectInfo } from "../lib/mcp-setup.js";
 
 // Parse arguments
 const args = process.argv.slice(2);
@@ -39,7 +38,7 @@ async function main() {
 
     // Version
     if (command === "--version" || command === "-v") {
-      console.log("ai-agent-hub v3.0.0");
+      console.log("ai-agent-hub v3.0.2");
       return;
     }
 
@@ -55,8 +54,7 @@ async function main() {
       installTargets = { desktop: true, project: true };
     } else {
       // Interactive mode - prompt user for installation targets
-      const projectInfo = detectProjectInfo();
-      installTargets = await promptForInstallationTargets(projectInfo.isProject);
+      installTargets = await promptForInstallationTargets();
     }
     
     await runSetup(__dirname, installTargets);
