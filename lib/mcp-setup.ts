@@ -50,6 +50,8 @@ export async function setupProjectMCP(__dirname?: string): Promise<void> {
   activeServers.forEach(server => {
     if (server.requiresEnv) {
       console.log(`   - ${server.name} (activated via ${server.requiresEnv})`);
+    } else if (server.name === 'browsermcp') {
+      console.log(`   - ${server.name} (requires extension: https://docs.browsermcp.io/setup-extension)`);
     } else {
       console.log(`   - ${server.name}`);
     }

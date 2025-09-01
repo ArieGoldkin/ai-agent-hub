@@ -3,7 +3,7 @@
  */
 
 import { existsSync, readdirSync } from "fs";
-import { mkdir, cp, writeFile } from "fs/promises";
+import { mkdir, writeFile, readFile } from "fs/promises";
 import { join } from "path";
 
 /**
@@ -42,38 +42,83 @@ export async function installAgents(__dirname: string): Promise<boolean> {
       await mkdir(".claude", { recursive: true });
     }
 
-    // Install agents if not present
+    // Create agents directory if not present
     if (!existsSync(".claude/agents")) {
       await mkdir(".claude/agents", { recursive: true });
+    }
 
-      // Find package root
-      const packageRoot = await findPackageRoot(__dirname);
-      const agentsPath = join(packageRoot, "agents");
-      console.log(`📁 Found package at: ${packageRoot}`);
+    // Find package root
+    const packageRoot = await findPackageRoot(__dirname);
+    const agentsPath = join(packageRoot, "agents");
+    console.log(`📁 Found package at: ${packageRoot}`);
+    
+    // Define the required AI Agent Hub agents
+    const requiredAgents = [
+      'ai-ml-engineer.md',
+      'backend-system-architect.md',
+      'code-quality-reviewer.md',
+      'frontend-ui-developer.md',
+      'rapid-ui-designer.md',
+      'sprint-prioritizer.md',
+      'studio-coach.md',
+      'ux-researcher.md',
+      'whimsy-injector.md'
+    ];
+    
+    // Check existing agents
+    const existingAgents = readdirSync(".claude/agents").filter(f => f.endsWith('.md'));
+    const existingAgentNames = new Set(existingAgents);
+    
+    // Find missing required agents
+    const missingAgents = requiredAgents.filter(agent => !existingAgentNames.has(agent));
+    
+    if (missingAgents.length === 0) {
+      console.log("✅ All 9 AI Agent Hub personalities already installed");
+      if (existingAgents.length > 9) {
+        const customCount = existingAgents.length - 9;
+        console.log(`   📌 Plus ${customCount} custom agent(s) preserved`);
+      }
+    } else {
+      // Copy only missing agents
+      console.log(`📦 Installing ${missingAgents.length} missing AI Agent Hub personalities...`);
       
-      // Copy agents
-      await cp(agentsPath, ".claude/agents", {
-        recursive: true
-      });
-      
-      // Verify installation
-      const copiedFiles = readdirSync(".claude/agents").filter(f => f.endsWith('.md'));
-      if (copiedFiles.length < 9) {
-        throw new Error(`Only ${copiedFiles.length} agents copied, expected 9`);
+      for (const agentFile of missingAgents) {
+        const sourcePath = join(agentsPath, agentFile);
+        const destPath = join(".claude/agents", agentFile);
+        
+        if (existsSync(sourcePath)) {
+          const content = await readFile(sourcePath);
+          await writeFile(destPath, content);
+        }
       }
       
-      console.log("✅ Installed 9 AI agent personalities:");
-      console.log("   • ai-ml-engineer - AI/ML implementation expert");
-      console.log("   • backend-system-architect - System design specialist");
-      console.log("   • code-quality-reviewer - Code review automation");
-      console.log("   • frontend-ui-developer - UI/UX implementation");
-      console.log("   • rapid-ui-designer - Quick UI prototyping");
-      console.log("   • sprint-prioritizer - Agile planning assistant");
-      console.log("   • studio-coach - Team coordination");
-      console.log("   • ux-researcher - User research & testing");
-      console.log("   • whimsy-injector - Creative enhancement");
-    } else {
-      console.log("✅ Agents already installed");
+      console.log(`✅ Installed ${missingAgents.length} AI agent personalities:`);
+      
+      // Show what was added
+      const agentDescriptions: Record<string, string> = {
+        'ai-ml-engineer.md': 'AI/ML implementation expert',
+        'backend-system-architect.md': 'System design specialist',
+        'code-quality-reviewer.md': 'Code review automation',
+        'frontend-ui-developer.md': 'UI/UX implementation',
+        'rapid-ui-designer.md': 'Quick UI prototyping',
+        'sprint-prioritizer.md': 'Agile planning assistant',
+        'studio-coach.md': 'Team coordination',
+        'ux-researcher.md': 'User research & testing',
+        'whimsy-injector.md': 'Creative enhancement'
+      };
+      
+      for (const agent of missingAgents) {
+        console.log(`   • ${agent.replace('.md', '')} - ${agentDescriptions[agent] || 'Specialized agent'}`);
+      }
+      
+      // Report on preserved custom agents
+      const customAgents = existingAgents.filter(a => !requiredAgents.includes(a));
+      if (customAgents.length > 0) {
+        console.log(`📌 Preserved ${customAgents.length} existing custom agent(s):`);
+        for (const agent of customAgents) {
+          console.log(`   • ${agent.replace('.md', '')}`);
+        }
+      }
     }
     
     // Create Claude Code settings

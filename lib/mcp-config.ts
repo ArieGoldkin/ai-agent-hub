@@ -42,6 +42,10 @@ export function getBaseMCPServers(): Record<string, MCPServerConfig> {
     playwright: {
       command: "npx",
       args: ["-y", "@playwright/mcp@latest"]
+    },
+    browsermcp: {
+      command: "npx",
+      args: ["@browsermcp/mcp@latest"]
     }
   };
 }

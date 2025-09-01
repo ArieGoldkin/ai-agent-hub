@@ -81,6 +81,11 @@ export async function runSetup(__dirname: string, installTargets: InstallationTa
     console.log("   • Whimsy Injector - Delight features");
     console.log("   • Code Quality Reviewer - Quality assurance");
     console.log();
+    console.log(chalk.yellow("🌐 Browser MCP Setup:"));
+    console.log("   To activate Browser MCP, install the extension:");
+    console.log("   https://docs.browsermcp.io/setup-extension");
+    console.log("   Then use /mcp in Claude to connect");
+    console.log();
     
   } catch (error) {
     console.error("❌ Setup failed:", error);
