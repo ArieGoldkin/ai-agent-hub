@@ -13,27 +13,23 @@ export interface InstallationTarget {
 /**
  * Prompt user for installation targets
  */
-export async function promptForInstallationTargets(hasProject: boolean): Promise<InstallationTarget> {
+export async function promptForInstallationTargets(): Promise<InstallationTarget> {
   console.log(chalk.blue('\n📍 Where would you like to install?'));
   
   const options = [
     { key: '1', label: 'Claude Desktop only', value: { desktop: true, project: false } },
-    { key: '2', label: 'Claude Code only (project .mcp.json)', value: { desktop: false, project: true }, disabled: !hasProject },
-    { key: '3', label: 'Both Claude Desktop and Claude Code', value: { desktop: true, project: true }, disabled: !hasProject }
+    { key: '2', label: 'Current directory (Claude Code)', value: { desktop: false, project: true } },
+    { key: '3', label: 'Both Claude Desktop and current directory', value: { desktop: true, project: true } }
   ];
 
-  // Filter out disabled options
-  const availableOptions = options.filter(opt => !opt.disabled);
+  // All options are always available
+  const availableOptions = options;
   
   // Display options
   console.log();
   availableOptions.forEach(opt => {
     console.log(`   ${opt.key}. ${opt.label}`);
   });
-  
-  if (!hasProject) {
-    console.log(chalk.dim('\n   (Claude Code options not available - not in a project directory)'));
-  }
   
   console.log();
   
