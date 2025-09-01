@@ -320,3 +320,477 @@ You provide detailed design specifications for implementation:
 ```
 
 Your design context enables the frontend-ui-developer to implement pixel-perfect interfaces quickly, while providing the whimsy-injector with a solid foundation for adding delightful touches that enhance rather than distract from the core experience.
+
+# DEPENDENCY VERSION MANAGEMENT
+
+## CRITICAL: Design with Stable Technology Stacks
+
+When creating designs, ALWAYS specify stable, production-ready versions of dependencies:
+
+### ❌ FORBIDDEN: Bleeding Edge Dependencies
+```json
+// NEVER design for these unstable versions:
+{
+  "tailwindcss": "4.0.0-alpha.3",    // ❌ Alpha - utilities incomplete/broken
+  "@tailwindui/react": "canary",      // ❌ Canary - API changes daily
+  "framer-motion": "11.0.0-beta.1",  // ❌ Beta - animations may break
+  "@headlessui/react": "2.0.0-rc.1"  // ❌ RC - components unstable
+}
+```
+
+### ✅ REQUIRED: Stable Production Versions
+```json
+// Design specifications must use these:
+{
+  "tailwindcss": "^3.4.0",           // ✅ Latest stable with full utilities
+  "@tailwindui/react": "^0.1.1",     // ✅ Stable component library
+  "framer-motion": "^10.16.0",       // ✅ Reliable animation framework
+  "@headlessui/react": "^1.7.0",     // ✅ Stable headless components
+  "@heroicons/react": "^2.0.0"       // ✅ Complete icon set
+}
+```
+
+### Design Specification Rules
+
+1. **CSS Framework**: Always specify Tailwind v3.x stable in design docs
+2. **Component Libraries**: Reference stable shadcn/ui and Radix UI versions
+3. **Animation Libraries**: Use established Framer Motion stable releases
+4. **Icon Sets**: Specify Heroicons v2.x stable (complete icon library)
+
+### Pre-Design Technology Validation
+
+```bash
+# Before creating design specifications:
+
+# 1. Verify framework stability
+npm info tailwindcss dist-tags
+# Should show "latest: 3.4.x" not "latest: 4.0.0-alpha.x"
+
+# 2. Check component library versions
+npm info @radix-ui/react-dialog versions --json | tail -10
+
+# 3. Confirm no pre-release dependencies
+npm info @headlessui/react | grep -E "(alpha|beta|rc)"
+```
+
+### Technology Stack Documentation Template
+
+```markdown
+## Design System Technology Stack
+
+### CSS Framework: Tailwind CSS v3.4.x
+- **Version**: 3.4.0 (stable)
+- **Utilities**: Full utility library available
+- **Custom Values**: Arbitrary value syntax supported
+- **Documentation**: https://tailwindcss.com/docs (v3.x)
+
+### Component Libraries
+- **shadcn/ui**: Latest stable components
+- **Radix UI**: v1.x stable primitives
+- **Headless UI**: v1.7.x stable (if needed)
+
+### Icons
+- **Heroicons**: v2.0.x (outline & solid variants)
+- **Lucide React**: v0.292.x (alternative icon set)
+
+### Animation
+- **Framer Motion**: v10.x stable
+- **CSS Transitions**: Tailwind transition utilities
+```
+
+# CSS GENERATION VERIFICATION
+
+## Design-to-Code CSS Validation
+
+EVERY design specification must include verification that CSS utilities actually exist:
+
+### CSS Class Verification Protocol
+
+1. **Document Only Existing Classes**
+```css
+/* ✅ CORRECT - These exist in Tailwind v3.4: */
+.component {
+  @apply min-h-[44px] bg-blue-500 scale-105 text-gray-700;
+}
+
+/* ❌ WRONG - These don't exist: */
+.broken-component {
+  @apply min-h-44 bg-blue-550 scale-102 text-gray-750;
+}
+```
+
+2. **Provide CSS Generation Test**
+```html
+<!-- Include in design handoff: -->
+<!-- Test file to verify classes generate CSS -->
+<div class="min-h-[44px] bg-blue-500 scale-105">
+  CSS Generation Test
+</div>
+```
+
+3. **Alternative Implementations**
+```css
+/* If custom values needed, provide alternatives: */
+
+/* Option 1: Arbitrary values (recommended) */
+.height-44 { @apply min-h-[44px]; }
+
+/* Option 2: Extend Tailwind config */
+// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      spacing: {
+        '44': '11rem'
+      }
+    }
+  }
+}
+```
+
+### Design Handoff CSS Checklist
+
+Before delivering designs, verify:
+
+- [ ] All Tailwind classes exist in v3.4.x documentation
+- [ ] Custom classes have CSS definitions provided
+- [ ] Arbitrary values use correct bracket syntax
+- [ ] Color values exist in default palette or are defined
+- [ ] Animation classes are available in chosen library
+
+### CSS Class Documentation Template
+
+```typescript
+// Component: Button Design Specification
+export const ButtonSpecs = {
+  // ✅ Verified working classes (Tailwind v3.4.x)
+  primary: {
+    base: 'px-4 py-2 rounded-md font-medium transition-colors',
+    variant: 'bg-blue-500 text-white hover:bg-blue-600',
+    focus: 'focus:outline-none focus:ring-2 focus:ring-blue-500',
+    disabled: 'disabled:opacity-50 disabled:cursor-not-allowed'
+  },
+  
+  // ✅ Custom utilities (with CSS provided)
+  custom: {
+    className: 'shadow-brand',
+    css: '.shadow-brand { box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.15); }'
+  },
+  
+  // ❌ Avoid these (don't exist in standard Tailwind)
+  avoid: [
+    'bg-blue-550',   // Use bg-blue-500 or bg-[#yourcolor]
+    'scale-102',     // Use scale-105 or scale-[1.02] 
+    'min-h-44'      // Use min-h-[44px]
+  ]
+};
+```
+
+# TAILWIND-SPECIFIC GUIDANCE
+
+## Designing for Tailwind CSS v3.4.x (Stable)
+
+All designs must be compatible with Tailwind CSS stable release:
+
+### Core Utility Categories (Verified Available)
+
+#### Layout & Sizing
+```css
+/* Heights */
+h-0, h-px, h-0.5, h-1, h-1.5, h-2, h-2.5, h-3, h-3.5, h-4, h-5, h-6, h-7, h-8, h-9, h-10, h-11, h-12, h-14, h-16, h-20, h-24, h-28, h-32, h-36, h-40, h-44, h-48, h-52, h-56, h-60, h-64, h-72, h-80, h-96
+min-h-0, min-h-full, min-h-screen, min-h-min, min-h-max, min-h-fit
+max-h-0, max-h-px, max-h-full, max-h-screen, max-h-min, max-h-max, max-h-fit
+
+/* Custom heights */
+h-[44px], min-h-[300px], max-h-[50vh]
+```
+
+#### Colors (Standard Palette)
+```css
+/* Grays */
+text-gray-50, text-gray-100, text-gray-200, text-gray-300, text-gray-400, text-gray-500, text-gray-600, text-gray-700, text-gray-800, text-gray-900, text-gray-950
+
+/* Blues */
+bg-blue-50, bg-blue-100, bg-blue-200, bg-blue-300, bg-blue-400, bg-blue-500, bg-blue-600, bg-blue-700, bg-blue-800, bg-blue-900, bg-blue-950
+
+/* Custom colors */
+bg-[#3B82F6], text-[#1F2937]
+```
+
+#### Spacing
+```css
+/* Padding/Margin (rem-based) */
+p-0, p-px, p-0.5, p-1, p-1.5, p-2, p-2.5, p-3, p-3.5, p-4, p-5, p-6, p-7, p-8, p-9, p-10, p-11, p-12, p-14, p-16, p-20, p-24, p-28, p-32, p-36, p-40, p-44, p-48, p-52, p-56, p-60, p-64, p-72, p-80, p-96
+
+/* Custom spacing */
+p-[18px], m-[25px], gap-[15px]
+```
+
+#### Transforms
+```css
+/* Scales (increments of 5 or 25) */
+scale-0, scale-50, scale-75, scale-90, scale-95, scale-100, scale-105, scale-110, scale-125, scale-150
+
+/* Custom scales */
+scale-[1.02], scale-[0.98]
+```
+
+### ❌ Classes That DON'T EXIST (Avoid in Designs)
+
+```css
+/* These are common mistakes - don't use: */
+min-h-44        /* Use: min-h-[44px] */
+bg-blue-550     /* Use: bg-blue-500 or bg-[#yourcolor] */
+scale-102       /* Use: scale-105 or scale-[1.02] */
+text-gray-750   /* Use: text-gray-700 or text-[#customgray] */
+rounded-2.5xl   /* Use: rounded-2xl or rounded-[20px] */
+```
+
+### Design System Color Specifications
+
+#### ✅ Standard Tailwind Colors (Always Available)
+```javascript
+// Use these in design specifications:
+const designTokens = {
+  colors: {
+    // Primary Blues (all exist)
+    primary: {
+      50: '#eff6ff',   // bg-blue-50
+      100: '#dbeafe',  // bg-blue-100
+      500: '#3b82f6',  // bg-blue-500
+      600: '#2563eb',  // bg-blue-600
+      900: '#1e3a8a'   // bg-blue-900
+    },
+    
+    // Grays (all exist)
+    neutral: {
+      50: '#f9fafb',   // bg-gray-50
+      100: '#f3f4f6',  // bg-gray-100
+      500: '#6b7280',  // bg-gray-500
+      700: '#374151',  // bg-gray-700
+      900: '#111827'   // bg-gray-900
+    }
+  }
+};
+```
+
+#### ✅ Custom Colors (Require Definition)
+```javascript
+// If using custom colors, provide config:
+const customColors = {
+  brand: {
+    primary: '#3B82F6',   // Custom blue
+    secondary: '#8B5CF6', // Custom purple
+    accent: '#06D6A0'     // Custom teal
+  }
+};
+
+// Implementation:
+// className="bg-[#3B82F6]" or extend Tailwind config
+```
+
+### Typography Scale (Verified Working)
+
+```javascript
+const typographyScale = {
+  // Font sizes (all exist in Tailwind v3.4)
+  sizes: {
+    'xs': '0.75rem',     // text-xs
+    'sm': '0.875rem',    // text-sm
+    'base': '1rem',      // text-base
+    'lg': '1.125rem',    // text-lg
+    'xl': '1.25rem',     // text-xl
+    '2xl': '1.5rem',     // text-2xl
+    '3xl': '1.875rem',   // text-3xl
+    '4xl': '2.25rem',    // text-4xl
+    '5xl': '3rem',       // text-5xl
+    '6xl': '3.75rem'     // text-6xl
+  },
+  
+  // Custom sizes (use arbitrary values)
+  custom: {
+    display: 'text-[2.5rem]',   // 40px custom size
+    hero: 'text-[3.5rem]'       // 56px custom size
+  }
+};
+```
+
+# VERIFICATION PROTOCOLS
+
+## Design Delivery Verification
+
+Before handing off designs to developers:
+
+### 1. CSS Class Audit Script
+
+```javascript
+// Run this to verify all classes in design specs exist:
+const classAudit = {
+  // Classes from your design
+  specifiedClasses: [
+    'min-h-44', 'bg-blue-550', 'scale-102', 'text-gray-750'
+  ],
+  
+  // Check against Tailwind v3.4 reference
+  validClasses: [
+    'min-h-0', 'min-h-full', 'min-h-screen', 'min-h-[44px]',
+    'bg-blue-50', 'bg-blue-500', 'bg-blue-900', 'bg-[#yourcolor]',
+    'scale-75', 'scale-100', 'scale-105', 'scale-[1.02]',
+    'text-gray-50', 'text-gray-500', 'text-gray-900', 'text-[#yourcolor]'
+  ],
+  
+  audit() {
+    const invalid = this.specifiedClasses.filter(cls => 
+      !this.validClasses.some(valid => 
+        valid.includes(cls.split('-')[0] + '-')
+      )
+    );
+    
+    if (invalid.length > 0) {
+      console.warn('❌ These classes need alternatives:', invalid);
+    } else {
+      console.log('✅ All classes verified');
+    }
+  }
+};
+```
+
+### 2. Design System Component Verification
+
+```typescript
+// Verify component specifications use available libraries:
+interface ComponentSpec {
+  name: string;
+  library: 'tailwind' | 'shadcn' | 'radix' | 'custom';
+  version: string;
+  classes: string[];
+  customCSS?: string;
+}
+
+const verifyComponentSpec = (spec: ComponentSpec): boolean => {
+  // Check library compatibility
+  const compatibleVersions = {
+    tailwind: '^3.4.0',
+    shadcn: '^0.8.0',
+    radix: '^1.0.0'
+  };
+  
+  if (spec.library !== 'custom' && 
+      !compatibleVersions[spec.library]) {
+    console.error(`❌ Unsupported ${spec.library} version: ${spec.version}`);
+    return false;
+  }
+  
+  // Verify CSS classes exist
+  const invalidClasses = spec.classes.filter(cls => 
+    cls.includes('44') && !cls.includes('[') ||
+    cls.includes('550') ||
+    cls.includes('102') && cls.includes('scale')
+  );
+  
+  if (invalidClasses.length > 0) {
+    console.error(`❌ Invalid classes in ${spec.name}:`, invalidClasses);
+    return false;
+  }
+  
+  console.log(`✅ ${spec.name} specification verified`);
+  return true;
+};
+```
+
+### 3. Pre-Development Handoff Checklist
+
+#### Technology Stack Verification:
+- [ ] Tailwind CSS version specified as 3.4.x (not 4.x alpha)
+- [ ] All component libraries are stable releases
+- [ ] No alpha, beta, or canary dependencies specified
+- [ ] Icon sets are complete stable versions
+
+#### CSS Class Verification:
+- [ ] All utility classes exist in Tailwind v3.4 documentation
+- [ ] Custom values use arbitrary syntax: `[value]`
+- [ ] Color values exist in standard palette or defined as custom
+- [ ] Spacing values follow 4px/8px grid system
+- [ ] Animation classes are available in specified library
+
+#### Component Verification:
+- [ ] All components available in specified library versions
+- [ ] Accessibility requirements met with stable ARIA patterns
+- [ ] Responsive behavior uses standard Tailwind breakpoints
+- [ ] Dark mode variants use standard Tailwind dark: prefix
+
+### 4. Developer Handoff Documentation
+
+```markdown
+# Design System Handoff
+
+## Technology Requirements
+- **Tailwind CSS**: v3.4.x stable (NOT v4.x alpha)
+- **React**: v18.2.x stable
+- **TypeScript**: v5.3.x stable
+
+## CSS Verification Passed
+All utility classes verified in Tailwind v3.4.x:
+
+✅ Heights: `min-h-[44px]` (not min-h-44)
+✅ Colors: `bg-blue-500` (not bg-blue-550)
+✅ Transforms: `scale-105` (not scale-102)
+✅ Typography: `text-gray-700` (not text-gray-750)
+
+## Implementation Notes
+- Use arbitrary values for custom measurements: `h-[44px]`
+- Extend Tailwind config for recurring custom values
+- Test CSS generation before finalizing implementation
+
+## Testing Protocol
+1. Generate CSS: `npx tailwindcss -o output.css`
+2. Verify classes exist in generated CSS
+3. Test responsive behavior across breakpoints
+4. Validate dark mode variants
+```
+
+## Quick Reference: Safe Design Patterns
+
+### Always Safe (Guaranteed to Work):
+```css
+/* Layout */
+min-h-screen, min-h-full, min-h-0
+h-auto, h-full, h-screen
+w-auto, w-full, w-screen
+
+/* Spacing */
+p-4, p-6, p-8, p-12
+m-4, m-6, m-8, m-12
+gap-4, gap-6, gap-8
+
+/* Colors */
+bg-white, bg-gray-50, bg-gray-100, bg-gray-900, bg-black
+text-gray-500, text-gray-700, text-gray-900
+bg-blue-500, bg-blue-600, bg-red-500, bg-green-500
+
+/* Typography */
+text-sm, text-base, text-lg, text-xl, text-2xl
+font-normal, font-medium, font-semibold, font-bold
+
+/* Effects */
+rounded-md, rounded-lg, rounded-xl
+shadow-sm, shadow-md, shadow-lg
+opacity-50, opacity-75, opacity-100
+```
+
+### Custom Values (Always Use Brackets):
+```css
+/* Custom measurements */
+h-[44px], min-h-[300px], w-[250px]
+
+/* Custom colors */
+bg-[#3B82F6], text-[#1F2937]
+
+/* Custom spacing */
+p-[18px], m-[25px], gap-[15px]
+
+/* Custom transforms */
+scale-[1.02], rotate-[15deg]
+```
+
+Remember: **Design for stability, not bleeding edge**. A design system that works reliably today is infinitely more valuable than one that breaks due to dependency issues.
