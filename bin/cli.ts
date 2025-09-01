@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 /**
- * AI Agent Hub CLI - Main entry point
+ * AI Agent Hub CLI - Lean Agent Deployment Tool
  * 
- * Simple orchestrator that delegates to command modules
+ * Simple tool to deploy 9 AI agents with MCP configuration
  */
 
 import { dirname } from "path";
@@ -15,89 +15,51 @@ const __dirname = dirname(__filename);
 
 // Import commands
 import { showHelp } from "./commands/help.js";
-import { listAgents } from "./commands/list-agents.js";
-import { listConfiguredServers } from "./commands/list-servers.js";
-import { addServer } from "./commands/add-server.js";
-import { removeServerCommand } from "./commands/remove-server.js";
-import { setupDefault } from "./commands/setup-default.js";
-import { InstallationChoice } from "./utils/prompt.js";
+import { runSetup } from "./commands/setup.js";
+import { promptForInstallationTargets } from "./utils/prompt.js";
+import { detectProjectInfo } from "../lib/mcp-setup.js";
 
 // Parse arguments
 const args = process.argv.slice(2);
 const command = args[0];
 
+// Check for installation target flags
+const hasProjectOnly = args.includes('--project-only');
+const hasDesktopOnly = args.includes('--desktop-only');
+const hasBoth = args.includes('--both');
+
 // Main CLI router
 async function main() {
   try {
-    // Version
-    if (command === "--version" || command === "-v") {
-      console.log("2.0.0");
-      return;
-    }
-
     // Help
-    if (command === "--help" || command === "-h") {
+    if (command === "--help" || command === "-h" || command === "help") {
       showHelp();
       return;
     }
 
-    // List agents
-    if (command === "--list-agents") {
-      listAgents();
+    // Version
+    if (command === "--version" || command === "-v") {
+      console.log("ai-agent-hub v3.0.0");
       return;
     }
 
-    // List servers
-    if (command === "--list") {
-      await listConfiguredServers();
-      return;
+    // Default setup or explicit flags
+    let installTargets;
+    
+    // Check for non-interactive flags
+    if (hasProjectOnly) {
+      installTargets = { desktop: false, project: true };
+    } else if (hasDesktopOnly) {
+      installTargets = { desktop: true, project: false };
+    } else if (hasBoth) {
+      installTargets = { desktop: true, project: true };
+    } else {
+      // Interactive mode - prompt user for installation targets
+      const projectInfo = detectProjectInfo();
+      installTargets = await promptForInstallationTargets(projectInfo.isProject);
     }
-
-    // Remove server
-    if (command === "--remove" && args[1]) {
-      await removeServerCommand(args[1]);
-      return;
-    }
-
-    // Non-interactive installation modes
-    if (command === "--project-only") {
-      await setupDefault(__dirname, { 
-        target: 'project',
-        installAgents: true,
-        installProjectMCP: true,
-        installDesktopMCP: false
-      });
-      return;
-    }
-
-    if (command === "--desktop-only") {
-      await setupDefault(__dirname, {
-        target: 'desktop',
-        installAgents: false,
-        installProjectMCP: false,
-        installDesktopMCP: true
-      });
-      return;
-    }
-
-    if (command === "--both") {
-      await setupDefault(__dirname, {
-        target: 'both',
-        installAgents: true,
-        installProjectMCP: true,
-        installDesktopMCP: true
-      });
-      return;
-    }
-
-    // Add specific server
-    if (command && !command.startsWith("--")) {
-      await addServer(command, __dirname);
-      return;
-    }
-
-    // Default: Interactive setup
-    await setupDefault(__dirname);
+    
+    await runSetup(__dirname, installTargets);
     
   } catch (error) {
     console.error("❌ Error:", error instanceof Error ? error.message : error);
