@@ -26,8 +26,9 @@ export async function promptForInstallationTargets(hasProject: boolean): Promise
   const availableOptions = options.filter(opt => !opt.disabled);
   
   // Display options
+  console.log();
   availableOptions.forEach(opt => {
-    console.log(`   ${chalk.cyan(opt.key)}. ${opt.label}`);
+    console.log(`   ${opt.key}. ${opt.label}`);
   });
   
   if (!hasProject) {

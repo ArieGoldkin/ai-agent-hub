@@ -1,6 +1,6 @@
 {
   "name": "ai-agent-hub",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "type": "module",
   "description": "Transform Claude into 9 specialized AI agents with one command - Zero dependencies orchestration system",
   "author": "Arie Goldkin",
@@ -9,7 +9,7 @@
     "node": ">=20.0.0"
   },
   "bin": {
-    "ai-agent-hub": "./dist/bin/cli.js"
+    "ai-agent-hub": "dist/bin/cli.js"
   },
   "scripts": {
     "build": "tsc",

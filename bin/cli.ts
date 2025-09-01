@@ -39,7 +39,7 @@ async function main() {
 
     // Version
     if (command === "--version" || command === "-v") {
-      console.log("ai-agent-hub v3.0.0");
+      console.log("ai-agent-hub v3.0.1");
       return;
     }
 
