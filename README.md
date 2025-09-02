@@ -162,47 +162,7 @@ npx ai-agent-hub@latest --both
 
 ### How Agents Collaborate
 
-```mermaid
-flowchart LR
-    You("👤 You<br/>Request: Build an app") 
-    Coach("🎬 Studio Coach<br/>Orchestrates team")
-    
-    subgraph Team[" 🎯 Your Expert Team "]
-        Research("🔍 UX Researcher<br/>Gathers needs")
-        Design("🎨 UI Designer<br/>Creates mockups")
-        Backend("🏗️ Backend Architect<br/>Designs APIs")
-        Frontend("💻 Frontend Dev<br/>Builds UI")
-        AI("🤖 AI Engineer<br/>Adds intelligence")
-    end
-    
-    subgraph Support[" ✨ Quality & Polish "]
-        Sprint("📊 Sprint Prioritizer<br/>Manages timeline")
-        Whimsy("✨ Whimsy Injector<br/>Adds delight")
-        Review("✅ Code Reviewer<br/>Ensures quality")
-    end
-    
-    Result("🎉 Your App<br/>Professional & Polished")
-    
-    You --> Coach
-    Coach --> Team
-    Coach --> Support
-    Team --> Result
-    Support --> Result
-    
-    Research -.-> Design
-    Design -.-> Frontend
-    Backend -.-> Frontend
-    AI -.-> Frontend
-    
-    style You fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
-    style Coach fill:#ffebee,stroke:#c62828,stroke-width:3px,color:#000
-    style Result fill:#fff9c4,stroke:#f57c00,stroke-width:2px,color:#000
-    style Team fill:#f1f8e9,stroke:#558b2f,stroke-width:2px,color:#000
-    style Support fill:#fce4ec,stroke:#c2185b,stroke-width:2px,color:#000
-    
-    linkStyle default stroke:#666,stroke-width:2px,fill:none
-    linkStyle 5,6,7,8 stroke:#888,stroke-width:2px,fill:none,stroke-dasharray: 5 5
-```
+![Agent Collaboration Flow](https://raw.githubusercontent.com/ArieGoldkin/ai-agent-hub/main/assets/agent-collaboration-flow.png)
 
 **The Flow Explained:**
 1. **You** make a request (e.g., "Build a dashboard")
