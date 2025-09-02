@@ -200,8 +200,8 @@ flowchart LR
     style Team fill:#f1f8e9,stroke:#558b2f,stroke-width:2px,color:#000
     style Support fill:#fce4ec,stroke:#c2185b,stroke-width:2px,color:#000
     
-    linkStyle default stroke:#333,stroke-width:2px,fill:none
-    linkStyle 5,6,7,8 stroke:#666,stroke-width:2px,fill:none,stroke-dasharray: 5 5
+    linkStyle default stroke:#666,stroke-width:2px,fill:none
+    linkStyle 5,6,7,8 stroke:#888,stroke-width:2px,fill:none,stroke-dasharray: 5 5
 ```
 
 **The Flow Explained:**
