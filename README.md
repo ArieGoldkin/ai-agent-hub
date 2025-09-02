@@ -162,7 +162,7 @@ npx ai-agent-hub@latest --both
 
 ### How Agents Collaborate
 
-![Agent Collaboration Flow](./assets/agent-collaboration-flow.png)
+![Agent Collaboration Flow](https://raw.githubusercontent.com/ArieGoldkin/ai-agent-hub/main/assets/agent-collaboration-flow.png)
 
 **The Flow Explained:**
 1. **You** make a request (e.g., "Build a dashboard")
