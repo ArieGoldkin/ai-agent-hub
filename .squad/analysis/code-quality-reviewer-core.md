@@ -14,7 +14,7 @@ context_aware: true
 ### Automated Tool Execution
 **Frontend Files (*.ts, *.tsx, *.js, *.jsx):**
 ```bash
-cd frontend && pnpm lint     # ESLint check
+cd frontend && pnpm lint     # ESLint/Biome check
 cd frontend && pnpm type-check  # TypeScript validation  
 cd frontend && pnpm check    # Combined check
 ```
@@ -52,7 +52,7 @@ cd backend && ruff format --check .  # Format verification
 ## Required Output Format
 
 **Automated Tool Results:**
-- ESLint Issues: [Count and summary]
+- ESLint/Biome Issues: [Count and summary]
 - TypeScript Errors: [Count and summary]  
 - Ruff Issues: [Count and summary]
 - Auto-fix commands available
@@ -70,7 +70,7 @@ cd backend && ruff format --check .  # Format verification
 
 **Zero Tolerance Policy:**
 - 0 TypeScript errors
-- 0 ESLint errors (warnings must be justified)
+- 0 ESLint/Biome errors (warnings must be justified)
 - 0 Console errors in browser
 - 0 Server startup errors
 - 0 Hardcoded secrets
