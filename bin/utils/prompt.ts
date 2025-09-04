@@ -10,6 +10,8 @@ export interface InstallationTarget {
   project: boolean;
 }
 
+export type ExecutionMode = 'classic' | 'squad';
+
 /**
  * Prompt user for installation targets
  */
@@ -42,6 +44,57 @@ export async function promptForInstallationTargets(): Promise<InstallationTarget
     const askQuestion = () => {
       rl.question(chalk.green('Please select (1-' + availableOptions.length + '): '), (answer) => {
         const selected = availableOptions.find(opt => opt.key === answer.trim());
+        
+        if (selected) {
+          rl.close();
+          resolve(selected.value);
+        } else {
+          console.log(chalk.red('Invalid selection. Please try again.'));
+          askQuestion();
+        }
+      });
+    };
+    
+    askQuestion();
+  });
+}
+
+/**
+ * Prompt user for execution mode
+ */
+export async function promptForExecutionMode(): Promise<ExecutionMode> {
+  console.log(chalk.blue('\n🚀 Select installation mode:'));
+  console.log();
+  console.log(chalk.gray('   Classic Mode:'));
+  console.log('   • Full agent definitions (educational)');
+  console.log('   • Complete documentation');
+  console.log('   • Best for learning and small projects');
+  console.log();
+  console.log(chalk.gray('   Squad Mode:'));
+  console.log('   • 97% fewer tokens (cost-efficient)');
+  console.log('   • Parallel execution');
+  console.log('   • Best for production and large projects');
+  
+  const options = [
+    { key: '1', label: 'Classic - Full agents with detailed documentation', value: 'classic' as ExecutionMode },
+    { key: '2', label: 'Squad - Optimized for parallel execution (recommended)', value: 'squad' as ExecutionMode }
+  ];
+  
+  console.log();
+  options.forEach(opt => {
+    console.log(`   ${opt.key}. ${opt.label}`);
+  });
+  console.log();
+  
+  return new Promise((resolve) => {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+    
+    const askQuestion = () => {
+      rl.question(chalk.green('Please select mode (1-2): '), (answer) => {
+        const selected = options.find(opt => opt.key === answer.trim());
         
         if (selected) {
           rl.close();

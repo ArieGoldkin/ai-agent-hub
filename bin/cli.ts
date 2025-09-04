@@ -16,7 +16,7 @@ const __dirname = dirname(__filename);
 // Import commands
 import { showHelp } from "./commands/help.js";
 import { runSetup } from "./commands/setup.js";
-import { promptForInstallationTargets } from "./utils/prompt.js";
+import { promptForInstallationTargets, promptForExecutionMode } from "./utils/prompt.js";
 import { loadCurrentMode, saveMode } from "./utils/mode-manager.js";
 import fs from "fs";
 import path from "path";
@@ -141,9 +141,6 @@ async function main() {
       return;
     }
 
-    // Handle mode selection
-    let selectedMode = await handleModeSelection(requestedMode, validModes);
-    
     // Default setup or explicit flags
     let installTargets;
     
@@ -157,6 +154,29 @@ async function main() {
     } else {
       // Interactive mode - prompt user for installation targets
       installTargets = await promptForInstallationTargets();
+    }
+    
+    // Handle mode selection
+    let selectedMode: string;
+    
+    // If mode was provided via flag, use it
+    if (requestedMode) {
+      selectedMode = await handleModeSelection(requestedMode, validModes);
+    } else {
+      // Check if we have a saved mode and it's not a first-time setup
+      const currentModeFile = path.join(process.cwd(), '.ai-hub', 'current-mode.json');
+      const hasSavedMode = fs.existsSync(currentModeFile);
+      
+      if (hasSavedMode) {
+        // Use existing saved mode
+        selectedMode = loadCurrentMode(currentModeFile);
+        console.log(`\n📋 Using saved mode: ${selectedMode.toUpperCase()}`);
+      } else {
+        // First time setup - prompt for mode
+        selectedMode = await promptForExecutionMode();
+        saveMode(selectedMode, "3.0.6");
+        console.log(`\n✅ Mode selected: ${selectedMode.toUpperCase()}`);
+      }
     }
     
     // Pass mode to setup
