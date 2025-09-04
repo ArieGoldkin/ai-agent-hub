@@ -1,12 +1,19 @@
 # Start Parallel Agent Execution
 
+**INTERACTION MODE: REQUIRED**
+
+This command requires user interaction. You MUST wait for user input if no requirements are found.
+
 Instructions for launching multiple agents to work simultaneously on allocated tasks.
 
-## Step 0: Check for Requirements in Command
+## STEP 1: Check for Requirements
 
-**FIRST:** Check if requirements were provided with this command.
+**FIRST ACTION:** Check if requirements were provided with this command.
 
-If requirements were NOT provided with the command, proceed to gather them:
+If NO requirements were provided:
+- Proceed to Step 2 to gather requirements
+- **DO NOT** skip to implementation
+- **DO NOT** create any files until requirements are confirmed
 
 ## Step 1: Discover or Gather Requirements
 
@@ -41,15 +48,16 @@ Is this what you're building? (Y/n):
 
 ### If No Requirements Found (or user said NO)
 
-Ask the single question:
-
-```markdown
-📋 **What would you like to build?**
-
-Please describe your requirements and I'll orchestrate multiple agents to build it in parallel:
-
-> _[Wait for user response]_
-```
+**REQUIRED ACTIONS:**
+1. **ASK** the user directly:
+   "📋 **What would you like to build?**
+   
+   Please describe your requirements and I'll orchestrate multiple agents to build it in parallel."
+   
+2. **WAIT** for the user to type their response
+3. **DO NOT** proceed until the user provides input
+4. **DO NOT** create any files or start any work until requirements are received
+5. Once user responds, proceed to Smart Inference
 
 ### Smart Inference from User Input
 

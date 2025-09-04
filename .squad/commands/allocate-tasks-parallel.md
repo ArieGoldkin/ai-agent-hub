@@ -1,20 +1,31 @@
 # Allocate Tasks for Parallel Execution
 
+**INTERACTION MODE: REQUIRED**
+
+This command requires user interaction. You MUST wait for user input before proceeding.
+
 You are responsible for analyzing feature requirements and distributing work across multiple agents to enable parallel execution.
 
-## IMPORTANT: Check for Requirements First
+## STEP 1: Gather Requirements
 
-Before proceeding, check if requirements were provided with this command. If not:
+**FIRST ACTION:** Check if the user provided requirements with this command.
 
-```markdown
-📋 **What would you like to build?**
+If NO requirements were provided:
+1. **STOP** and ask the user directly:
+   "📋 **What would you like to build?**
+   
+   Please describe your requirements and I'll allocate tasks across multiple agents for parallel execution."
+   
+2. **WAIT** for the user to respond with their requirements
+3. **DO NOT** proceed until the user provides their input
+4. **DO NOT** create any files or generate any output until requirements are received
 
-Please describe your requirements and I'll allocate tasks across multiple agents for parallel execution:
+If requirements WERE provided with the command:
+- Proceed directly to Step 2
 
-> _[Wait for user input]_
-```
+## STEP 2: Process Requirements
 
-Once requirements are provided, proceed with the allocation process.
+Only after receiving requirements from the user, proceed with allocation:
 
 ## Core Responsibilities
 
