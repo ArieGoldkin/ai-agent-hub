@@ -5,10 +5,35 @@ You are responsible for analyzing feature requirements and distributing work acr
 ## Core Responsibilities
 
 ### 1. Parse Feature Requirements
-- Read the PRD from `.squad/feature-prd.md`
+
+#### Source Priority (check in order):
+1. **Formal PRD**: `.squad/feature-prd.md` or `feature-prd.md` 
+2. **Discovered Requirements**: Found in README, docs, or issues
+3. **Inferred Requirements**: From user's natural language description
+
+#### For Formal PRDs:
 - Extract all implementation tasks
 - Identify dependencies between tasks
 - Determine task complexity and time estimates
+
+#### For Inferred Requirements:
+```python
+def parse_inferred_requirements(user_description):
+    # Work with what we have
+    requirements = {
+        "description": user_description,
+        "components": extract_components(user_description),
+        "tasks": generate_basic_tasks(user_description)
+    }
+    
+    # Be conservative with parallelization
+    if quality_score(requirements) < 0.5:
+        max_agents = 2  # Low confidence = fewer agents
+    else:
+        max_agents = calculate_optimal(requirements)
+    
+    return requirements, max_agents
+```
 
 ### 2. Identify Independent Work Streams
 - Group related tasks by subsystem (frontend, backend, database, etc.)
@@ -152,11 +177,38 @@ def recommend_agent_count(analysis):
     return recommended
 ```
 
+## Handling Different Input Quality
+
+### High Quality (Formal PRD)
+- Full parallelization possible
+- Can use 3-9 agents safely
+- Clear file ownership boundaries
+- Explicit dependencies
+
+### Medium Quality (Basic Requirements)
+- Conservative parallelization
+- Use 2-4 agents maximum
+- Focus on obvious separations (frontend/backend)
+- Add safety margins for conflicts
+
+### Low Quality (Vague Description)  
+- Minimal parallelization
+- Use 1-2 agents only
+- Start sequential, learn, then parallelize
+- Gather more info during execution
+
 ## Execution Instructions
 
-1. **Read the PRD**:
+1. **Find Requirements**:
    ```bash
-   cat .squad/feature-prd.md
+   # Check for formal PRD
+   cat feature-prd.md 2>/dev/null || cat .squad/feature-prd.md 2>/dev/null
+   
+   # If not found, check for inferred requirements
+   cat .squad/inferred-requirements.md 2>/dev/null
+   
+   # If nothing, work from user description
+   echo "Working from user description: '[description]'"
    ```
 
 2. **Analyze Task Dependencies**:

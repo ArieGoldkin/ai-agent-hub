@@ -2,13 +2,142 @@
 
 Instructions for launching multiple agents to work simultaneously on allocated tasks.
 
+## Step 0: Discover or Gather Requirements
+
+### Search for Existing Requirements
+
+First, search for any existing requirements or documentation:
+
+```bash
+# Search for PRD or requirements files
+find . -type f \( -name "*prd*.md" -o -name "*requirements*.md" -o -name "README.md" -o -name "TODO.md" -o -name "ROADMAP.md" \) -not -path "*/node_modules/*" -not -path "*/.git/*" 2>/dev/null
+
+# Check README for features section
+grep -i "features\|requirements\|user stories" README.md 2>/dev/null
+
+# Check for GitHub issues
+ls .github/issues/*.md 2>/dev/null
+```
+
+### If Requirements Found
+
+Summarize what you found and confirm:
+
+```markdown
+📄 Found existing requirements in [filename]:
+"[1-2 sentence summary of what the project is building]"
+
+Is this what you're building? (Y/n):
+```
+
+**If YES:** Proceed to Step 1 with existing requirements
+**If NO:** Ask for requirements (see below)
+
+### If No Requirements Found (or user said NO)
+
+Ask the single question:
+
+```markdown
+What are you building? (describe in your own words):
+> _
+```
+
+### Smart Inference from User Input
+
+#### Examples of Inference
+
+**Example 1 - Minimal Input:**
+```
+User: "user auth system"
+Inferred:
+- Frontend: login/register forms
+- Backend: auth endpoints, JWT handling
+- Database: user tables, sessions
+→ 3 agents recommended
+```
+
+**Example 2 - Detailed Input:**
+```
+User: "Dashboard showing real-time metrics with charts, 
+      export to CSV, and email alerts"
+Inferred:
+- Frontend: dashboard UI, charts, real-time updates
+- Backend: metrics API, WebSocket server, export service
+- Notifications: email service
+→ 3-4 agents recommended
+```
+
+**Example 3 - Vague Input:**
+```
+User: "something like Twitter"
+Inferred:
+- Frontend: timeline, post creation
+- Backend: posts API, user API
+- Database: posts, users, follows
+→ Start with 2 agents (conservative)
+```
+
+#### Inference Logic
+
+```python
+def infer_requirements(user_input):
+    # Keywords to components mapping
+    component_keywords = {
+        'frontend': ['dashboard', 'UI', 'interface', 'form', 'page', 'screen'],
+        'backend': ['API', 'endpoint', 'server', 'auth', 'database'],
+        'realtime': ['websocket', 'real-time', 'live', 'updates'],
+        'ml': ['ML', 'AI', 'predict', 'recommend', 'analyze'],
+        'data': ['export', 'CSV', 'report', 'analytics']
+    }
+    
+    # Extract components from keywords
+    components = detect_components(user_input, component_keywords)
+    
+    # Generate concrete tasks
+    tasks = []
+    if 'frontend' in components:
+        tasks.extend(['Create UI components', 'Style layouts', 'Handle state'])
+    if 'backend' in components:
+        tasks.extend(['Build API endpoints', 'Setup database', 'Handle auth'])
+    if 'ml' in components:
+        tasks.extend(['Train model', 'Create pipeline', 'API integration'])
+    
+    # Smart agent count
+    if len(tasks) <= 3:
+        agent_count = 1  # Sequential is fine
+    elif len(components) <= 3 and no_complex_dependencies:
+        agent_count = len(components)  # One agent per component
+    else:
+        agent_count = min(len(components), 5)  # Cap at 5 for manageability
+    
+    return {
+        "description": user_input,
+        "components": components,
+        "tasks": tasks,
+        "recommended_agents": agent_count
+    }
+```
+
+### Confirmation Before Proceeding
+
+Show the user what you understood:
+
+```markdown
+I'll build this with [N] parallel agents:
+- Component 1: [what it does]
+- Component 2: [what it does]
+- Component 3: [what it does]
+
+Ready to start? (Y/n):
+```
+
 ## Prerequisites
 
-Before starting parallel execution, ensure:
-1. Task allocation is complete (`.squad/parallel-plans/agent-*-plan.md` exist)
-2. Lock directory is initialized (`.squad/locks/` is empty)
-3. Communication directory exists (`.squad/comms/`)
-4. Git repository is in clean state
+Once requirements are confirmed:
+1. Generate task allocation based on requirements
+2. Create `.squad/parallel-plans/agent-*-plan.md` files
+3. Initialize directories (`.squad/locks/`, `.squad/comms/`)
+4. Ensure Git repository is in clean state
 
 ## Launch Instructions
 

@@ -16,34 +16,52 @@ node /path/to/ai-agent-hub/dist/bin/cli.js --mode squad --project-only
 ai-agent-hub --mode squad --project-only
 ```
 
-### 2. Create a Feature PRD
+### 2. Start Parallel Execution
 
-Create `feature-prd.md` in your project root with your requirements:
+The system will automatically:
+1. **Search** for existing requirements (PRD, README, docs)
+2. **Confirm** if found, or **Ask** one simple question if not
+3. **Infer** components and tasks from your description
+4. **Allocate** work across optimal number of agents
 
+#### Example: No Requirements Found
 ```markdown
-# Feature: User Dashboard
+$ Start parallel execution
 
-## Requirements
-1. Frontend: React dashboard with charts
-2. Backend: REST API for metrics
-3. ML: Anomaly detection service
+Searching for existing requirements...
+✗ No requirements found
 
-## Tasks
-- Create dashboard component
-- Build metrics API
-- Implement ML model
-- Add WebSocket updates
+What are you building? (describe in your own words):
+> A dashboard showing user metrics with real-time updates
+
+I'll build this with 3 parallel agents:
+- Frontend: Dashboard UI with real-time updates
+- Backend: Metrics API and WebSocket server
+- Database: Metrics storage and queries
+
+Ready to start? (Y/n): Y
 ```
 
-### 3. Allocate Tasks
-
-Use the allocation command to distribute work:
-
+#### Example: Requirements Found
 ```markdown
-You are in Squad mode. Please read .claude/commands/allocate-tasks-parallel.md
-and distribute the tasks from feature-prd.md across multiple agents.
-Create parallel execution plans that avoid file conflicts.
+$ Start parallel execution
+
+📄 Found existing requirements in README.md:
+"E-commerce platform with cart and checkout"
+
+Is this what you're building? (Y/n): Y
+✅ Using existing requirements
 ```
+
+### 3. Automatic Task Allocation
+
+Based on your input, the system:
+- Extracts components (frontend, backend, ML, etc.)
+- Generates concrete tasks
+- Determines optimal agent count (1-9)
+- Creates conflict-free execution plans
+
+**No PRD file needed!** The system works with whatever you provide.
 
 ### 4. Start Parallel Agents
 

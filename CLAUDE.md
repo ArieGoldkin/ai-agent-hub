@@ -11,177 +11,60 @@ AI Agent Hub is a **lean deployment tool** (not an orchestration platform). Keep
 - Intelligence lives in the agents, not the tool
 - Complexity was intentionally removed and should not be added back
 
-## Current Architecture (v3.2.0 - Parallel Execution)
+## Current Architecture (v3.3.0)
 
-### Project Metrics
+### Key Metrics
 ```
-Core Metrics:
-- 28 TypeScript files (includes parallel execution)
-- ~2,200 lines of code (modularized)
-- 2 dependencies: chalk + js-yaml
-- 3-second installation time
-- 1 question asked during setup (installation target)
-- 2 execution modes: Classic and Squad
-- Parallel execution: 1-9 agents simultaneously
+- 28 TypeScript files, ~2,200 lines (modular)
+- 2 dependencies only: chalk + js-yaml  
+- Setup: 3 seconds, 1 question
+- Modes: Classic (learning) | Squad (production + parallel)
+- Parallel: 1-9 agents, 66-79% time reduction
+- PRD: Optional - works with any input
 ```
 
-### File Structure
+### Core Structure
 ```
-bin/
-├── cli.ts                          # Main entry with mode selection
-├── commands/
-│   ├── setup.ts                   # Core setup logic with mode support
-│   ├── install-agents.ts          # Modularized agent installer
-│   ├── help.ts                    # Help display with mode info
-│   ├── migrate-mode.ts            # Mode migration utilities
-│   └── components/                # Modular components
-│       ├── squad-installer.ts     # Squad infrastructure
-│       └── agent-copier.ts        # Agent file operations
-└── utils/
-    ├── prompt.ts                  # Installation target prompt
-    ├── mode-manager.ts            # Mode persistence utilities
-    ├── mode-helpers.ts            # Mode operation helpers
-    └── migration-helpers.ts       # Migration support functions
-
-lib/
-├── claude-desktop-setup.ts        # Desktop configuration
-├── env-handler.ts                 # Environment management
-├── file-ops.ts                    # File utilities
-├── mcp-config.ts                  # MCP server configuration
-├── mcp-setup.ts                   # MCP setup logic
-├── platform-paths.ts              # OS detection
-├── templates/
-│   └── claude-md.ts               # CLAUDE.md template
-└── claude-md-generator/           # Intelligent CLAUDE.md generation
-    ├── index.ts                   # Main generator
-    ├── parser.ts                  # Agent metadata parser
-    ├── types.ts                   # TypeScript interfaces
-    ├── utils.ts                   # Helper functions
-    └── generators/                # Content generators
-        ├── capabilities.ts        # Capability matrix
-        ├── context-flow.ts        # Context flow diagram
-        ├── examples.ts            # Usage examples
-        └── registry.ts            # Agent registry
-
-agents/                             # 9 agent personalities (270-720 lines each)
-├── studio-coach.md                # Master orchestrator
-├── sprint-prioritizer.md          # Agile planning
-├── ux-researcher.md               # User research
-├── rapid-ui-designer.md           # UI/UX design
-├── backend-system-architect.md    # System design
-├── frontend-ui-developer.md       # UI implementation
-├── ai-ml-engineer.md              # AI/ML features
-├── whimsy-injector.md             # Delight features
-└── code-quality-reviewer.md       # Quality assurance
-
-.squad/                            # Squad mode infrastructure
-├── templates/                     # Slim agent templates (25 lines, with descriptions)
-│   └── [9 agent templates]       # 97% token reduction
-├── commands/                      # Parallel execution commands
-│   ├── allocate-tasks-parallel.md # Intelligent task distribution
-│   ├── start-parallel.md         # Launch multiple agents
-│   └── sync-parallel.md          # Coordination & monitoring
-├── parallel-execution-rules.md   # Conflict prevention system
-├── examples/                      # Test scenarios
-│   ├── parallel-test/            # 3-agent example
-│   └── large-project-example.md  # 5-agent scaling demo
-└── [infrastructure files]         # Protocols and rules
-
-.ai-hub/                          # Mode configurations (created in user projects)
-├── modes/
-│   ├── classic/config.json      # Classic mode configuration
-│   └── squad/config.json        # Squad mode configuration
-└── mode-selector-rules.md       # Mode selection documentation
+bin/commands/          # CLI commands (setup, install, help)
+lib/                   # Core libraries (MCP, desktop, generators)
+agents/                # Full agents for Classic mode (270-720 lines)
+.squad/                # Squad mode infrastructure
+├── templates/         # Slim agents (25 lines, 97% reduction)
+├── commands/          # Parallel execution (allocate, start, sync)
+└── examples/          # Test scenarios and demos
 ```
 
-## Dual-Mode Operation (NEW in v3.1.0)
+## Execution Modes
 
-### Overview
-AI Agent Hub now supports two execution modes to balance simplicity with efficiency:
+| Mode | Tokens | Speed | Best For |
+|------|--------|-------|-----------|
+| **Classic** | ~37,500 | Sequential | Learning, small projects |
+| **Squad** | ~1,080 (97% less) | Parallel (66-79% faster) | Production, complex features |
 
-### Classic Mode (Default)
-- **Token Usage**: Full agent prompts (~37,500 tokens across 9 agents)
-- **Execution**: Sequential, single-agent at a time
-- **Agent Source**: `agents/` directory (full markdown files)
-- **Best For**: Simple tasks, small projects, learning
-- **No Prerequisites**: Works out of the box
-
-### Squad Mode
-- **Token Usage**: Slim templates (~1,080 tokens - 97% reduction)
-- **Execution**: Parallel, up to 4 concurrent agents
-- **Agent Source**: `.squad/templates/` directory (25-line templates)
-- **Supervisor**: studio-coach orchestrates all agents
-- **Best For**: Complex features, large projects, production work
-- **Prerequisites**: Squad infrastructure files required
-
-### Mode Selection
-
-#### CLI Flags
 ```bash
-npx ai-agent-hub --mode classic    # Force Classic mode
-npx ai-agent-hub --mode squad      # Force Squad mode  
-npx ai-agent-hub --mode auto       # Auto-detect optimal mode
+npx ai-agent-hub --mode classic    # Full agents, sequential
+npx ai-agent-hub --mode squad      # Slim agents, parallel  
+npx ai-agent-hub --mode auto       # Auto-detect based on project
 ```
 
-#### Auto-Detection Rules
-- **< 10 files**: Classic mode
-- **> 50 files**: Squad mode
-- **10-50 files**: Classic mode (default)
-- **Squad prerequisites missing**: Classic mode
-- **Token cost > $2**: Squad mode recommended
+## Latest: Smart PRD Inference (v3.3.0)
 
-### Mode Persistence
-- Mode selection saved in `.ai-hub/current-mode.json`
-- Remembered for subsequent runs
-- Can be overridden with CLI flags
+### One-Question Parallel Execution
+1. **Searches** for existing requirements (PRD, README, docs)
+2. **Confirms** if found, or **Asks** "What are you building?" 
+3. **Infers** components and tasks from natural language
+4. **Allocates** optimal agent count (1-9) automatically
 
-### Mode Migration
-```typescript
-// Utilities available in bin/commands/migrate-mode.ts
-migrateToSquad()     // Classic → Squad with backup
-migrateToClassic()   // Squad → Classic with session archival
-rollbackMode()       // Restore from backup
-validateSquadPrerequisites() // Check Squad readiness
-```
+**No PRD file required!** Works with any input:
+- "login system" → 2 agents
+- "dashboard with real-time updates" → 3 agents  
+- Full PRD → up to 9 agents optimally
 
-## Recent Improvements (v3.2.0)
-
-### ✅ Parallel Execution Framework
-- **Intelligent task allocation** based on dependency analysis
-- **Automatic agent count recommendation** (1-9 agents)
-- **File-level mutex system** prevents conflicts
-- **Lock mechanism** with automatic timeout
-- **Real-time monitoring** and coordination
-- **66-79% time reduction** for parallel tasks
-
-### ✅ Code Quality Improvements
-- **Modularized install-agents.ts** (complexity reduced from 16 to <10)
-- **Fixed all ESLint/TypeScript warnings**
-- **Component-based architecture** for maintainability
-
-### ✅ Squad Mode Enhancements
-- **Agent descriptions added** for Claude Code visibility
-- **Parallel commands** installed automatically
-- **Test scenarios** included with examples
-- **Documentation** for parallel execution
-
-## Squad Mode & Parallel Execution
-
-### Token Efficiency
-- **Classic agents**: ~4,440 lines, ~37,500 tokens
-- **Squad templates**: 225 lines, ~1,080 tokens (97% reduction)
-
-### Parallel Execution
-- **Automatic agent count**: Based on task dependency analysis
-- **Optimal range**: 3-5 agents for most projects
-- **Efficiency gains**: 66-79% time reduction
-- **Conflict prevention**: File ownership matrix and lock system
-
-### When to Use Each Mode
-| Mode | Use When | Token Cost | Speed |
-|------|----------|------------|-------|
-| Classic | Learning, small projects | High | Sequential |
-| Squad | Production, complex features | Low | Parallel |
+### Parallel Execution Benefits
+- **File-level mutex** prevents conflicts
+- **Smart allocation** based on dependencies
+- **Progressive enhancement** - starts conservative, learns
+- **66-79% time reduction** proven in testing
 
 ## Development Guidelines
 
