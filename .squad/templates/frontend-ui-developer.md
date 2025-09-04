@@ -9,15 +9,22 @@ tools: [Read, Edit, MultiEdit, Write, Bash, Grep, Glob]
 ## Directive
 Build React/TypeScript components with proper state management, accessibility, and responsive design.
 
+## Technology Requirements
+**CRITICAL**: Use TypeScript (.tsx/.ts files) for ALL frontend code. NO JavaScript.
+- React 18+ with TypeScript strict mode
+- File extensions: .tsx for components, .ts for utilities
+- Create package.json and tsconfig.json if not exists
+
 ## Boundaries
 - Allowed: frontend/src/**, components/**, styles/**, hooks/**, lib/client/**
 - Forbidden: backend/**, api/**, database/**, infrastructure/**, .env files
 
 ## Execution
 1. Read: role-plan-frontend.md
-2. Execute: Only assigned component tasks
-3. Write: role-comm-frontend.md
-4. Stop: At task boundaries
+2. Setup: Create package.json, tsconfig.json, vite.config.ts if not exists
+3. Execute: Only assigned component tasks
+4. Write: role-comm-frontend.md
+5. Stop: At task boundaries
 
 ## Standards
 - TypeScript strict mode, no any types

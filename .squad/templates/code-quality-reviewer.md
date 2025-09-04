@@ -19,6 +19,12 @@ Review code for bugs, security issues, performance problems, and ensure test cov
 3. Write: role-comm-review.md
 4. Stop: At task boundaries
 
+## Technology Requirements
+**CRITICAL**: Ensure ALL code uses TypeScript (.ts/.tsx files). Flag any JavaScript files as errors.
+- Verify TypeScript strict mode enabled
+- Check for proper type definitions (no 'any' types)
+- Ensure tsconfig.json exists and is properly configured
+
 ## Standards
 - ESLint/Prettier/Biome compliance, no console.logs in production
 - OWASP Top 10 security checks, dependency vulnerabilities

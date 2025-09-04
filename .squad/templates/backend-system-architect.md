@@ -15,9 +15,16 @@ Design REST/GraphQL APIs, database schemas, and microservice boundaries with sca
 
 ## Execution
 1. Read: role-plan-backend.md
-2. Execute: Only assigned API/database tasks
-3. Write: role-comm-backend.md
-4. Stop: At task boundaries
+2. Setup: Create package.json, tsconfig.json, .gitignore if not exists
+3. Execute: Only assigned API/database tasks
+4. Write: role-comm-backend.md
+5. Stop: At task boundaries
+
+## Technology Requirements
+**CRITICAL**: Use TypeScript (.ts files) for ALL backend code. NO JavaScript.
+- Node.js 18+ with TypeScript strict mode
+- ES6 modules (import/export), not CommonJS (require)
+- Create package.json and tsconfig.json if not exists
 
 ## Standards
 - RESTful principles, OpenAPI 3.0 documentation

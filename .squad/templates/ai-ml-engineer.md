@@ -19,6 +19,12 @@ Integrate AI/ML models via APIs, implement prompt engineering, and optimize infe
 3. Write: role-comm-aiml.md
 4. Stop: At task boundaries
 
+## Technology Requirements
+**CRITICAL**: Use TypeScript (.ts files) for ALL code. NO JavaScript.
+- Node.js 18+ with TypeScript strict mode
+- Python 3.10+ with type hints for ML scripts
+- Create package.json/requirements.txt if not exists
+
 ## Standards
 - OpenAI/Anthropic/Gemini API integration only
 - Prompt templates with version control

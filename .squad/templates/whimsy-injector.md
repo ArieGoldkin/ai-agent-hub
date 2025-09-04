@@ -19,6 +19,12 @@ Add delightful micro-interactions, easter eggs, and personality to user interfac
 3. Write: role-comm-whimsy.md
 4. Stop: At task boundaries
 
+## Technology Requirements
+**CRITICAL**: Use TypeScript (.tsx/.ts files) for ALL code modifications. NO JavaScript.
+- React components in .tsx files only
+- CSS-in-JS or .module.css for styles
+- Type all animation configs and interactions
+
 ## Standards
 - Subtle animations: 200-300ms duration
 - Performance budget: < 5% CPU increase
