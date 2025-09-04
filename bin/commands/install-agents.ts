@@ -7,6 +7,32 @@ import { mkdir, writeFile, readFile } from "fs/promises";
 import { join } from "path";
 
 /**
+ * Determine agent source based on mode
+ */
+function getAgentSource(packageRoot: string, mode: string): { agentsPath: string; sourceDescription: string } {
+  if (mode === 'squad') {
+    // Check if squad templates exist
+    const squadTemplatesPath = join(packageRoot, ".squad", "templates");
+    if (existsSync(squadTemplatesPath)) {
+      return {
+        agentsPath: squadTemplatesPath,
+        sourceDescription: "slim squad templates (97% token reduction)"
+      };
+    } else {
+      console.log("⚠️  Squad templates not found, falling back to classic agents");
+      return {
+        agentsPath: join(packageRoot, "agents"),
+        sourceDescription: "classic agents"
+      };
+    }
+  }
+  return {
+    agentsPath: join(packageRoot, "agents"),
+    sourceDescription: "classic full agents"
+  };
+}
+
+/**
  * Find the package root directory containing agents
  */
 async function findPackageRoot(currentDir: string): Promise<string> {
@@ -33,8 +59,8 @@ async function findPackageRoot(currentDir: string): Promise<string> {
 /**
  * Install agents and session infrastructure
  */
-export async function installAgents(__dirname: string): Promise<boolean> {
-  console.log("🤖 Installing AI Agent Personalities...");
+export async function installAgents(__dirname: string, mode: string = 'classic'): Promise<boolean> {
+  console.log(`🤖 Installing AI Agent Personalities (${mode} mode)...`);
 
   try {
     // Create .claude directory
@@ -49,8 +75,12 @@ export async function installAgents(__dirname: string): Promise<boolean> {
 
     // Find package root
     const packageRoot = await findPackageRoot(__dirname);
-    const agentsPath = join(packageRoot, "agents");
+    
+    // Determine source directory based on mode
+    const { agentsPath, sourceDescription } = getAgentSource(packageRoot, mode);
+    
     console.log(`📁 Found package at: ${packageRoot}`);
+    console.log(`📦 Using ${sourceDescription}`);
     
     // Define the required AI Agent Hub agents
     const requiredAgents = [
