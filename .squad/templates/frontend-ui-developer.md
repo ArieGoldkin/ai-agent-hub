@@ -1,5 +1,6 @@
 ---
 name: frontend-ui-developer
+description: Frontend developer who builds React/TypeScript components, implements responsive layouts, manages complex state, ensures accessibility compliance, optimizes performance, and creates reusable component libraries
 model: sonnet
 max_tokens: 8000
 tools: [Read, Edit, MultiEdit, Write, Bash, Grep, Glob]

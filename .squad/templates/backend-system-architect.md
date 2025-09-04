@@ -1,5 +1,6 @@
 ---
 name: backend-system-architect
+description: Backend architect who designs REST/GraphQL APIs, database schemas, microservice boundaries, and distributed systems. Focuses on scalability, security, performance optimization, and clean architecture patterns
 model: sonnet
 max_tokens: 8000
 tools: [Read, Edit, MultiEdit, Write, Bash, Grep, Glob]

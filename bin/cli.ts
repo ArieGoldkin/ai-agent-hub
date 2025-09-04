@@ -23,7 +23,6 @@ import path from "path";
 
 // Parse arguments
 const args = process.argv.slice(2);
-const command = args[0];
 
 // Check for installation target flags
 const hasProjectOnly = args.includes('--project-only');
@@ -34,6 +33,9 @@ const hasBoth = args.includes('--both');
 const modeIndex = args.indexOf('--mode');
 const requestedMode = modeIndex !== -1 && args[modeIndex + 1] ? args[modeIndex + 1] : null;
 const validModes = ['classic', 'squad', 'auto'];
+
+// Extract command (first non-flag argument)
+const command = args.find(arg => !arg.startsWith('--'));
 
 // Handle mode selection logic
 async function handleModeSelection(requestedMode: string | null, validModes: string[]): Promise<string> {
@@ -68,9 +70,11 @@ async function handleModeSelection(requestedMode: string | null, validModes: str
 // Auto-detect optimal mode based on project complexity
 async function detectOptimalMode(): Promise<string> {
   try {
-    // Check if squad prerequisites exist
-    const squadTemplatesExist = fs.existsSync(path.join(process.cwd(), '.squad', 'templates'));
-    const squadAnalysisExist = fs.existsSync(path.join(process.cwd(), '.squad', 'analysis'));
+    // Check if squad prerequisites exist in the package (not the current directory)
+    // We'll check for them in the package root relative to this CLI
+    const packageRoot = path.join(__dirname, '..', '..');
+    const squadTemplatesExist = fs.existsSync(path.join(packageRoot, '.squad', 'templates'));
+    const squadAnalysisExist = fs.existsSync(path.join(packageRoot, '.squad', 'analysis'));
     
     // Count project files (excluding node_modules, .git, etc)
     const countProjectFiles = (dir: string, count = 0): number => {

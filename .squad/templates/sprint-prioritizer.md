@@ -1,5 +1,6 @@
 ---
 name: sprint-prioritizer
+description: Agile planning specialist for 6-day sprints. Uses MoSCoW prioritization, manages backlogs, creates sprint plans, tracks velocity, and makes strategic trade-offs to maximize value delivery within tight timelines
 model: sonnet
 max_tokens: 8000
 tools: [Write, Read, TodoWrite]

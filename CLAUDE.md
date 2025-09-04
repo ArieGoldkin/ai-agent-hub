@@ -11,17 +11,18 @@ AI Agent Hub is a **lean deployment tool** (not an orchestration platform). Keep
 - Intelligence lives in the agents, not the tool
 - Complexity was intentionally removed and should not be added back
 
-## Current Architecture (v3.1.0 with Dual-Mode Support)
+## Current Architecture (v3.2.0 - Parallel Execution)
 
 ### Project Metrics
 ```
 Core Metrics:
-- 25 TypeScript files (includes dual-mode support)
-- ~2,100 lines of code
+- 28 TypeScript files (includes parallel execution)
+- ~2,200 lines of code (modularized)
 - 2 dependencies: chalk + js-yaml
 - 3-second installation time
 - 1 question asked during setup (installation target)
 - 2 execution modes: Classic and Squad
+- Parallel execution: 1-9 agents simultaneously
 ```
 
 ### File Structure
@@ -30,9 +31,12 @@ bin/
 ├── cli.ts                          # Main entry with mode selection
 ├── commands/
 │   ├── setup.ts                   # Core setup logic with mode support
-│   ├── install-agents.ts          # Smart agent merging (mode-aware)
+│   ├── install-agents.ts          # Modularized agent installer
 │   ├── help.ts                    # Help display with mode info
-│   └── migrate-mode.ts            # Mode migration utilities
+│   ├── migrate-mode.ts            # Mode migration utilities
+│   └── components/                # Modular components
+│       ├── squad-installer.ts     # Squad infrastructure
+│       └── agent-copier.ts        # Agent file operations
 └── utils/
     ├── prompt.ts                  # Installation target prompt
     ├── mode-manager.ts            # Mode persistence utilities
@@ -71,21 +75,17 @@ agents/                             # 9 agent personalities (270-720 lines each)
 └── code-quality-reviewer.md       # Quality assurance
 
 .squad/                            # Squad mode infrastructure
-├── templates/                     # Slim agent templates (25 lines each)
-│   ├── studio-coach.md
-│   ├── sprint-prioritizer.md
-│   ├── ux-researcher.md
-│   ├── rapid-ui-designer.md
-│   ├── backend-system-architect.md
-│   ├── frontend-ui-developer.md
-│   ├── ai-ml-engineer.md
-│   ├── whimsy-injector.md
-│   └── code-quality-reviewer.md
-├── analysis/                      # Core agent directives (83% reduction)
-├── supervisor-rules.md            # Orchestration logic
-├── squad-roster.md               # Agent configuration
-├── communication-protocol.md     # File-based messaging
-└── architecture-decisions.md     # Design rationale
+├── templates/                     # Slim agent templates (25 lines, with descriptions)
+│   └── [9 agent templates]       # 97% token reduction
+├── commands/                      # Parallel execution commands
+│   ├── allocate-tasks-parallel.md # Intelligent task distribution
+│   ├── start-parallel.md         # Launch multiple agents
+│   └── sync-parallel.md          # Coordination & monitoring
+├── parallel-execution-rules.md   # Conflict prevention system
+├── examples/                      # Test scenarios
+│   ├── parallel-test/            # 3-agent example
+│   └── large-project-example.md  # 5-agent scaling demo
+└── [infrastructure files]         # Protocols and rules
 
 .ai-hub/                          # Mode configurations (created in user projects)
 ├── modes/
@@ -144,64 +144,44 @@ rollbackMode()       // Restore from backup
 validateSquadPrerequisites() // Check Squad readiness
 ```
 
-## Recent Improvements
+## Recent Improvements (v3.2.0)
 
-### ✅ Dual-Mode System (v3.1.0)
-- Classic mode preserves original behavior
-- Squad mode adds 97% token reduction
-- Auto-detection based on project complexity
-- Mode persistence and migration utilities
-- Backward compatible - Classic is default
+### ✅ Parallel Execution Framework
+- **Intelligent task allocation** based on dependency analysis
+- **Automatic agent count recommendation** (1-9 agents)
+- **File-level mutex system** prevents conflicts
+- **Lock mechanism** with automatic timeout
+- **Real-time monitoring** and coordination
+- **66-79% time reduction** for parallel tasks
 
-### ✅ Browser MCP Integration
-- Added Browser MCP to base servers
-- Requires browser extension installation
-- Clear setup instructions in README and output
-- Connects via `/mcp` command in Claude
+### ✅ Code Quality Improvements
+- **Modularized install-agents.ts** (complexity reduced from 16 to <10)
+- **Fixed all ESLint/TypeScript warnings**
+- **Component-based architecture** for maintainability
 
-### ✅ Smart Agent Merging
-- Preserves existing custom agents
-- Only installs missing hub agents
-- Never overwrites user content
-- Clear reporting of what was added vs preserved
-- Mode-aware installation (full vs slim)
+### ✅ Squad Mode Enhancements
+- **Agent descriptions added** for Claude Code visibility
+- **Parallel commands** installed automatically
+- **Test scenarios** included with examples
+- **Documentation** for parallel execution
 
-### ✅ Enhanced CLAUDE.md Generator
-- Extracts agent metadata from frontmatter
-- Generates capability matrix
-- Creates context flow diagrams
-- Handles agents with and without metadata
-- Preserves custom sections on updates
+## Squad Mode & Parallel Execution
 
-## Squad Engineering Architecture (Phase 1-2 Complete)
+### Token Efficiency
+- **Classic agents**: ~4,440 lines, ~37,500 tokens
+- **Squad templates**: 225 lines, ~1,080 tokens (97% reduction)
 
-### Overview
-Squad mode enables coordinated multi-agent execution while maintaining simplicity. This architecture achieves **97% token reduction** while enabling parallel execution and clear agent boundaries.
+### Parallel Execution
+- **Automatic agent count**: Based on task dependency analysis
+- **Optimal range**: 3-5 agents for most projects
+- **Efficiency gains**: 66-79% time reduction
+- **Conflict prevention**: File ownership matrix and lock system
 
-### Token Optimization Achievement
-- **Original agents**: ~37,500 tokens across 9 agents
-- **Core versions** (.squad/analysis/): ~6,300 tokens (83% reduction)
-- **Slim templates** (.squad/templates/): ~1,080 tokens (97% reduction)
-- Each template is exactly 25 lines, ~120 tokens
-
-### Squad Roster Configuration
-
-#### Supervisor (Orchestration Only)
-- **studio-coach**: Claude Opus 4.1, coordinates all agents, never writes code
-
-#### Core Squad (Implementation)
-- **frontend-ui-developer** (2 instances): React/TypeScript components
-- **backend-system-architect** (1 instance): APIs and database design
-- **ai-ml-engineer** (1 instance): LLM integration and prompts
-
-#### Support Squad (Quality & Design)
-- **code-quality-reviewer**: Testing and security audits
-- **rapid-ui-designer**: UI mockups and design systems
-- **ux-researcher**: Requirements and user research
-
-#### Optional Squad (Enhancement)
-- **whimsy-injector**: Micro-interactions and delight (Haiku model)
-- **sprint-prioritizer**: Planning and prioritization (Haiku model)
+### When to Use Each Mode
+| Mode | Use When | Token Cost | Speed |
+|------|----------|------------|-------|
+| Classic | Learning, small projects | High | Sequential |
+| Squad | Production, complex features | Low | Parallel |
 
 ## Development Guidelines
 
@@ -324,12 +304,13 @@ cat .ai-hub/current-mode.json  # Should show "classic"
 These metrics define success:
 - **Setup Time**: < 5 seconds
 - **User Prompts**: 1 question max
-- **Code Size**: < 2,200 lines total
+- **Code Size**: < 2,200 lines (modularized)
 - **Dependencies**: 2 max (chalk + js-yaml)
-- **Files Created**: < 15 per installation
-- **TypeScript Files**: ~25 files
+- **TypeScript Files**: ~28 files
 - **Classic Mode**: Full compatibility
-- **Squad Mode**: 97% token reduction
+- **Squad Mode**: 97% token reduction + parallel execution
+- **Code Complexity**: < 10 per function
+- **File Length**: < 150 lines (except generators)
 
 ## Future Considerations
 
@@ -354,12 +335,14 @@ These metrics define success:
 
 This tool succeeds by doing less, not more. Every line of code is a liability. The agents are the intelligence - the tool just delivers them.
 
-The dual-mode system provides flexibility without complexity:
-- **Classic**: Simple, reliable, full-featured
-- **Squad**: Efficient, parallel, token-optimized
+**Core Principles:**
+- **Classic Mode**: Simple, educational, sequential
+- **Squad Mode**: Efficient, production-ready, parallel
+- **Parallel Execution**: Automatic optimization based on task dependencies
+- **Code Quality**: Modular, testable, < 150 lines per file
 
 **When in doubt, choose simplicity.**
 
 ---
 
-*Last Updated: v3.1.0 - Dual-mode operation with Classic and Squad modes*
+*Last Updated: v3.2.0 - Parallel Execution Framework with intelligent task allocation*

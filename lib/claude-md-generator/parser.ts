@@ -54,7 +54,7 @@ export async function extractAgentMetadata(agentsDir: string = ".claude/agents")
  * Parse agent frontmatter manually to handle complex multiline descriptions
  */
 function parseAgentFrontmatter(frontmatter: string): AgentMetadata | null {
-  const metadata: any = {};
+  const metadata: Partial<AgentMetadata> = {};
   const lines = frontmatter.split('\n');
   let currentKey: string | null = null;
   let currentValue: string[] = [];
@@ -68,7 +68,7 @@ function parseAgentFrontmatter(frontmatter: string): AgentMetadata | null {
       // Save previous key-value if exists
       if (currentKey) {
         const value = currentValue.join('\n').trim();
-        metadata[currentKey] = parseValue(value, currentKey);
+        (metadata as Record<string, unknown>)[currentKey] = parseValue(value, currentKey);
       }
       
       currentKey = keyMatch[1];
@@ -88,7 +88,7 @@ function parseAgentFrontmatter(frontmatter: string): AgentMetadata | null {
         // End description and process new key
         if (currentKey) {
           const value = currentValue.join(' ').trim();
-          metadata[currentKey] = value;
+          (metadata as Record<string, unknown>)[currentKey] = value;
         }
         
         const newKeyMatch = line.match(/^([a-z_]+):\s*(.*)/);
@@ -110,7 +110,7 @@ function parseAgentFrontmatter(frontmatter: string): AgentMetadata | null {
   // Save last key-value
   if (currentKey) {
     const value = currentValue.join(inDescription ? ' ' : '\n').trim();
-    metadata[currentKey] = parseValue(value, currentKey);
+    (metadata as Record<string, unknown>)[currentKey] = parseValue(value, currentKey);
   }
   
   return metadata as AgentMetadata;
@@ -119,7 +119,7 @@ function parseAgentFrontmatter(frontmatter: string): AgentMetadata | null {
 /**
  * Parse a value from frontmatter (could be string, array, boolean, etc.)
  */
-function parseValue(value: string, key?: string): any {
+function parseValue(value: string, key?: string): string | boolean | string[] {
   // Handle boolean values
   if (value === 'true') return true;
   if (value === 'false') return false;
