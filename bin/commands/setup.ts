@@ -47,7 +47,7 @@ export async function runSetup(__dirname: string, installTargets: InstallationTa
     // Step 4: Create CLAUDE.md
     console.log();
     console.log("Step 4: Creating CLAUDE.md instructions...");
-    await createClaudeMd();
+    await createClaudeMd(mode);
     
     // Final summary
     console.log();

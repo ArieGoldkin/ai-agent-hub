@@ -6,12 +6,15 @@
 
 import { existsSync, readdirSync } from "fs";
 import { writeFile } from "fs/promises";
-import { AgentMetadata, ClaudeMdSection, GenerationStrategy } from "./types.js";
+import { AgentMetadata, ClaudeMdSection, GenerationStrategy, ExecutionMode } from "./types.js";
 import { extractAgentMetadata, parseExistingClaudeMd } from "./parser.js";
 import { generateAgentRegistry } from "./generators/registry.js";
 import { generateContextFlow } from "./generators/context-flow.js";
 import { generateCapabilitiesMatrix } from "./generators/capabilities.js";
 import { generateInvocationExamples } from "./generators/examples.js";
+import { generateSquadSections } from "./generators/squad-sections.js";
+import { generateModeHeader } from "./generators/mode-header.js";
+import { generateMcpSection, generateTipsSection } from "./generators/common-sections.js";
 
 /**
  * Generate complete CLAUDE.md content
@@ -19,13 +22,13 @@ import { generateInvocationExamples } from "./generators/examples.js";
 export async function generateClaudeMd(
   agents: AgentMetadata[],
   existingSections: ClaudeMdSection[] = [],
-  strategy: GenerationStrategy = 'create'
+  strategy: GenerationStrategy = 'create',
+  mode: ExecutionMode = 'classic'
 ): Promise<string> {
   const sections: string[] = [];
   
-  // Header
-  sections.push('# AI Agent Hub - Orchestration System\n');
-  sections.push('*Enhanced with intelligent agent metadata and context flow*\n');
+  // Header with mode indication
+  sections.push(...generateModeHeader(mode));
   
   // Agent Registry (only if we have agents with metadata)
   if (agents.length > 0) {
@@ -56,33 +59,16 @@ export async function generateClaudeMd(
     sections.push(generateInvocationExamples(agents));
   }
   
-  // MCP Servers (preserve or generate)
-  const existingMCP = existingSections.find(s => s.title.includes('MCP Servers'));
-  if (existingMCP && strategy !== 'create') {
-    sections.push(`## ${existingMCP.title}`);
-    sections.push(existingMCP.content);
-  } else {
-    sections.push('## MCP Servers Available\n');
-    sections.push('Your project has been configured with these MCP servers:');
-    sections.push('- **Memory** - Persistent conversation context');
-    sections.push('- **Sequential Thinking** - Step-by-step reasoning');
-    sections.push('- **Context7** - Advanced context management');
-    sections.push('- **Playwright** - Browser automation capabilities\n');
+  // Squad-specific sections
+  if (mode === 'squad') {
+    sections.push(...generateSquadSections());
   }
   
-  // Tips (preserve or generate)
-  const existingTips = existingSections.find(s => s.title.includes('Tips'));
-  if (existingTips && strategy !== 'create') {
-    sections.push(`## ${existingTips.title}`);
-    sections.push(existingTips.content);
-  } else {
-    sections.push('## Tips for Best Results\n');
-    sections.push('- Be specific about your requirements');
-    sections.push('- Let Studio Coach orchestrate complex tasks');
-    sections.push('- Use direct agent calls for focused work');
-    sections.push('- Review the context flow to understand agent dependencies');
-    sections.push('- Check the capabilities matrix to find the right agent\n');
-  }
+  // MCP Servers section
+  sections.push(...generateMcpSection(existingSections, strategy));
+  
+  // Tips section  
+  sections.push(...generateTipsSection(existingSections, strategy));
   
   // Preserve custom sections
   if (strategy === 'merge' || strategy === 'update') {
@@ -110,7 +96,8 @@ export async function generateClaudeMd(
  */
 export async function createOrUpdateClaudeMd(
   agentsDir: string = ".claude/agents",
-  outputPath: string = "CLAUDE.md"
+  outputPath: string = "CLAUDE.md",
+  mode: string = 'classic'
 ): Promise<void> {
   console.log("📝 Generating CLAUDE.md with agent metadata...");
   
@@ -147,8 +134,8 @@ export async function createOrUpdateClaudeMd(
     console.log(`   Found ${agentsWithoutMetadata} agent(s) without metadata (will be listed separately)`);
   }
   
-  // Generate content
-  const content = await generateClaudeMd(agents, existingSections, strategy);
+  // Generate content with mode
+  const content = await generateClaudeMd(agents, existingSections, strategy, mode as ExecutionMode);
   
   // Write file
   await writeFile(outputPath, content);

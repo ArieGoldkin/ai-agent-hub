@@ -228,4 +228,4 @@ This tool succeeds by doing less, not more. Every line of code is a liability. T
 
 ---
 
-*Last Updated: v3.2.0 - Parallel Execution Framework with intelligent task allocation*
+*Last Updated: v3.3.0 - Mode-specific CLAUDE.md generation for Classic and Squad modes*

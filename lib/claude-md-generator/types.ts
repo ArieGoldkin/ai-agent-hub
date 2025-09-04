@@ -26,6 +26,11 @@ export interface AgentMetadata {
 export type GenerationStrategy = 'create' | 'update' | 'merge';
 
 /**
+ * Execution mode for AI Agent Hub
+ */
+export type ExecutionMode = 'classic' | 'squad';
+
+/**
  * CLAUDE.md section structure
  */
 export interface ClaudeMdSection {
