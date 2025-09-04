@@ -2,11 +2,17 @@
 
 Instructions for launching multiple agents to work simultaneously on allocated tasks.
 
-## Step 0: Discover or Gather Requirements
+## Step 0: Check for Requirements in Command
+
+**FIRST:** Check if requirements were provided with this command.
+
+If requirements were NOT provided with the command, proceed to gather them:
+
+## Step 1: Discover or Gather Requirements
 
 ### Search for Existing Requirements
 
-First, search for any existing requirements or documentation:
+Search for any existing requirements or documentation:
 
 ```bash
 # Search for PRD or requirements files
@@ -38,8 +44,11 @@ Is this what you're building? (Y/n):
 Ask the single question:
 
 ```markdown
-What are you building? (describe in your own words):
-> _
+📋 **What would you like to build?**
+
+Please describe your requirements and I'll orchestrate multiple agents to build it in parallel:
+
+> _[Wait for user response]_
 ```
 
 ### Smart Inference from User Input
