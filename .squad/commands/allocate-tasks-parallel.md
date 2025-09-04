@@ -10,7 +10,16 @@ You are responsible for analyzing feature requirements and distributing work acr
 
 **FIRST ACTION:** Check if the user provided requirements with this command.
 
-If NO requirements were provided:
+### Automatic PRD Detection
+First, search for existing PRD files using the bash commands in the Execution Instructions section. 
+
+**IMPORTANT**: When searching for PRDs:
+- **EXCLUDE** any files in `.squad/examples/` directory
+- **EXCLUDE** any files in `.claude/` directory  
+- **EXCLUDE** any files in `templates/` or `test/` directories
+- These are example/template files, NOT actual project requirements
+
+If the search returns "NO_PRD_FOUND - User input required" OR if NO requirements were provided:
 1. **STOP** and ask the user directly:
    "📋 **What would you like to build?**
    
@@ -19,13 +28,44 @@ If NO requirements were provided:
 2. **WAIT** for the user to respond with their requirements
 3. **DO NOT** proceed until the user provides their input
 4. **DO NOT** create any files or generate any output until requirements are received
+5. **DO NOT** use example PRDs from `.squad/examples/` as actual requirements
 
-If requirements WERE provided with the command:
+If requirements WERE provided with the command OR a valid PRD was found:
 - Proceed directly to Step 2
 
 ## STEP 2: Process Requirements
 
 Only after receiving requirements from the user, proceed with allocation:
+
+## DEFAULT TECHNOLOGY STACK
+
+**CRITICAL**: Unless explicitly specified otherwise, use these defaults:
+
+### Backend
+- **Language**: TypeScript (Node.js 18+)
+- **Framework**: Express.js or Fastify
+- **Files**: .ts extension only
+- **Package Manager**: npm
+- **Config**: tsconfig.json with strict mode
+
+### Frontend
+- **Language**: TypeScript + React 18+
+- **Framework**: Vite for build tooling
+- **Files**: .tsx for components, .ts for utilities
+- **Styling**: Tailwind CSS or CSS Modules
+- **State**: Context API or Zustand
+
+### Database
+- **Primary**: PostgreSQL for relational
+- **NoSQL**: MongoDB if document-based
+- **ORM**: Prisma or TypeORM for TypeScript
+
+### Common
+- **Testing**: Jest + React Testing Library
+- **Linting**: ESLint + Prettier
+- **Git**: .gitignore for Node.js projects
+
+**IMPORTANT**: Include these technology choices in EVERY agent plan file.
 
 ## Core Responsibilities
 
@@ -80,6 +120,13 @@ For each parallel worker, create a role-plan file:
 - Agent Type: [frontend-ui-developer|backend-system-architect|ai-ml-engineer]
 - Work Stream: [component/api/model]
 - Assigned Files: [list of files this agent owns]
+
+## Technology Stack
+**MANDATORY**: Use TypeScript for ALL code
+- Language: TypeScript (strict mode)
+- File Extensions: .ts/.tsx only
+- Framework: [Express/React/etc based on agent type]
+- Package Manager: npm
 
 ## Tasks
 1. [Task description]
@@ -227,14 +274,38 @@ def recommend_agent_count(analysis):
 
 1. **Find Requirements**:
    ```bash
-   # Check for formal PRD
-   cat feature-prd.md 2>/dev/null || cat .squad/feature-prd.md 2>/dev/null
-   
-   # If not found, check for inferred requirements
-   cat .squad/inferred-requirements.md 2>/dev/null
-   
-   # If nothing, work from user description
-   echo "Working from user description: '[description]'"
+   # Check for formal PRD (excluding examples and templates)
+   # IMPORTANT: Exclude .squad/examples/, .claude/, and any template directories
+   if [ -f "feature-prd.md" ]; then
+       echo "Found feature-prd.md"
+       cat feature-prd.md
+   elif [ -f ".squad/feature-prd.md" ]; then
+       echo "Found .squad/feature-prd.md"
+       cat .squad/feature-prd.md
+   else
+       # Search for PRD files, excluding examples and templates
+       PRD_FILES=$(find . -type f \( -name "*prd*.md" -o -name "*PRD*.md" -o -name "*requirements*.md" \) \
+                   -not -path "*/node_modules/*" \
+                   -not -path "*/.git/*" \
+                   -not -path "*/.squad/examples/*" \
+                   -not -path "*/.claude/*" \
+                   -not -path "*/templates/*" \
+                   -not -path "*/test/*" \
+                   2>/dev/null | head -1)
+       
+       if [ -n "$PRD_FILES" ]; then
+           echo "Found PRD: $PRD_FILES"
+           cat "$PRD_FILES"
+       else
+           # Check for inferred requirements
+           if [ -f ".squad/inferred-requirements.md" ]; then
+               cat .squad/inferred-requirements.md
+           else
+               # No PRD found - MUST ASK USER
+               echo "NO_PRD_FOUND - User input required"
+           fi
+       fi
+   fi
    ```
 
 2. **Analyze Task Dependencies**:

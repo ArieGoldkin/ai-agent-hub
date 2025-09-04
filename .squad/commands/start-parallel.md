@@ -10,10 +10,17 @@ Instructions for launching multiple agents to work simultaneously on allocated t
 
 **FIRST ACTION:** Check if requirements were provided with this command.
 
+**CRITICAL**: When searching for PRDs:
+- **EXCLUDE** any files in `.squad/examples/` - These are example templates
+- **EXCLUDE** any files in `.claude/` - These are agent templates
+- **EXCLUDE** any files in `templates/` or `test/` - These are not real requirements
+- If only example PRDs are found, treat as NO PRD FOUND
+
 If NO requirements were provided:
 - Proceed to Step 2 to gather requirements
 - **DO NOT** skip to implementation
 - **DO NOT** create any files until requirements are confirmed
+- **DO NOT** use example PRDs as actual requirements
 
 ## Step 1: Discover or Gather Requirements
 
@@ -22,14 +29,26 @@ If NO requirements were provided:
 Search for any existing requirements or documentation:
 
 ```bash
-# Search for PRD or requirements files
-find . -type f \( -name "*prd*.md" -o -name "*requirements*.md" -o -name "README.md" -o -name "TODO.md" -o -name "ROADMAP.md" \) -not -path "*/node_modules/*" -not -path "*/.git/*" 2>/dev/null
+# Search for PRD or requirements files (EXCLUDING examples and templates)
+# IMPORTANT: Exclude .squad/examples/, .claude/, templates/, and test/ directories
+find . -type f \( -name "*prd*.md" -o -name "*requirements*.md" -o -name "README.md" -o -name "TODO.md" -o -name "ROADMAP.md" \) \
+    -not -path "*/node_modules/*" \
+    -not -path "*/.git/*" \
+    -not -path "*/.squad/examples/*" \
+    -not -path "*/.claude/*" \
+    -not -path "*/templates/*" \
+    -not -path "*/test/*" \
+    2>/dev/null
 
-# Check README for features section
-grep -i "features\|requirements\|user stories" README.md 2>/dev/null
+# Check README for features section (if not in excluded directories)
+if [ -f "README.md" ]; then
+    grep -i "features\|requirements\|user stories" README.md 2>/dev/null
+fi
 
 # Check for GitHub issues
-ls .github/issues/*.md 2>/dev/null
+if [ -d ".github/ISSUE_TEMPLATE" ]; then
+    cat .github/ISSUE_TEMPLATE/*.md 2>/dev/null | head -50
+fi
 ```
 
 ### If Requirements Found
