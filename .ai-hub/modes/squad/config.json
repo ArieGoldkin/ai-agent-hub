@@ -1,0 +1,147 @@
+{
+  "mode": "squad",
+  "version": "1.0.0",
+  "description": "Optimized multi-agent coordination with parallel execution and token efficiency",
+  "features": {
+    "execution": "parallel",
+    "agentSource": ".squad/templates/",
+    "tokenOptimization": true,
+    "parallelExecution": true,
+    "supervisorPattern": true,
+    "sessionPersistence": true,
+    "tokenLimits": true
+  },
+  "agents": {
+    "directory": ".squad/templates/",
+    "coreDirectory": ".squad/analysis/",
+    "format": "markdown",
+    "loadStrategy": "slim",
+    "supervisor": {
+      "agent": "studio-coach",
+      "model": "claude-3-opus-20240229",
+      "tokenLimit": 16000,
+      "role": "orchestrator"
+    },
+    "workers": {
+      "frontend-ui-developer": {
+        "model": "claude-3-sonnet",
+        "instances": 2,
+        "tokenLimit": 8000,
+        "domain": ["frontend/src/**", "components/**", "hooks/**"]
+      },
+      "backend-system-architect": {
+        "model": "claude-3-sonnet",
+        "instances": 1,
+        "tokenLimit": 8000,
+        "domain": ["backend/**", "api/**", "database/**"]
+      },
+      "ai-ml-engineer": {
+        "model": "claude-3-sonnet",
+        "instances": 1,
+        "tokenLimit": 8000,
+        "domain": ["ml/**", "models/**", "prompts/**"]
+      },
+      "code-quality-reviewer": {
+        "model": "claude-3-sonnet",
+        "instances": 1,
+        "tokenLimit": 8000,
+        "domain": ["**/*.test.*", "**/*.spec.*", "tests/**"]
+      },
+      "rapid-ui-designer": {
+        "model": "claude-3-sonnet",
+        "instances": 1,
+        "tokenLimit": 8000,
+        "domain": ["designs/**", "mockups/**", "style-guides/**"]
+      },
+      "ux-researcher": {
+        "model": "claude-3-sonnet",
+        "instances": 1,
+        "tokenLimit": 8000,
+        "domain": ["research/**", "personas/**", "user-stories/**"]
+      },
+      "whimsy-injector": {
+        "model": "claude-3-haiku",
+        "instances": 1,
+        "tokenLimit": 4000,
+        "domain": ["components/**", "styles/**", "animations/**"]
+      },
+      "sprint-prioritizer": {
+        "model": "claude-3-haiku",
+        "instances": 1,
+        "tokenLimit": 4000,
+        "domain": ["planning/**", "roadmaps/**", "backlogs/**"]
+      }
+    }
+  },
+  "execution": {
+    "type": "parallel",
+    "maxConcurrent": 4,
+    "taskQueue": true,
+    "errorHandling": "isolate-and-continue",
+    "retryPolicy": {
+      "enabled": true,
+      "maxRetries": 3,
+      "backoffStrategy": "exponential"
+    },
+    "parallelRules": {
+      "canParallelize": [
+        "different-components",
+        "frontend-backend-split",
+        "independent-reads",
+        "different-domains"
+      ],
+      "mustSerialize": [
+        "same-file-edits",
+        "integration-testing",
+        "code-review-after-implementation"
+      ]
+    }
+  },
+  "context": {
+    "management": "distributed",
+    "sharing": "file-based",
+    "persistence": true,
+    "maxContextSize": 100000,
+    "sessionDirectory": ".squad/sessions/",
+    "communicationProtocol": {
+      "taskAssignment": "role-plan-[agent]-[task-id].md",
+      "progressUpdate": "role-comm-[agent]-[task-id].md",
+      "sessionStatus": "session-status.md"
+    }
+  },
+  "performance": {
+    "tokenTracking": true,
+    "costEstimation": true,
+    "optimizations": [
+      "template-compression",
+      "context-pruning",
+      "parallel-execution",
+      "smart-caching"
+    ],
+    "caching": true,
+    "tokenReduction": "97%",
+    "limits": {
+      "maxTokensPerSession": 100000,
+      "maxTokensPerAgent": 8000,
+      "maxActiveAgents": 4,
+      "maxFilesOpen": 20
+    }
+  },
+  "phases": {
+    "requirements": ["ux-researcher", "sprint-prioritizer"],
+    "design": ["rapid-ui-designer", "backend-system-architect"],
+    "implementation": ["frontend-ui-developer", "backend-system-architect", "ai-ml-engineer"],
+    "quality": ["code-quality-reviewer", "whimsy-injector"]
+  },
+  "compatibility": {
+    "backwardCompatible": false,
+    "preservesExistingBehavior": false,
+    "requiresMigration": true,
+    "prerequisites": [
+      ".squad/templates/",
+      ".squad/analysis/",
+      ".squad/supervisor-rules.md",
+      ".squad/communication-protocol.md"
+    ]
+  }
+}

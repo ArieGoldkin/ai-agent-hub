@@ -1,0 +1,57 @@
+{
+  "mode": "classic",
+  "version": "1.0.0",
+  "description": "Traditional sequential agent execution with full agent prompts",
+  "features": {
+    "execution": "sequential",
+    "agentSource": "agents/",
+    "tokenOptimization": false,
+    "parallelExecution": false,
+    "supervisorPattern": false,
+    "sessionPersistence": false,
+    "tokenLimits": false
+  },
+  "agents": {
+    "directory": "agents/",
+    "format": "markdown",
+    "loadStrategy": "full",
+    "availableAgents": [
+      "studio-coach",
+      "sprint-prioritizer",
+      "ux-researcher",
+      "rapid-ui-designer",
+      "backend-system-architect",
+      "frontend-ui-developer",
+      "ai-ml-engineer",
+      "whimsy-injector",
+      "code-quality-reviewer"
+    ]
+  },
+  "execution": {
+    "type": "sequential",
+    "maxConcurrent": 1,
+    "taskQueue": false,
+    "errorHandling": "stop-on-error",
+    "retryPolicy": {
+      "enabled": false,
+      "maxRetries": 0
+    }
+  },
+  "context": {
+    "management": "simple",
+    "sharing": "none",
+    "persistence": false,
+    "maxContextSize": null
+  },
+  "performance": {
+    "tokenTracking": false,
+    "costEstimation": false,
+    "optimizations": [],
+    "caching": false
+  },
+  "compatibility": {
+    "backwardCompatible": true,
+    "preservesExistingBehavior": true,
+    "requiresMigration": false
+  }
+}

@@ -12,15 +12,16 @@ import type { InstallationTarget } from "../utils/prompt.js";
 /**
  * Run simple setup
  */
-export async function runSetup(__dirname: string, installTargets: InstallationTarget): Promise<void> {
+export async function runSetup(__dirname: string, installTargets: InstallationTarget, mode: string = 'classic'): Promise<void> {
   try {
     console.log("🚀 AI Agent Hub - Setup");
+    console.log(`📋 Mode: ${mode.toUpperCase()}`);
     console.log("═".repeat(50));
     console.log();
     
-    // Step 1: Install agents
-    console.log("Step 1: Installing AI agents...");
-    const agentsInstalled = await installAgents(__dirname);
+    // Step 1: Install agents (based on mode)
+    console.log(`Step 1: Installing AI agents (${mode} mode)...`);
+    const agentsInstalled = await installAgents(__dirname, mode);
     if (!agentsInstalled) {
       throw new Error("Failed to install agents");
     }
@@ -46,7 +47,7 @@ export async function runSetup(__dirname: string, installTargets: InstallationTa
     // Step 4: Create CLAUDE.md
     console.log();
     console.log("Step 4: Creating CLAUDE.md instructions...");
-    await createClaudeMd();
+    await createClaudeMd(mode);
     
     // Final summary
     console.log();

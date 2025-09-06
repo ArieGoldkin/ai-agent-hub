@@ -12,6 +12,6 @@ import { createOrUpdateClaudeMd } from "../claude-md-generator/index.js";
  * - Analysis phase: Understand relationships and dependencies
  * - Generation phase: Create rich documentation using all properties
  */
-export async function createClaudeMd(): Promise<void> {
-  await createOrUpdateClaudeMd();
+export async function createClaudeMd(mode: string = 'classic'): Promise<void> {
+  await createOrUpdateClaudeMd(".claude/agents", "CLAUDE.md", mode);
 }
