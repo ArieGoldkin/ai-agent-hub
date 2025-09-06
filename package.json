@@ -24,7 +24,10 @@
     "test:integration": "node dist/bin/squad/integration-test.js",
     "test:stress": "node dist/bin/squad/stress-test.js",
     "test:all": "npm run build && npm test && npm run test:integration && npm run test:stress",
-    "monitor-locks": "node dist/bin/squad/lock-monitor.js"
+    "monitor-locks": "node dist/bin/squad/lock-monitor.js",
+    "test:debug": "node dist/bin/squad/debug-test.js",
+    "squad-debug": "npm run build && node dist/bin/cli.js --squad-debug",
+    "squad-debug-parallel": "npm run build && node dist/bin/cli.js --squad-debug-parallel"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.9",
