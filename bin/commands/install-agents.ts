@@ -57,7 +57,7 @@ function getAgentSource(packageRoot: string, mode: string): { agentsPath: string
  * Works for both Classic and Squad modes
  */
 async function copyContextTriggers(packageRoot: string): Promise<void> {
-  const sourceFile = join(packageRoot, "lib", "config", "context-triggers.md");
+  const sourceFile = join(packageRoot, "assets", "context-triggers.md");
   const targetFile = ".claude/context-triggers.md";
   
   try {
