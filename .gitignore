@@ -1,6 +1,9 @@
 # Claude AI
 .claude/
 
+# MCP configuration
+.mcp.json
+
 # Dependencies
 node_modules/
 .pnp

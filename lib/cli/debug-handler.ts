@@ -3,38 +3,20 @@ export async function handleDebugMode(
   hasSquadDebugParallel: boolean,
   debugReplaySession: string | null
 ): Promise<{ debugEnabled: boolean; selectedMode: string }> {
-  // Handle debug replay
+  // Debug mode has been simplified - the complex infrastructure was removed
+  // Squad mode now works without debug tooling
+  
   if (debugReplaySession) {
-    const { DebugCommands } = await import('../../bin/squad/debug-commands.js');
-    const debugCommands = new DebugCommands();
-    await debugCommands.replaySession(debugReplaySession);
-    return { debugEnabled: false, selectedMode: '' }; // Exit after replay
+    console.log("⚠️  Debug replay feature has been removed in the simplification");
+    console.log("   Squad mode now runs without debug infrastructure");
+    return { debugEnabled: false, selectedMode: '' };
   }
   
-  // Handle debug mode
   if (hasSquadDebug || hasSquadDebugParallel) {
-    const { DebugMode } = await import('../../bin/squad/debug-mode.js');
-    const { DebugLogger } = await import('../../bin/squad/debug-logger.js');
-    
-    const debugMode = DebugMode.getInstance();
-    await debugMode.initialize({
-      enabled: true,
-      sequential: hasSquadDebug, // Force sequential if --squad-debug
-      verboseLogging: true,
-      saveContext: true,
-      tokenTracking: true
-    });
-    
-    const logger = DebugLogger.getInstance();
-    await logger.initialize();
-    
-    console.log(`\n🔍 Squad Debug Mode Enabled`);
-    console.log(`   Session ID: ${debugMode.getSessionId()}`);
-    console.log(`   Execution: ${hasSquadDebug ? 'Sequential' : 'Parallel (dangerous)'}`);
-    console.log(`   Debug Dir: ${debugMode.getDebugDir()}`);
-    console.log(`   Tail Logs: ${logger.getTailCommand()}\n`);
-    
-    return { debugEnabled: true, selectedMode: 'squad' };
+    console.log("⚠️  Debug mode has been removed in the simplification");
+    console.log("   Squad mode now runs efficiently without debug overhead");
+    console.log("   Use --mode squad for parallel execution");
+    return { debugEnabled: false, selectedMode: 'squad' };
   }
   
   return { debugEnabled: false, selectedMode: '' };
