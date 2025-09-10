@@ -15,6 +15,7 @@ import { generateInvocationExamples } from "./generators/examples.js";
 import { generateSquadSections } from "./generators/squad-sections.js";
 import { generateModeHeader } from "./generators/mode-header.js";
 import { generateMcpSection, generateTipsSection } from "./generators/common-sections.js";
+import { generateAutoDetectionSection } from "./generators/auto-detection.js";
 
 /**
  * Generate complete CLAUDE.md content
@@ -30,13 +31,8 @@ export async function generateClaudeMd(
   // Header with mode indication
   sections.push(...generateModeHeader(mode));
   
-  // Agent Registry (only if we have agents with metadata)
-  if (agents.length > 0) {
-    sections.push(generateAgentRegistry(agents));
-  } else {
-    sections.push('## Available Agents\n');
-    sections.push('*Agents are installed but metadata is being generated.*\n');
-  }
+  // Auto-Agent Detection Mode - FIRST for emphasis
+  sections.push(generateAutoDetectionSection());
   
   // Quick Start (preserve if exists, otherwise generate)
   const existingQuickStart = existingSections.find(s => s.title.includes('Quick Start'));
@@ -45,7 +41,16 @@ export async function generateClaudeMd(
     sections.push(existingQuickStart.content);
   } else {
     sections.push('## Quick Start\n');
-    sections.push('Say: **"Use Studio Coach to [your request]"** to begin orchestrated development.\n');
+    sections.push('- **Auto Mode (Default):** Just describe what you need naturally\n');
+    sections.push('- **Explicit Mode:** Say "Use [Agent Name] to [task]" for direct control\n');
+  }
+  
+  // Agent Registry (only if we have agents with metadata)
+  if (agents.length > 0) {
+    sections.push(generateAgentRegistry(agents));
+  } else {
+    sections.push('## Available Agents\n');
+    sections.push('*Agents are installed but metadata is being generated.*\n');
   }
   
   // Context Flow (only if we have agents with metadata)

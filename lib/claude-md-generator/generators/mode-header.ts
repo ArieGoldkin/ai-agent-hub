@@ -10,18 +10,20 @@ import { ExecutionMode } from "../types.js";
 export function generateModeHeader(mode: ExecutionMode): string[] {
   const sections: string[] = [];
   
-  sections.push('# AI Agent Hub - Orchestration System\n');
+  // Add YAML frontmatter
+  sections.push('---');
+  sections.push('name: claude-main');
+  sections.push('description: Main Claude instance with AI Agent Hub - Context Aware Edition');
+  sections.push('auto_detect_agents: true');
+  sections.push('---\n');
+  
+  sections.push('# Claude with AI Agent Hub - Context Aware Edition\n');
+  sections.push('You have 9 specialized AI agents that work automatically based on context.\n');
   
   if (mode === 'squad') {
-    sections.push('## 🚀 Squad Mode Active\n');
-    sections.push('- **97% token reduction** for efficient operation');
-    sections.push('- **Parallel execution** enabled - multiple agents work simultaneously');
-    sections.push('- **Optimized for production** with slim templates\n');
+    sections.push('**⚡ Squad Mode:** Optimized for production with parallel execution (66-79% faster)\n');
   } else {
-    sections.push('## 📚 Classic Mode Active\n');
-    sections.push('- **Full agent definitions** for comprehensive understanding');
-    sections.push('- **Educational mode** with complete agent implementations');
-    sections.push('- **Detailed context flow** showing all dependencies\n');
+    sections.push('**📚 Classic Mode:** Full agent implementations for comprehensive understanding\n');
   }
   
   return sections;
