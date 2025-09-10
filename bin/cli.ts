@@ -24,7 +24,7 @@ import { parseArguments, getInstallTargets } from "../lib/cli/arg-parser.js";
 import { handleModeSelection } from "../lib/cli/mode-detector.js";
 import { handleDebugMode } from "../lib/cli/debug-handler.js";
 
-const CURRENT_VERSION = "3.0.6";
+const CURRENT_VERSION = "3.0.8";
 const VALID_MODES = ['classic', 'squad', 'auto'];
 
 // Main CLI router

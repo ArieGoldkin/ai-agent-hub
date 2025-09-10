@@ -15,6 +15,7 @@ import { generateInvocationExamples } from "./generators/examples.js";
 import { generateSquadSections } from "./generators/squad-sections.js";
 import { generateModeHeader } from "./generators/mode-header.js";
 import { generateMcpSection, generateTipsSection } from "./generators/common-sections.js";
+import { generateAutoDetectionSection } from "./generators/auto-detection.js";
 
 /**
  * Generate complete CLAUDE.md content
@@ -57,6 +58,9 @@ export async function generateClaudeMd(
     
     // Invocation Examples
     sections.push(generateInvocationExamples(agents));
+    
+    // Auto-Agent Detection Mode
+    sections.push(generateAutoDetectionSection());
   }
   
   // Squad-specific sections
