@@ -4,9 +4,6 @@ export interface ParsedArgs {
   hasDesktopOnly: boolean;
   hasBoth: boolean;
   requestedMode: string | null;
-  hasSquadDebug: boolean;
-  hasSquadDebugParallel: boolean;
-  debugReplaySession: string | null;
 }
 
 export function parseArguments(args: string[]): ParsedArgs {
@@ -19,13 +16,6 @@ export function parseArguments(args: string[]): ParsedArgs {
   const modeIndex = args.indexOf('--mode');
   const requestedMode = modeIndex !== -1 && args[modeIndex + 1] ? args[modeIndex + 1] : null;
   
-  // Check for debug flags
-  const hasSquadDebug = args.includes('--squad-debug');
-  const hasSquadDebugParallel = args.includes('--squad-debug-parallel');
-  const debugReplayIndex = args.indexOf('--squad-debug-replay');
-  const debugReplaySession = debugReplayIndex !== -1 && args[debugReplayIndex + 1] ? 
-    args[debugReplayIndex + 1] : null;
-  
   // Extract command (first non-flag argument)
   const command = args.find(arg => !arg.startsWith('--'));
   
@@ -34,10 +24,7 @@ export function parseArguments(args: string[]): ParsedArgs {
     hasProjectOnly,
     hasDesktopOnly,
     hasBoth,
-    requestedMode,
-    hasSquadDebug,
-    hasSquadDebugParallel,
-    debugReplaySession
+    requestedMode
   };
 }
 

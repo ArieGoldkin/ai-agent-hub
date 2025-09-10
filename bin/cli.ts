@@ -22,7 +22,6 @@ import { promptForInstallationTargets, promptForExecutionMode } from "./utils/pr
 import { loadCurrentMode, saveMode } from "./utils/mode-manager.js";
 import { parseArguments, getInstallTargets } from "../lib/cli/arg-parser.js";
 import { handleModeSelection } from "../lib/cli/mode-detector.js";
-import { handleDebugMode } from "../lib/cli/debug-handler.js";
 
 const CURRENT_VERSION = "3.0.8";
 const VALID_MODES = ['classic', 'squad', 'auto'];
@@ -45,17 +44,6 @@ async function main() {
       return;
     }
 
-    // Handle debug mode
-    const debugResult = await handleDebugMode(
-      parsedArgs.hasSquadDebug,
-      parsedArgs.hasSquadDebugParallel,
-      parsedArgs.debugReplaySession
-    );
-    
-    if (parsedArgs.debugReplaySession) {
-      return; // Exit after replay
-    }
-
     // Determine installation targets
     let installTargets = getInstallTargets(parsedArgs);
     if (!installTargets) {
@@ -66,9 +54,7 @@ async function main() {
     let selectedMode: string;
     const currentModeFile = path.join(process.cwd(), '.ai-hub', 'current-mode.json');
     
-    if (debugResult.debugEnabled) {
-      selectedMode = debugResult.selectedMode;
-    } else if (parsedArgs.requestedMode) {
+    if (parsedArgs.requestedMode) {
       selectedMode = await handleModeSelection(parsedArgs.requestedMode, VALID_MODES, currentModeFile);
     } else {
       // Check for existing mode or prompt for new one
