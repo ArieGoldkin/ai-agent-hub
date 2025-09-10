@@ -42,6 +42,7 @@
     "dist/",
     "agents/",
     "assets/",
+    "lib/config/",
     ".squad/",
     ".env.example",
     "README.md",

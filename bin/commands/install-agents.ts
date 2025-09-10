@@ -3,7 +3,7 @@
  */
 
 import { existsSync, readdirSync } from "fs";
-import { mkdir, writeFile } from "fs/promises";
+import { mkdir, writeFile, copyFile } from "fs/promises";
 import { join } from "path";
 import { installSquadInfrastructure } from "./components/squad-installer.js";
 import { copyMissingAgents, reportCustomAgents, getMissingAgents } from "./components/agent-copier.js";
@@ -50,6 +50,25 @@ function getAgentSource(packageRoot: string, mode: string): { agentsPath: string
     agentsPath: join(packageRoot, "agents"),
     sourceDescription: mode === 'squad' ? "classic agents" : "classic full agents"
   };
+}
+
+/**
+ * Copy context triggers file for automatic agent invocation
+ * Works for both Classic and Squad modes
+ */
+async function copyContextTriggers(packageRoot: string): Promise<void> {
+  const sourceFile = join(packageRoot, "lib", "config", "context-triggers.md");
+  const targetFile = ".claude/context-triggers.md";
+  
+  try {
+    if (existsSync(sourceFile)) {
+      await copyFile(sourceFile, targetFile);
+      console.log("✅ Installed context triggers for automatic agent invocation");
+    }
+  } catch {
+    // Silent fail - context triggers are optional enhancement
+    console.log("   Context triggers not found (optional feature)");
+  }
 }
 
 /**
@@ -102,6 +121,9 @@ export async function installAgents(__dirname: string, mode: string = 'classic')
       await copyMissingAgents(agentsPath, missingAgents);
       reportCustomAgents(existingAgents);
     }
+    
+    // Copy context triggers file (works for both Classic and Squad modes)
+    await copyContextTriggers(packageRoot);
     
     // Create settings
     await createClaudeSettings();
