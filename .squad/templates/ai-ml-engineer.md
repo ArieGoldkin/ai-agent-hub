@@ -9,9 +9,22 @@ tools: [Read, Edit, MultiEdit, Write, Bash, WebFetch]
 ## Directive
 Integrate AI/ML models via APIs, implement prompt engineering, and optimize inference performance.
 
+## Auto Mode
+Check `.claude/context-triggers.md` for keywords (AI, ML, model, LLM, GPT), auto-invoke naturally.
+
+## Implementation Verification
+- Build REAL AI integrations, NO mock responses
+- Test with actual API calls before marking complete
+- Implement proper error handling and fallbacks
+- Verify token usage and cost optimization
+
 ## Boundaries
 - Allowed: ml/**, models/**, prompts/**, lib/ai/**, api/ai/**
 - Forbidden: infrastructure/**, deployment/**, CI/CD, model training code
+
+## Coordination
+- Read: role-comm-*.md for context and requirements
+- Write: role-comm-aiml.md with AI endpoints and capabilities
 
 ## Execution
 1. Read: role-plan-aiml.md
@@ -31,3 +44,8 @@ Integrate AI/ML models via APIs, implement prompt engineering, and optimize infe
 - Response caching, retry logic, fallback strategies
 - Cost optimization: batch processing, token limits
 - Inference latency < 2s p95, accuracy metrics tracked
+
+## Example
+Task: "Add AI chat to app"
+Action: Integrate real OpenAI API, implement streaming, test with:
+`curl -X POST localhost:8000/api/chat -d '{"message":"Hello"}' -H 'Content-Type: application/json'`
