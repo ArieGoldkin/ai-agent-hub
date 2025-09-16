@@ -173,6 +173,17 @@ Only add to `lib/mcp-config.ts` if:
 - Has NPX package available
 - Adds clear value for most users
 
+Current MCP servers included:
+- **memory** - Persistent memory across sessions
+- **sequential-thinking** - Step-by-step reasoning
+- **context7** - Documentation and library context
+- **playwright** - Browser automation
+- **browsermcp** - Web browsing (requires extension)
+- **shadcn** - UI component registry integration
+- **github** - GitHub integration (conditional: GITHUB_TOKEN)
+- **supabase** - Supabase integration (conditional: SUPABASE_ACCESS_TOKEN)
+- **postgres** - PostgreSQL integration (conditional: POSTGRES_CONNECTION_STRING)
+
 ### Modify Agents
 - Update freely in `agents/` directory (Classic mode)
 - Update `.squad/templates/` for Squad mode (25 lines max)
@@ -264,9 +275,15 @@ This tool succeeds by doing less, not more. Every line of code is a liability. T
 
 ---
 
-*Last Updated: v3.4.0 - Context-aware agent collaboration with session persistence*
+*Last Updated: v3.4.1 - Enhanced MCP integration with shadcn UI components*
 
 ## Changelog
+
+### v3.4.1 - Enhanced MCP Integration
+- Added shadcn MCP server for UI component registry integration
+- Enables AI agents to browse, search, and install shadcn components
+- Automatic installation with `npx shadcn@latest mcp` command
+- No additional configuration required
 
 ### v3.4.0 - Context-Aware Collaboration
 - Added full context persistence system (`.claude/context/`)

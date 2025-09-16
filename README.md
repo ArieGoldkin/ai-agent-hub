@@ -146,6 +146,7 @@ Your Claude gets enhanced capabilities through MCP servers:
 - **Context7** - Large project management
 - **Playwright** - Browser automation
 - **Browser MCP** - Web control (requires [extension](https://docs.browsermcp.io/setup-extension))
+- **Shadcn** - UI component registry integration
 
 ### Desktop-Specific
 - **Filesystem** - File system access
