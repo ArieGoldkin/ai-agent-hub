@@ -2,8 +2,8 @@
 
 <div align="center">
   
-  ### ✨ Transform Claude into 9 Specialized AI Agents Working in Parallel ✨
-  ### 🏃‍♂️ Build 79% Faster with Squad Mode's Parallel Execution 🏃‍♂️
+  ### ✨ Transform Claude into 9 Context-Aware AI Agents Working in Parallel ✨
+  ### 🏃‍♂️ Build 79% Faster with Squad Mode + Full Session Memory 🏃‍♂️
   
   ```bash
   npx ai-agent-hub@latest
@@ -33,8 +33,9 @@ npx ai-agent-hub@latest
 
 **Then in Claude Code:**
 ```
-"Use Studio Coach to help me build a viral TikTok app"
+"Build a viral TikTok app"
 ```
+✨ Agents auto-activate based on your needs and share context automatically!
 
 ---
 
@@ -87,6 +88,35 @@ Total: 30 minutes (66% faster!)
 | Learning agents | Production apps |
 | Small tasks | Complex features |
 | Exploration | Tight deadlines |
+
+---
+
+## 🧠 Context-Aware Collaboration (v3.4.0)
+
+Agents now share context automatically, building on each other's work seamlessly:
+
+### How It Works
+```
+1. First agent creates session → Writes decisions to .claude/context/
+2. Next agent reads context → Knows what's done, continues work
+3. All agents stay in sync → Real-time sharing, no duplicate effort
+4. Next session continues → Picks up exactly where you left off
+```
+
+### Automatic Features
+- **📝 Session Memory** - Work persists between Claude sessions
+- **🔄 Shared Decisions** - All agents see what others decided
+- **📚 Vocabulary Learning** - Adapts to your project's terminology
+- **🎯 Smart Triggers** - Agents activate based on keywords
+
+### Example Flow
+```markdown
+User: "Build an authentication system"
+→ Backend Architect designs API, writes to context
+→ Frontend Developer reads API specs, builds matching UI
+→ AI Engineer sees both, adds biometric features
+→ All decisions aligned automatically!
+```
 
 ---
 
@@ -152,18 +182,35 @@ npx ai-agent-hub@latest --both --mode auto
 
 **Project (.claude/)**
 - 9 AI agents (Classic: full, Squad: slim)
+- Context system (session persistence, shared decisions)
+- Context triggers (keyword-based activation)
 - MCP configuration
 - Mode-specific instructions
 
 **Claude Desktop**
 - Enhanced config with 7 MCP servers
 - Global agent availability
+- Cross-project context awareness
 
 ---
 
 ## 🚀 How to Use
 
-### Basic Commands (Classic Mode)
+### Auto Mode (Default) - Just Describe What You Need
+```markdown
+"I need user authentication with social login"
+# Backend Architect automatically handles API design
+# Frontend Developer automatically creates UI
+# Context shared between them instantly
+
+"Make the loading screens more fun"
+# Whimsy Injector automatically activates
+
+"Build a real-time dashboard"
+# Studio Coach coordinates multiple agents in parallel
+```
+
+### Explicit Commands (When You Want Control)
 ```markdown
 "Use Studio Coach to plan my startup MVP"
 "Have the Backend Architect design a scalable API"
@@ -224,8 +271,10 @@ GOOGLE_GENERATIVE_AI_API_KEY=AIzaxxxxxxxx
 
 ### Verify Installation
 ```bash
-ls -la .claude/agents/     # Should show 9 agents
-cat .mcp.json              # Should show MCP config
+ls -la .claude/agents/           # Should show 9 agents
+ls -la .claude/context/          # Should show session & shared-context files
+cat .claude/context-triggers.md  # Should show keyword triggers
+cat .mcp.json                    # Should show MCP config
 ```
 
 ---
