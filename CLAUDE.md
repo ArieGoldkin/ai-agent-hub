@@ -11,17 +11,18 @@ AI Agent Hub is a **lean deployment tool** (not an orchestration platform). Keep
 - Intelligence lives in the agents, not the tool
 - Complexity was intentionally removed and should not be added back
 
-## Current Architecture (v3.4.0)
+## Current Architecture (v3.4.1)
 
 ### Key Metrics
 ```
-- 31 TypeScript files, ~2,400 lines (modular)
+- ~35 TypeScript files, ~2,500 lines (modular)
 - 2 dependencies only: chalk + js-yaml
 - Setup: 3 seconds, 1 question
 - Modes: Classic (learning) | Squad (production + parallel)
 - Parallel: 1-9 agents, 66-79% time reduction
 - PRD: Optional - works with any input
 - Context: Full session persistence & agent collaboration
+- Orchestration: Intelligent semantic routing (zero-config)
 ```
 
 ### Core Structure
@@ -30,6 +31,9 @@ bin/commands/          # CLI commands (setup, install, help)
 lib/                   # Core libraries (MCP, desktop, generators)
 ├── context/           # Context persistence & vocabulary learning
 ├── claude-md-generator/ # Intelligent documentation generation
+│   └── generators/
+│       ├── orchestration/  # Semantic routing & handoff protocols
+│       └── triggers/       # Intelligent agent triggers
 agents/                # Full agents for Classic mode (270-720 lines)
 .squad/                # Squad mode infrastructure
 ├── templates/         # Slim agents (25 lines, 97% reduction)
@@ -38,6 +42,9 @@ agents/                # Full agents for Classic mode (270-720 lines)
 assets/                # Templates, triggers, and instructions
 ├── context-triggers.md    # Keyword-based agent activation
 └── context-instructions.md # Shared context protocol
+docs/                  # Documentation
+├── intelligent-orchestration-plan.md  # Full implementation roadmap
+└── orchestration-workflow-demo.md     # Usage examples
 ```
 
 ## Execution Modes
@@ -53,35 +60,49 @@ npx ai-agent-hub --mode squad      # Slim agents, parallel
 npx ai-agent-hub --mode auto       # Auto-detect based on project
 ```
 
-## Latest: Context-Aware Agent Collaboration (v3.4.0)
+## Latest: Intelligent Orchestration System (v3.4.1)
+
+### 🧠 Zero-Config Semantic Routing
+The system now intelligently routes user requests to appropriate agents without manual selection:
+
+1. **Semantic Analysis** - Understands intent beyond keywords
+2. **Complexity Scoring** - Evaluates task complexity (1-10 scale)
+3. **Domain Detection** - Identifies which specializations are needed
+4. **Context Awareness** - Considers existing project work
+5. **Automatic Handoffs** - Agents suggest next specialists when needed
+
+### How Orchestration Works
+```typescript
+// Embedded in generated CLAUDE.md - no runtime code!
+interface OrchestrationState {
+  active_workflow?: {
+    type: 'sequential' | 'parallel' | 'hierarchical' | 'consensus';
+    coordinator_agent: string;
+    participants: string[];
+    current_phase: string;
+    progress_percentage: number;
+  };
+  routing_history: Array<{...}>;
+  project_intelligence: {...};
+  performance_analytics: {...};
+}
+```
+
+### Intelligent Features
+- **Intent Classification**: "Fix login" vs "Build auth system" - different complexity
+- **Multi-Agent Coordination**: Complex tasks automatically use multiple specialists
+- **Performance Optimization**: Token usage reduced through smart context sharing
+- **Continuous Learning**: System improves routing decisions over time
+
+## Previous: Context-Aware Agent Collaboration (v3.4.0)
 
 ### Seamless Session Persistence
-Every agent interaction now maintains full context awareness:
+Every agent interaction maintains full context awareness:
 
 1. **Session Continuity** - Work persists across Claude sessions
 2. **Shared Context** - All agents read/write to `.claude/context/`
 3. **Automatic Synchronization** - Decisions immediately available to all agents
 4. **Vocabulary Learning** - Adapts to your project's terminology
-
-### How Context Works
-```json
-// .claude/context/shared-context.json
-{
-  "session_id": "persistent-across-sessions",
-  "agent_decisions": {
-    "backend": { "api_endpoints": [...] },
-    "frontend": { "ui_components": [...] }
-  },
-  "tasks_completed": ["auth", "dashboard"],
-  "tasks_pending": ["notifications", "testing"]
-}
-```
-
-### Benefits
-- **No Duplicate Work** - Agents know what's already done
-- **Coherent Architecture** - All decisions align automatically
-- **Smart Handoffs** - Each agent continues where others left off
-- **Cross-Session Memory** - Claude remembers everything between sessions
 
 ## Previous: Smart PRD Inference (v3.3.0)
 
@@ -275,15 +296,19 @@ This tool succeeds by doing less, not more. Every line of code is a liability. T
 
 ---
 
-*Last Updated: v3.4.1 - Enhanced MCP integration with shadcn UI components*
+*Last Updated: v3.4.1 - Intelligent Orchestration System with semantic routing*
 
 ## Changelog
 
-### v3.4.1 - Enhanced MCP Integration
+### v3.4.1 - Intelligent Orchestration System
+- **Phase 1 Complete**: Embedded intelligence in generated files (zero runtime overhead)
+- Added semantic analysis beyond keyword matching (multi-dimensional intent analysis)
+- Implemented complexity scoring for automatic agent selection (1-10 scale)
+- Enhanced context system with `OrchestrationState` for workflow tracking
+- Modularized generators into focused modules (all files < 150 lines)
+- Added intelligent triggers with continuous learning protocol
 - Added shadcn MCP server for UI component registry integration
-- Enables AI agents to browse, search, and install shadcn components
-- Automatic installation with `npx shadcn@latest mcp` command
-- No additional configuration required
+- Performance optimization guidelines embedded in CLAUDE.md
 
 ### v3.4.0 - Context-Aware Collaboration
 - Added full context persistence system (`.claude/context/`)

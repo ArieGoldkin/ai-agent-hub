@@ -17,6 +17,13 @@ import { generateModeHeader } from "./generators/mode-header.js";
 import { generateMcpSection, generateTipsSection } from "./generators/common-sections.js";
 import { generateAutoDetectionSection } from "./generators/auto-detection.js";
 import { generateContextAwarenessSection } from "./generators/context-awareness.js";
+import {
+  generateIntelligentOrchestrationSection,
+  generateAdvancedRoutingExamples,
+  generateOrchestrationProtocols,
+  generateHandoffProtocols,
+  generatePerformanceOptimization
+} from "./generators/intelligent-orchestration.js";
 
 /**
  * Generate complete CLAUDE.md content
@@ -37,6 +44,11 @@ export async function generateClaudeMd(
 
   // Context Awareness - Critical for continuity
   sections.push(generateContextAwarenessSection());
+
+  // Intelligent Orchestration - Advanced routing and workflow management
+  sections.push(generateIntelligentOrchestrationSection(agents, mode));
+  sections.push(generateAdvancedRoutingExamples());
+  sections.push(generateOrchestrationProtocols());
 
   // Quick Start (preserve if exists, otherwise generate)
   const existingQuickStart = existingSections.find(s => s.title.includes('Quick Start'));
@@ -66,8 +78,14 @@ export async function generateClaudeMd(
     
     // Invocation Examples
     sections.push(generateInvocationExamples(agents));
+
+    // Agent Handoff Protocols
+    sections.push(generateHandoffProtocols(agents));
   }
-  
+
+  // Performance Optimization (for both modes)
+  sections.push(generatePerformanceOptimization());
+
   // Squad-specific sections
   if (mode === 'squad') {
     sections.push(...generateSquadSections());

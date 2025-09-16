@@ -95,4 +95,77 @@ export interface SharedContext {
     priority?: 'low' | 'medium' | 'high';
     dependencies?: string[];
   }>;
+
+  // Intelligent Orchestration Enhancements
+  orchestration_state?: OrchestrationState;
+}
+
+/**
+ * Enhanced orchestration state for intelligent routing and workflow management
+ */
+export interface OrchestrationState {
+  // Current workflow information
+  active_workflow?: {
+    id: string;
+    type: 'sequential' | 'parallel' | 'hierarchical' | 'consensus';
+    started_at: string;
+    coordinator_agent: string;
+    participants: string[];
+    current_phase: string;
+    progress_percentage: number;
+  };
+
+  // Agent routing intelligence
+  routing_history: Array<{
+    timestamp: string;
+    user_input: string;
+    intent_analysis: {
+      primary_intent: string;
+      complexity_score: number; // 1-10
+      domains: string[];
+      confidence: number; // 0-1
+    };
+    routing_decision: {
+      selected_agents: string[];
+      reasoning: string;
+      coordination_pattern: string;
+    };
+    performance_metrics: {
+      response_time_ms: number;
+      token_usage?: number;
+      success_rating?: number; // 0-1
+    };
+  }>;
+
+  // Context-aware intelligence
+  project_intelligence: {
+    architecture_patterns: string[];
+    technology_stack: string[];
+    established_conventions: Record<string, string>;
+    learned_vocabulary: Record<string, string>;
+    agent_specializations: Record<string, string[]>; // agent -> domains they handle well
+  };
+
+  // Performance optimization data
+  performance_analytics: {
+    token_usage_by_agent: Record<string, number>;
+    average_task_completion_time: number;
+    agent_collaboration_frequency: Record<string, Record<string, number>>;
+    successful_routing_patterns: Array<{
+      pattern: string;
+      success_rate: number;
+      use_count: number;
+    }>;
+  };
+
+  // Workflow coordination
+  coordination_queue?: Array<{
+    id: string;
+    type: 'handoff' | 'parallel_sync' | 'dependency_wait' | 'decision_point';
+    from_agent?: string;
+    to_agent?: string;
+    status: 'pending' | 'in_progress' | 'completed';
+    created_at: string;
+    metadata: Record<string, unknown>;
+  }>;
 }
