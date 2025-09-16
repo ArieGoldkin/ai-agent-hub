@@ -23,7 +23,7 @@ import { loadCurrentMode, saveMode } from "./utils/mode-manager.js";
 import { parseArguments, getInstallTargets } from "../lib/cli/arg-parser.js";
 import { handleModeSelection } from "../lib/cli/mode-detector.js";
 
-const CURRENT_VERSION = "3.0.8";
+const CURRENT_VERSION = "3.4.0";
 const VALID_MODES = ['classic', 'squad', 'auto'];
 
 // Main CLI router

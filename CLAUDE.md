@@ -11,27 +11,33 @@ AI Agent Hub is a **lean deployment tool** (not an orchestration platform). Keep
 - Intelligence lives in the agents, not the tool
 - Complexity was intentionally removed and should not be added back
 
-## Current Architecture (v3.3.0)
+## Current Architecture (v3.4.0)
 
 ### Key Metrics
 ```
-- 28 TypeScript files, ~2,200 lines (modular)
-- 2 dependencies only: chalk + js-yaml  
+- 31 TypeScript files, ~2,400 lines (modular)
+- 2 dependencies only: chalk + js-yaml
 - Setup: 3 seconds, 1 question
 - Modes: Classic (learning) | Squad (production + parallel)
 - Parallel: 1-9 agents, 66-79% time reduction
 - PRD: Optional - works with any input
+- Context: Full session persistence & agent collaboration
 ```
 
 ### Core Structure
 ```
 bin/commands/          # CLI commands (setup, install, help)
 lib/                   # Core libraries (MCP, desktop, generators)
+├── context/           # Context persistence & vocabulary learning
+├── claude-md-generator/ # Intelligent documentation generation
 agents/                # Full agents for Classic mode (270-720 lines)
 .squad/                # Squad mode infrastructure
 ├── templates/         # Slim agents (25 lines, 97% reduction)
 ├── commands/          # Parallel execution (allocate, start, sync)
 └── examples/          # Test scenarios and demos
+assets/                # Templates, triggers, and instructions
+├── context-triggers.md    # Keyword-based agent activation
+└── context-instructions.md # Shared context protocol
 ```
 
 ## Execution Modes
@@ -47,7 +53,37 @@ npx ai-agent-hub --mode squad      # Slim agents, parallel
 npx ai-agent-hub --mode auto       # Auto-detect based on project
 ```
 
-## Latest: Smart PRD Inference (v3.3.0)
+## Latest: Context-Aware Agent Collaboration (v3.4.0)
+
+### Seamless Session Persistence
+Every agent interaction now maintains full context awareness:
+
+1. **Session Continuity** - Work persists across Claude sessions
+2. **Shared Context** - All agents read/write to `.claude/context/`
+3. **Automatic Synchronization** - Decisions immediately available to all agents
+4. **Vocabulary Learning** - Adapts to your project's terminology
+
+### How Context Works
+```json
+// .claude/context/shared-context.json
+{
+  "session_id": "persistent-across-sessions",
+  "agent_decisions": {
+    "backend": { "api_endpoints": [...] },
+    "frontend": { "ui_components": [...] }
+  },
+  "tasks_completed": ["auth", "dashboard"],
+  "tasks_pending": ["notifications", "testing"]
+}
+```
+
+### Benefits
+- **No Duplicate Work** - Agents know what's already done
+- **Coherent Architecture** - All decisions align automatically
+- **Smart Handoffs** - Each agent continues where others left off
+- **Cross-Session Memory** - Claude remembers everything between sessions
+
+## Previous: Smart PRD Inference (v3.3.0)
 
 ### One-Question Parallel Execution
 1. **Searches** for existing requirements (PRD, README, docs)
@@ -228,4 +264,25 @@ This tool succeeds by doing less, not more. Every line of code is a liability. T
 
 ---
 
-*Last Updated: v3.3.0 - Mode-specific CLAUDE.md generation for Classic and Squad modes*
+*Last Updated: v3.4.0 - Context-aware agent collaboration with session persistence*
+
+## Changelog
+
+### v3.4.0 - Context-Aware Collaboration
+- Added full context persistence system (`.claude/context/`)
+- Implemented session continuity across Claude sessions
+- Added vocabulary learning for project terminology
+- Enhanced all agents with context awareness instructions
+- Added automatic context synchronization between agents
+- Context triggers for keyword-based agent activation
+
+### v3.3.0 - Smart PRD Inference
+- One-question parallel execution
+- Automatic agent allocation (1-9 agents)
+- Natural language task inference
+- 66-79% time reduction with parallel execution
+
+### v3.2.0 - Squad Mode
+- 97% token reduction with slim agents
+- Parallel execution infrastructure
+- File-level mutex for conflict prevention

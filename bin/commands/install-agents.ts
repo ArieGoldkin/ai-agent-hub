@@ -11,7 +11,8 @@ import {
   copyContextTriggers,
   createClaudeSettings,
   findPackageRoot,
-  getAgentSource
+  getAgentSource,
+  appendContextInstructions
 } from "./install-agents/index.js";
 
 /**
@@ -53,10 +54,13 @@ export async function installAgents(__dirname: string, mode: string = 'classic')
     
     // Copy context triggers file (works for both Classic and Squad modes)
     await copyContextTriggers(packageRoot);
-    
+
     // Initialize structured context system
     await initializeContextSystem(mode);
-    
+
+    // Append context instructions to all agents
+    await appendContextInstructions(packageRoot);
+
     // Create settings
     await createClaudeSettings();
     

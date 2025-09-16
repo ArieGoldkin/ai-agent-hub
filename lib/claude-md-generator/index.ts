@@ -16,6 +16,7 @@ import { generateSquadSections } from "./generators/squad-sections.js";
 import { generateModeHeader } from "./generators/mode-header.js";
 import { generateMcpSection, generateTipsSection } from "./generators/common-sections.js";
 import { generateAutoDetectionSection } from "./generators/auto-detection.js";
+import { generateContextAwarenessSection } from "./generators/context-awareness.js";
 
 /**
  * Generate complete CLAUDE.md content
@@ -33,7 +34,10 @@ export async function generateClaudeMd(
   
   // Auto-Agent Detection Mode - FIRST for emphasis
   sections.push(generateAutoDetectionSection());
-  
+
+  // Context Awareness - Critical for continuity
+  sections.push(generateContextAwarenessSection());
+
   // Quick Start (preserve if exists, otherwise generate)
   const existingQuickStart = existingSections.find(s => s.title.includes('Quick Start'));
   if (existingQuickStart && strategy !== 'create') {
