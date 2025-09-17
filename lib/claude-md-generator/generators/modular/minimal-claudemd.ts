@@ -39,14 +39,16 @@ export function generateMinimalClaudeMd(
   sections.push('| `.claude/instructions/orchestration.md` | Routing & coordination | Complex tasks, multi-agent work |');
   sections.push('| `.claude/instructions/agents.md` | Agent capabilities | When invoking specific agents |');
   sections.push('| `.claude/instructions/context.md` | Context system | Session continuity, handoffs |');
-  sections.push('| `.claude/instructions/workflows.md` | Workflow patterns | Multi-step projects |\n');
+  sections.push('| `.claude/instructions/workflows.md` | Workflow patterns | Multi-step projects |');
+  sections.push('| `.claude/instructions/cli-integration.md` | CLI auto-detection | Claude Code CLI interactions |\n');
 
   // Quick start
   sections.push('## 🎯 Quick Start\n');
   sections.push('1. **Simple tasks**: Work directly without loading extra instructions');
   sections.push('2. **Agent work**: Read `.claude/instructions/agents.md` for capabilities');
   sections.push('3. **Complex projects**: Read `.claude/instructions/orchestration.md` for routing');
-  sections.push('4. **Multi-session**: Read `.claude/instructions/context.md` for continuity\n');
+  sections.push('4. **Multi-session**: Read `.claude/instructions/context.md` for continuity');
+  sections.push('5. **CLI usage**: Read `.claude/instructions/cli-integration.md` for auto-detection\n');
 
   // Agent trigger detection
   sections.push('## 🔍 Auto-Detection\n');

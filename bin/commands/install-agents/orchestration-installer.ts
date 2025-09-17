@@ -24,7 +24,8 @@ export async function installOrchestrationInstructions(packageRoot: string): Pro
       'orchestration.md',
       'agents.md',
       'context.md',
-      'workflows.md'
+      'workflows.md',
+      'cli-integration.md'
     ];
 
     // Copy each instruction file from assets

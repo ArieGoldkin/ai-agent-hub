@@ -51,3 +51,32 @@ I recommend [Agent] who can [capability]."
 - Avoid duplicate work by checking context first
 - Use parallel execution where possible
 - Keep shared-context.json under 50KB
+
+## CLI Integration Examples
+
+### Auto-Detection Flow
+```
+User (CLI): "Fix the login bug"
+1. Check .claude/ directory exists → orchestration available
+2. Analyze: Bug fix request, authentication domain
+3. Route: code-quality-reviewer + backend-system-architect
+4. Update context for future related fixes
+```
+
+### Session Continuation
+```
+User (CLI): "What were we working on?"
+1. Load shared-context.json
+2. Check cli_session.last_command
+3. Report: "Dashboard component creation with rapid-ui-designer"
+4. Suggest: "Ready to continue with styling phase"
+```
+
+### Intelligent Routing
+```
+User (CLI): "Build me a viral app"
+1. Complexity: 9/10 → needs orchestration
+2. Domains: UI, backend, AI, marketing
+3. Route to: Studio Coach (coordinator)
+4. Studio Coach activates: 5 agents in parallel
+```
