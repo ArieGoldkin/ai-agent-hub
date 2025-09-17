@@ -11,5 +11,8 @@ export {
   generateAdvancedRoutingExamples,
   generateOrchestrationProtocols,
   generateHandoffProtocols,
-  generatePerformanceOptimization
+  generatePerformanceOptimization,
+  generateWorkflowPatterns,
+  generatePatternSelectionGuide,
+  generateStudioCoachOrchestrationEnhancement
 } from './orchestration/index.js';
