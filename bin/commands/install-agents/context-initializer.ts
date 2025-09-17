@@ -13,11 +13,17 @@ import { VocabularyLearning } from "../../../lib/context/vocabulary-learning.js"
  */
 export async function initializeContextSystem(mode: string): Promise<void> {
   const contextDir = '.claude/context';
+  const instructionsDir = '.claude/instructions';
 
   try {
     // Create context directory
     if (!existsSync(contextDir)) {
       await mkdir(contextDir, { recursive: true });
+    }
+
+    // Create instructions directory for orchestration
+    if (!existsSync(instructionsDir)) {
+      await mkdir(instructionsDir, { recursive: true });
     }
 
     // Check for existing session
