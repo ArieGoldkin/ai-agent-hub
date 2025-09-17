@@ -9,10 +9,18 @@ Transform AI Agent Hub from a **static agent deployment tool** into an **intelli
 
 ### 🏆 Key Implementation Success:
 **One Command, Complete Intelligence**: `npx ai-agent-hub`
+
+**Token Engineering Achievement:**
+- ✅ **CLAUDE.md: 62 lines** (was 771 lines)
+- ✅ **Base tokens: ~400** (was ~6,000)
+- ✅ **Token reduction: 85-92%** on every interaction
+- ✅ **Dynamic loading** - Only loads needed instructions
+- ✅ **Modular architecture** - 5 separate instruction files
+
+**Zero-Configuration Achievement:**
 - ✅ **No runtime components** - All intelligence via instruction files
 - ✅ **No configuration** - Everything auto-configured on install
 - ✅ **No complexity** - Simple instruction-based approach
-- ✅ **85% token reduction** - Through modular loading
 - ✅ **100% automated** - Developer just runs NPX and chooses options
 
 ## 📊 Current Implementation Status
@@ -41,6 +49,30 @@ Transform AI Agent Hub from a **static agent deployment tool** into an **intelli
 - **Session Persistence**: Cross-CLI session continuity
 - **Progressive Enhancement**: Seamless integration with existing workflows
 - **Zero Configuration**: All via instruction files, no runtime components
+
+## 🏗️ Core Architecture Principle: Minimal CLAUDE.md & Token Engineering
+
+### Token Efficiency Strategy:
+**CLAUDE.md as a Router, Not a Repository**
+- CLAUDE.md stays under 100 lines (~400-500 tokens)
+- All detailed instructions in separate `.claude/instructions/*.md` files
+- Dynamic loading: Only load instructions when needed
+- Reference-based architecture: CLAUDE.md points to files, doesn't contain them
+
+### Implementation Pattern:
+```
+CLAUDE.md (minimal)
+  ├─→ Points to → .claude/instructions/orchestration.md (load for complex tasks)
+  ├─→ Points to → .claude/instructions/agents.md (load for agent work)
+  ├─→ Points to → .claude/instructions/context.md (load for sessions)
+  ├─→ Points to → .claude/instructions/workflows.md (load for patterns)
+  └─→ Points to → .claude/instructions/cli-integration.md (load for CLI)
+```
+
+### Token Savings:
+- **Before**: Monolithic CLAUDE.md with 771+ lines (~5,000-6,000 tokens)
+- **After**: Minimal CLAUDE.md + dynamic loading (~400 base tokens)
+- **Result**: 85-92% token reduction on every interaction
 
 ## 🎯 Core Objectives
 
@@ -346,7 +378,14 @@ CLAUDE.md                    # 60 lines (~400 tokens)
 
 ## 🔒 Core Principles Maintained
 
-### Simplicity First
+### Token Engineering First
+- **Minimal CLAUDE.md** - Always under 100 lines (~400-500 tokens)
+- **Reference-based architecture** - CLAUDE.md points to instructions, doesn't contain them
+- **Dynamic loading** - Only load what's needed for current task
+- **Modular instructions** - Each topic in separate file for selective loading
+- **85%+ token savings** - On every Claude Code interaction
+
+### Simplicity Second
 - **3-second setup** - No additional configuration required
 - **Zero breaking changes** - Existing agents continue to work
 - **Lean architecture** - Intelligence layer adds <500 lines total
@@ -474,6 +513,35 @@ Comprehensive testing and optimization:
 - [x] Ensured backward compatibility
 - [x] Tested with fresh installations
 - [x] All via instruction files - no runtime components
+
+## 📐 Token Engineering Guidelines
+
+### For Any New Feature:
+1. **Never add to CLAUDE.md directly** - Create separate instruction file
+2. **Use references** - CLAUDE.md should only point to the file
+3. **Selective loading** - Instructions should state "Load this when..."
+4. **Measure impact** - Each instruction file should be <100 lines
+5. **Test token usage** - Verify minimal base context is maintained
+
+### Instruction File Pattern:
+```markdown
+# [Feature Name]
+*Load this file when [specific condition]*
+
+## [Concise instructions]
+[Keep under 100 lines]
+```
+
+### CLAUDE.md Addition Pattern:
+```markdown
+| `.claude/instructions/[feature].md` | [Purpose] | [When to load] |
+```
+
+### Token Budget:
+- CLAUDE.md: Max 100 lines (~400-500 tokens)
+- Each instruction file: Max 100-150 lines (~500-750 tokens)
+- Total loaded per task: Aim for <1,500 tokens
+- Compare to monolithic: Would be 5,000-10,000 tokens
 
 ## 🚀 How It Works - Complete Simplicity
 
