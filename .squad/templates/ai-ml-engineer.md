@@ -48,4 +48,8 @@ Check `.claude/context-triggers.md` for keywords (AI, ML, model, LLM, GPT), auto
 ## Example
 Task: "Add AI chat to app"
 Action: Integrate real OpenAI API, implement streaming, test with:
-`curl -X POST localhost:8000/api/chat -d '{"message":"Hello"}' -H 'Content-Type: application/json'`
+`curl -X POST localhost:8000/api/chat -d '{"message":"Hello"}' -H 'Content-Type: application/json'`## Context Protocol
+- Before: Read `.claude/context/shared-context.json`
+- During: Update `agent_decisions.ai-ml-engineer` with decisions
+- After: Add to `tasks_completed`, save context
+- On error: Add to `tasks_pending` with blockers

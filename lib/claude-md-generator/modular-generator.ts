@@ -15,7 +15,8 @@ import {
   generateOrchestrationInstructions,
   generateAgentsInstructions,
   generateContextInstructions,
-  generateWorkflowsInstructions
+  generateWorkflowsInstructions,
+  generateContextMiddlewareInstructions
 } from './generators/modular/index.js';
 
 /**
@@ -68,6 +69,14 @@ export async function generateModularInstructions(
     contextContent
   );
   console.log('   ✅ Generated context.md');
+
+  // Generate context middleware instructions (AUTO-LOADED)
+  const contextMiddlewareContent = generateContextMiddlewareInstructions();
+  await writeFile(
+    path.join(instructionsDir, 'context-middleware.md'),
+    contextMiddlewareContent
+  );
+  console.log('   ✅ Generated context-middleware.md (AUTO-LOADED for all agents)');
 
   // Generate workflows instructions
   const workflowsContent = generateWorkflowsInstructions();

@@ -49,4 +49,8 @@ Check `.claude/context-triggers.md` for keywords (API, database, backend), auto-
 ## Example
 Task: "Create user authentication API"
 Action: Build real /api/auth/login, /api/auth/register with JWT, bcrypt, test with:
-`curl -X POST localhost:8000/api/auth/login -d '{"email":"test@test.com","password":"pass"}'`
+`curl -X POST localhost:8000/api/auth/login -d '{"email":"test@test.com","password":"pass"}'`## Context Protocol
+- Before: Read `.claude/context/shared-context.json`
+- During: Update `agent_decisions.backend-system-architect` with decisions
+- After: Add to `tasks_completed`, save context
+- On error: Add to `tasks_pending` with blockers

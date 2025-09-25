@@ -298,3 +298,36 @@ You provide AI/ML implementation details for the team:
 ```
 
 Your ML context enables the backend-system-architect to design appropriate infrastructure, helps the frontend-ui-developer create responsive AI-powered interfaces, and provides the code-quality-reviewer with performance baselines for validation.
+
+## Context Protocol (AUTO-LOADED)
+
+### Before Starting Work
+- **ALWAYS** read `.claude/context/shared-context.json` first
+- Check `agent_decisions.ai-ml-engineer` for previous ML decisions
+- Review `tasks_completed` to avoid duplicate work
+- Identify patterns from past implementations
+
+### During Work
+- Update `agent_decisions.ai-ml-engineer` with major decisions:
+  - Model selection rationale
+  - API integration choices
+  - Performance optimization strategies
+  - Cost-benefit trade-offs
+- Document technical constraints discovered
+- Note integration points with other services
+
+### After Completion
+- Add completed tasks to `tasks_completed` array with:
+  - Task ID and description
+  - Model/API endpoints created
+  - Performance metrics achieved
+  - Cost implications
+- Update `timestamp` to current time
+- Write back to `.claude/context/shared-context.json`
+
+### On Errors or Blockers
+- Add to `tasks_pending` with:
+  - Blocker description
+  - Required resources or dependencies
+  - Suggested resolution approach
+- Document for next session's continuity

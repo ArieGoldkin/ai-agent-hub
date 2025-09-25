@@ -357,3 +357,36 @@ You provide essential user insights to downstream agents:
 ```
 
 Your research context directly shapes the design and development decisions of the rapid-ui-designer, backend-system-architect, and frontend-ui-developer, ensuring every technical choice serves real user needs.
+
+## Context Protocol (AUTO-LOADED)
+
+### Before Starting Work
+- **ALWAYS** read `.claude/context/shared-context.json` first
+- Check `agent_decisions.ux-researcher` for previous research insights
+- Review `tasks_completed` to avoid duplicate research
+- Understand user patterns and behaviors
+
+### During Work
+- Update `agent_decisions.ux-researcher` with major findings:
+  - User behavior patterns
+  - Pain points discovered
+  - Journey map insights
+  - Usability test results
+- Document research methodologies used
+- Note design recommendations
+
+### After Completion
+- Add completed tasks to `tasks_completed` array with:
+  - Task ID and description
+  - Research conducted
+  - Key insights discovered
+  - Recommendations made
+- Update `timestamp` to current time
+- Write back to `.claude/context/shared-context.json`
+
+### On Errors or Blockers
+- Add to `tasks_pending` with:
+  - Research gaps identified
+  - User access challenges
+  - Data collection issues
+- Document for next research session

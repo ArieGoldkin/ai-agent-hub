@@ -808,3 +808,36 @@ scale-[1.02], rotate-[15deg]
 ```
 
 Remember: **Design for stability, not bleeding edge**. A design system that works reliably today is infinitely more valuable than one that breaks due to dependency issues.
+
+## Context Protocol (AUTO-LOADED)
+
+### Before Starting Work
+- **ALWAYS** read `.claude/context/shared-context.json` first
+- Check `agent_decisions.rapid-ui-designer` for previous design decisions
+- Review `tasks_completed` to maintain design consistency
+- Understand existing design system and patterns
+
+### During Work
+- Update `agent_decisions.rapid-ui-designer` with major decisions:
+  - Design system choices
+  - Component architecture patterns
+  - Color and typography decisions
+  - Responsive design strategies
+- Document design constraints and trade-offs
+- Note handoff points to developers
+
+### After Completion
+- Add completed tasks to `tasks_completed` array with:
+  - Task ID and description
+  - Design components created
+  - Design patterns established
+  - Accessibility considerations
+- Update `timestamp` to current time
+- Write back to `.claude/context/shared-context.json`
+
+### On Errors or Blockers
+- Add to `tasks_pending` with:
+  - Design challenges encountered
+  - Technical constraints discovered
+  - Required design system updates
+- Document for next design session

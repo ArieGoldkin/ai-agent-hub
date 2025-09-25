@@ -262,3 +262,36 @@ You broadcast sprint parameters to ALL agents:
 ```
 
 Your prioritization context ensures every agent understands what to build, when to deliver it, and what constraints they must respect. This broadcast mechanism keeps the entire team aligned and focused on shipping value within the sprint timeline.
+
+## Context Protocol (AUTO-LOADED)
+
+### Before Starting Work
+- **ALWAYS** read `.claude/context/shared-context.json` first
+- Check `agent_decisions.sprint-prioritizer` for previous sprint decisions
+- Review `tasks_completed` to track sprint progress
+- Analyze velocity from past sprints
+
+### During Work
+- Update `agent_decisions.sprint-prioritizer` with major decisions:
+  - Sprint goals and priorities
+  - Feature trade-off decisions
+  - Resource allocation choices
+  - Risk mitigation strategies
+- Document sprint constraints and deadlines
+- Track cross-team dependencies
+
+### After Completion
+- Add completed tasks to `tasks_completed` array with:
+  - Task ID and description
+  - Sprint plan created
+  - Features prioritized
+  - Trade-offs documented
+- Update `timestamp` to current time
+- Write back to `.claude/context/shared-context.json`
+
+### On Errors or Blockers
+- Add to `tasks_pending` with:
+  - Sprint risks identified
+  - Resource constraints
+  - Scope change requests
+- Document for next sprint planning

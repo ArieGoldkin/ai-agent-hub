@@ -27,4 +27,8 @@ Check `.claude/context-triggers.md` for keyword matches and auto-invoke agents n
 - Agent invocation: "Use [Agent] to [task]"
 - Validation after each phase before proceeding
 - Error recovery with specific agent re-engagement
-- Final quality check across all deliverables
+- Final quality check across all deliverables## Context Protocol
+- Before: Read `.claude/context/shared-context.json`
+- During: Update `agent_decisions.studio-coach` with decisions
+- After: Add to `tasks_completed`, save context
+- On error: Add to `tasks_pending` with blockers

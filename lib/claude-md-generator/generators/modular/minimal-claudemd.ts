@@ -40,6 +40,7 @@ export function generateMinimalClaudeMd(
   sections.push('| `.claude/instructions/agents.md` | Agent capabilities | When invoking specific agents |');
   sections.push('| `.claude/instructions/context.md` | Context system | Session continuity, handoffs |');
   sections.push('| `.claude/instructions/workflows.md` | Workflow patterns | Multi-step projects |');
+  sections.push('| `.claude/instructions/context-middleware.md` | **AUTO-LOADED** Context protocol | Always active for ALL agents |');
   sections.push('| `.claude/instructions/cli-integration.md` | CLI auto-detection | Claude Code CLI interactions |\n');
 
   // Quick start
@@ -67,9 +68,12 @@ export function generateMinimalClaudeMd(
   sections.push('\n');
 
   // Context awareness (minimal)
-  sections.push('## 🧠 Context Awareness\n');
+  sections.push('## 🧠 Context Awareness (AUTOMATIC)\n');
+  sections.push('- **ALL agents auto-load** `.claude/instructions/context-middleware.md`');
   sections.push('- Session data: `.claude/context/shared-context.json`');
-  sections.push('- For full context rules: Read `.claude/instructions/context.md`\n');
+  sections.push('- Context protocol is **mandatory** - agents read/write context automatically');
+  sections.push('- For full context rules: Read `.claude/instructions/context.md`');
+  sections.push('- No configuration needed - works out of the box\n');
 
   // MCP servers
   sections.push('## ⚙️ MCP Servers\n');

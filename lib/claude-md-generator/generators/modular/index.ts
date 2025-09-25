@@ -10,3 +10,4 @@ export { generateOrchestrationInstructions } from './orchestration-instructions.
 export { generateAgentsInstructions } from './agents-instructions.js';
 export { generateContextInstructions } from './context-instructions.js';
 export { generateWorkflowsInstructions } from './workflows-instructions.js';
+export { generateContextMiddlewareInstructions } from './context-middleware-instructions.js';
