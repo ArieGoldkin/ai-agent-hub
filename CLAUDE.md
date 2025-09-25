@@ -22,6 +22,7 @@ This project uses a modular instruction system to optimize token usage.
 | `.claude/instructions/agents.md` | Agent capabilities | When invoking specific agents |
 | `.claude/instructions/context.md` | Context system | Session continuity, handoffs |
 | `.claude/instructions/workflows.md` | Workflow patterns | Multi-step projects |
+| `.claude/instructions/context-middleware.md` | **AUTO-LOADED** Context protocol | Always active for ALL agents |
 
 ## 🎯 Quick Start
 
@@ -48,10 +49,13 @@ For semantic routing beyond keywords, load `.claude/instructions/orchestration.m
 - **whimsy-injector**
 
 
-## 🧠 Context Awareness
+## 🧠 Context Awareness (AUTOMATIC)
 
+- **ALL agents auto-load** `.claude/instructions/context-middleware.md`
 - Session data: `.claude/context/shared-context.json`
+- Context protocol is **mandatory** - agents read/write context automatically
 - For full context rules: Read `.claude/instructions/context.md`
+- No configuration needed - works out of the box
 
 ## ⚙️ MCP Servers
 
