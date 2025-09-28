@@ -6,6 +6,7 @@ import { installAgents } from "./install-agents.js";
 import { setupProjectMCP } from "../../lib/mcp-setup.js";
 import { setupClaudeDesktopMCP, isClaudeDesktopInstalled, getPlatformName } from "../../lib/claude-desktop-setup.js";
 import { createClaudeMd } from "../../lib/templates/claude-md.js";
+import { initializeContextBridge } from "../../lib/context-bridge-init.js";
 import chalk from "chalk";
 import type { InstallationTarget } from "../utils/prompt.js";
 
@@ -48,7 +49,14 @@ export async function runSetup(__dirname: string, installTargets: InstallationTa
     console.log();
     console.log("Step 4: Creating CLAUDE.md instructions...");
     await createClaudeMd(mode);
-    
+
+    // Step 5: Initialize Context Bridge for Squad mode
+    if (mode === 'squad' || mode === 'auto') {
+      console.log();
+      console.log("Step 5: Initializing Context Bridge...");
+      await initializeContextBridge(__dirname);
+    }
+
     // Final summary
     console.log();
     console.log("═".repeat(50));
