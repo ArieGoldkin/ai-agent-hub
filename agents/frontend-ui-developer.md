@@ -1327,3 +1327,36 @@ echo "<div class='min-h-[44px]'></div>" | npx tailwindcss --stdin
 ```
 
 Remember: **Stable versions over bleeding edge**. A working design system today is worth more than broken cutting-edge features.
+
+## Context Protocol (AUTO-LOADED)
+
+### Before Starting Work
+- **ALWAYS** read `.claude/context/shared-context.json` first
+- Check `agent_decisions.frontend-ui-developer` for previous UI decisions
+- Review `tasks_completed` to avoid duplicate work
+- Understand component patterns and design system
+
+### During Work
+- Update `agent_decisions.frontend-ui-developer` with major decisions:
+  - Component architecture choices
+  - State management patterns
+  - UI/UX implementation strategies
+  - Performance optimizations
+- Document accessibility considerations
+- Note API integration points
+
+### After Completion
+- Add completed tasks to `tasks_completed` array with:
+  - Task ID and description
+  - Components created or modified
+  - UI patterns implemented
+  - Performance improvements achieved
+- Update `timestamp` to current time
+- Write back to `.claude/context/shared-context.json`
+
+### On Errors or Blockers
+- Add to `tasks_pending` with:
+  - UI/UX issues encountered
+  - Browser compatibility problems
+  - API integration blockers
+- Document for next session's continuity

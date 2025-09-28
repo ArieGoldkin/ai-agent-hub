@@ -48,4 +48,8 @@ Check `.claude/context-triggers.md` for keywords (test, review, quality, bug, li
 ## Example
 Task: "Review authentication code"
 Action: Run `npm run lint && npm run typecheck && npm test auth.test.ts`
-Report: Found SQL injection risk in login.ts:45, missing rate limiting
+Report: Found SQL injection risk in login.ts:45, missing rate limiting## Context Protocol
+- Before: Read `.claude/context/shared-context.json`
+- During: Update `agent_decisions.code-quality-reviewer` with decisions
+- After: Add to `tasks_completed`, save context
+- On error: Add to `tasks_pending` with blockers

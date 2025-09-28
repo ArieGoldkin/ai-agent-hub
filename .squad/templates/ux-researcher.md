@@ -44,4 +44,8 @@ Task: "Research user needs for dashboard redesign"
 - Creates persona: "Sarah, data analyst, needs quick insights, frustrated by slow load times"
 - Maps journey: Login → Filter data → Export (3 friction points identified)
 - Validates with users: 80% want faster filters, 60% need better export options
-- Documents insights: Prioritize performance over aesthetics, add keyboard shortcuts
+- Documents insights: Prioritize performance over aesthetics, add keyboard shortcuts## Context Protocol
+- Before: Read `.claude/context/shared-context.json`
+- During: Update `agent_decisions.ux-researcher` with decisions
+- After: Add to `tasks_completed`, save context
+- On error: Add to `tasks_pending` with blockers

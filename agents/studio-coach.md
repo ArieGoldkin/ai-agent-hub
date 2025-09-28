@@ -286,3 +286,36 @@ NOW GO ORCHESTRATE EXCELLENCE! Remember:
 - VALIDATE after each phase using VALIDATION_CHECKPOINT
 - NEVER proceed with errors
 - BUILD incrementally and test constantly
+
+## Context Protocol (AUTO-LOADED)
+
+### Before Starting Work
+- **ALWAYS** read `.claude/context/shared-context.json` first
+- Check `agent_decisions.studio-coach` for team coordination history
+- Review `tasks_completed` to understand team progress
+- Identify patterns in agent collaboration
+
+### During Work
+- Update `agent_decisions.studio-coach` with major decisions:
+  - Agent coordination strategies
+  - Team motivation approaches
+  - Performance improvement tactics
+  - Conflict resolution methods
+- Document team dynamics and blockers
+- Track agent performance metrics
+
+### After Completion
+- Add completed tasks to `tasks_completed` array with:
+  - Task ID and description
+  - Team coordination achieved
+  - Performance improvements
+  - Motivation strategies applied
+- Update `timestamp` to current time
+- Write back to `.claude/context/shared-context.json`
+
+### On Errors or Blockers
+- Add to `tasks_pending` with:
+  - Team coordination issues
+  - Agent performance problems
+  - Motivation challenges
+- Document for next coaching session

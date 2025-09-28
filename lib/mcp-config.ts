@@ -46,6 +46,10 @@ export function getBaseMCPServers(): Record<string, MCPServerConfig> {
     browsermcp: {
       command: "npx",
       args: ["@browsermcp/mcp@latest"]
+    },
+    shadcn: {
+      command: "npx",
+      args: ["shadcn@latest", "mcp"]
     }
   };
 }

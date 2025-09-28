@@ -11,7 +11,17 @@
 │   ├── role-comm-*.md              # Progress updates
 │   ├── artifacts/                  # Generated files
 │   └── locks/                      # File lock tracking
+.claude/context/
+├── shared-context.json             # Unified context (synced automatically)
+└── instructions/context-middleware.md # Context protocol
 ```
+
+### Context Synchronization
+Squad communication files automatically sync with `.claude/context/shared-context.json`:
+- Agent decisions from `role-comm-*.md` → `agent_decisions`
+- Completed tasks → `tasks_completed`
+- Blocked items → `tasks_pending`
+- Session continuity preserved across Squad/Classic modes
 
 ## Message Formats
 

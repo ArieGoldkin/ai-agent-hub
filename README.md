@@ -3,7 +3,8 @@
 <div align="center">
   
   ### ✨ Transform Claude into 9 Context-Aware AI Agents Working in Parallel ✨
-  ### 🏃‍♂️ Build 79% Faster with Squad Mode + Full Session Memory 🏃‍♂️
+  ### 🧠 Intelligent Orchestration + 79% Faster with Squad Mode 🚀
+  ### 🎯 Zero-Config Semantic Routing - Agents Auto-Select Based on Intent 🎯
   
   ```bash
   npx ai-agent-hub@latest
@@ -91,9 +92,29 @@ Total: 30 minutes (66% faster!)
 
 ---
 
-## 🧠 Context-Aware Collaboration (v3.4.0)
+## 🧠 Intelligent Orchestration System (v3.4.1)
 
-Agents now share context automatically, building on each other's work seamlessly:
+**NEW: Zero-config semantic routing automatically selects the right agents for your task!**
+
+### How Intelligence Works
+```
+User says: "Fix the login bug" → System analyzes:
+├── Intent: Debug/Fix (not create)
+├── Complexity: Score 3 (single domain)
+├── Domain: Authentication/Frontend
+└── Routes to: Frontend Developer + Quality Reviewer
+```
+
+### Semantic Analysis Features
+- **🎯 Intent Classification** - Understands what you're trying to achieve
+- **📊 Complexity Scoring** - Evaluates task difficulty (1-10 scale)
+- **🔍 Domain Detection** - Identifies which specializations are needed
+- **🤝 Smart Handoffs** - Agents suggest next specialists automatically
+- **📈 Continuous Learning** - Improves routing decisions over time
+
+## 🔄 Context-Aware Collaboration
+
+Agents share context automatically, building on each other's work seamlessly:
 
 ### How It Works
 ```
@@ -103,19 +124,13 @@ Agents now share context automatically, building on each other's work seamlessly
 4. Next session continues → Picks up exactly where you left off
 ```
 
-### Automatic Features
-- **📝 Session Memory** - Work persists between Claude sessions
-- **🔄 Shared Decisions** - All agents see what others decided
-- **📚 Vocabulary Learning** - Adapts to your project's terminology
-- **🎯 Smart Triggers** - Agents activate based on keywords
-
 ### Example Flow
 ```markdown
-User: "Build an authentication system"
-→ Backend Architect designs API, writes to context
-→ Frontend Developer reads API specs, builds matching UI
-→ AI Engineer sees both, adds biometric features
-→ All decisions aligned automatically!
+User: "Build a dashboard with real-time updates"
+→ System scores complexity: 7 (multi-domain)
+→ Routes to Studio Coach for orchestration
+→ Coach coordinates: Backend → Frontend → AI Engineer
+→ All agents share context automatically!
 ```
 
 ---
@@ -146,6 +161,7 @@ Your Claude gets enhanced capabilities through MCP servers:
 - **Context7** - Large project management
 - **Playwright** - Browser automation
 - **Browser MCP** - Web control (requires [extension](https://docs.browsermcp.io/setup-extension))
+- **Shadcn** - UI component registry integration
 
 ### Desktop-Specific
 - **Filesystem** - File system access

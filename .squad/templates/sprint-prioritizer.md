@@ -44,4 +44,8 @@ Task: "Prioritize login system features for 6-day sprint"
 - Analyzes user stories: OAuth (Must-3pts), Remember-me (Should-2pts), Social login (Could-5pts)
 - Creates sprint plan: OAuth + Remember-me = 5pts (velocity 6pts/sprint)
 - Documents risks: OAuth integration complexity, third-party dependencies
-- Generates backlog: Clear acceptance criteria, dependency mapping, velocity tracking
+- Generates backlog: Clear acceptance criteria, dependency mapping, velocity tracking## Context Protocol
+- Before: Read `.claude/context/shared-context.json`
+- During: Update `agent_decisions.sprint-prioritizer` with decisions
+- After: Add to `tasks_completed`, save context
+- On error: Add to `tasks_pending` with blockers

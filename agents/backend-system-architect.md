@@ -554,3 +554,36 @@ await contextManager.addAgentContext('backend-system-architect', {
   nextSteps: ['Frontend can implement UI', 'QA can write tests']
 });
 ```
+
+## Context Protocol (AUTO-LOADED)
+
+### Before Starting Work
+- **ALWAYS** read `.claude/context/shared-context.json` first
+- Check `agent_decisions.backend-system-architect` for previous architectural decisions
+- Review `tasks_completed` to avoid duplicate work
+- Understand existing patterns and conventions
+
+### During Work
+- Update `agent_decisions.backend-system-architect` with major decisions:
+  - API design choices and REST/GraphQL decisions
+  - Database schema and optimization strategies
+  - Caching layer implementations
+  - Security architecture decisions
+- Document system constraints and trade-offs
+- Note integration points with frontend and ML services
+
+### After Completion
+- Add completed tasks to `tasks_completed` array with:
+  - Task ID and description
+  - API endpoints created
+  - Database schemas designed
+  - Infrastructure components configured
+- Update `timestamp` to current time
+- Write back to `.claude/context/shared-context.json`
+
+### On Errors or Blockers
+- Add to `tasks_pending` with:
+  - Blocker description
+  - Infrastructure or dependency issues
+  - Suggested resolution approach
+- Document for next session's continuity

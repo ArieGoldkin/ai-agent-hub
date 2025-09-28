@@ -2,16 +2,20 @@
  * CLAUDE.md template - Intelligent agent orchestration documentation
  */
 
-import { createOrUpdateClaudeMd } from "../claude-md-generator/index.js";
+import { generateModularInstructions } from "../claude-md-generator/modular-generator.js";
 
 /**
- * Create or update CLAUDE.md file with intelligent generation
- * 
- * This now uses the agent properties for each phase:
- * - Extraction phase: Parse agent metadata properties from .md files
- * - Analysis phase: Understand relationships and dependencies
- * - Generation phase: Create rich documentation using all properties
+ * Create CLAUDE.md file with modular instruction system
+ *
+ * Generates:
+ * - Minimal CLAUDE.md (~60 lines) for core instructions
+ * - .claude/instructions/orchestration.md for routing
+ * - .claude/instructions/agents.md for agent details
+ * - .claude/instructions/context.md for context system
+ *
+ * This reduces token usage by ~85% through dynamic loading
  */
 export async function createClaudeMd(mode: string = 'classic'): Promise<void> {
-  await createOrUpdateClaudeMd(".claude/agents", "CLAUDE.md", mode);
+  // Always use modular instruction system
+  await generateModularInstructions('.', mode as 'classic' | 'squad');
 }

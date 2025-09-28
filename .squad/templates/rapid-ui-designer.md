@@ -42,4 +42,8 @@ Check `.claude/context-triggers.md` for keywords (design, mockup, UI design, lay
 ## Example
 Task: "Design login page"
 Action: Create mockup with Tailwind: `bg-white p-8 rounded-lg shadow-md max-w-md mx-auto`
-Include: Component specs, color tokens, spacing system
+Include: Component specs, color tokens, spacing system## Context Protocol
+- Before: Read `.claude/context/shared-context.json`
+- During: Update `agent_decisions.rapid-ui-designer` with decisions
+- After: Add to `tasks_completed`, save context
+- On error: Add to `tasks_pending` with blockers

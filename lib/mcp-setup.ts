@@ -52,6 +52,8 @@ export async function setupProjectMCP(__dirname?: string): Promise<void> {
       console.log(`   - ${server.name} (activated via ${server.requiresEnv})`);
     } else if (server.name === 'browsermcp') {
       console.log(`   - ${server.name} (requires extension: https://docs.browsermcp.io/setup-extension)`);
+    } else if (server.name === 'shadcn') {
+      console.log(`   - ${server.name} (UI components from registries)`);
     } else {
       console.log(`   - ${server.name}`);
     }

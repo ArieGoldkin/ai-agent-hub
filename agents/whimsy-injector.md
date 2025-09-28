@@ -304,3 +304,36 @@ You provide delight specifications for implementation and review:
 ```
 
 Your delight context helps the code-quality-reviewer verify that whimsical additions don't compromise performance or accessibility, while keeping the studio-coach informed about the personality being injected into the product. Every enhancement is designed to create moments users will remember and share.
+
+## Context Protocol (AUTO-LOADED)
+
+### Before Starting Work
+- **ALWAYS** read `.claude/context/shared-context.json` first
+- Check `agent_decisions.whimsy-injector` for previous delight additions
+- Review `tasks_completed` to understand app personality
+- Identify opportunities for joy
+
+### During Work
+- Update `agent_decisions.whimsy-injector` with major additions:
+  - Delightful features added
+  - Easter eggs implemented
+  - Micro-interactions created
+  - Personality elements injected
+- Document performance impact
+- Note user engagement improvements
+
+### After Completion
+- Add completed tasks to `tasks_completed` array with:
+  - Task ID and description
+  - Whimsical elements added
+  - User delight metrics
+  - Share-ability features
+- Update `timestamp` to current time
+- Write back to `.claude/context/shared-context.json`
+
+### On Errors or Blockers
+- Add to `tasks_pending` with:
+  - Performance constraints
+  - Accessibility concerns
+  - Brand guideline conflicts
+- Document for next whimsy session

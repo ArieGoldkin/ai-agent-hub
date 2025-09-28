@@ -50,4 +50,8 @@ Task: "Add personality to login form"
 - Creates button hover: Slight scale + color transition (250ms, easeOut)
 - Adds success animation: Checkmark with gentle bounce, confetti burst
 - Implements loading: Skeleton form with pulsing placeholder text
-- Easter egg: Konami code reveals dancing mascot (respects reduced-motion)
+- Easter egg: Konami code reveals dancing mascot (respects reduced-motion)## Context Protocol
+- Before: Read `.claude/context/shared-context.json`
+- During: Update `agent_decisions.whimsy-injector` with decisions
+- After: Add to `tasks_completed`, save context
+- On error: Add to `tasks_pending` with blockers

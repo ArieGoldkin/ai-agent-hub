@@ -49,4 +49,8 @@ Check `.claude/context-triggers.md` for keywords (component, UI, React, frontend
 ## Example
 Task: "Create login form component"
 Action: Build real LoginForm.tsx with validation, API integration, test with:
-`npm run dev` → Open browser → Submit form → Verify API call succeeds
+`npm run dev` → Open browser → Submit form → Verify API call succeeds## Context Protocol
+- Before: Read `.claude/context/shared-context.json`
+- During: Update `agent_decisions.frontend-ui-developer` with decisions
+- After: Add to `tasks_completed`, save context
+- On error: Add to `tasks_pending` with blockers

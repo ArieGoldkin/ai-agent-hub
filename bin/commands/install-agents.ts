@@ -12,7 +12,8 @@ import {
   createClaudeSettings,
   findPackageRoot,
   getAgentSource,
-  appendContextInstructions
+  appendContextInstructions,
+  installOrchestrationInstructions
 } from "./install-agents/index.js";
 
 /**
@@ -57,6 +58,9 @@ export async function installAgents(__dirname: string, mode: string = 'classic')
 
     // Initialize structured context system
     await initializeContextSystem(mode);
+
+    // Install orchestration instructions for intelligent routing
+    await installOrchestrationInstructions(packageRoot);
 
     // Append context instructions to all agents
     await appendContextInstructions(packageRoot);
