@@ -92,9 +92,9 @@ Total: 30 minutes (66% faster!)
 
 ---
 
-## 🧠 Intelligent Orchestration System (v3.4.1)
+## 🧠 Intelligent Orchestration System (v3.4.2)
 
-**NEW: Zero-config semantic routing automatically selects the right agents for your task!**
+**NEW: Zero-config semantic routing with automatic context preservation!**
 
 ### How Intelligence Works
 ```
@@ -112,9 +112,9 @@ User says: "Fix the login bug" → System analyzes:
 - **🤝 Smart Handoffs** - Agents suggest next specialists automatically
 - **📈 Continuous Learning** - Improves routing decisions over time
 
-## 🔄 Context-Aware Collaboration
+## 🔄 Context-Aware Collaboration (v3.4.2 Enhanced)
 
-Agents share context automatically, building on each other's work seamlessly:
+**AUTOMATIC**: All agents now auto-load context middleware for seamless collaboration!
 
 ### How It Works
 ```
@@ -123,6 +123,12 @@ Agents share context automatically, building on each other's work seamlessly:
 3. All agents stay in sync → Real-time sharing, no duplicate effort
 4. Next session continues → Picks up exactly where you left off
 ```
+
+### What's New in 3.4.2
+- ✅ **Auto-loaded context middleware** - Every agent reads/writes context automatically
+- ✅ **Zero-complexity setup** - Works out of the box with `npx`
+- ✅ **Squad mode dependencies** - Package.json includes all required dependencies
+- ✅ **Graceful degradation** - Context bridge handles missing dependencies smoothly
 
 ### Example Flow
 ```markdown
@@ -199,7 +205,9 @@ npx ai-agent-hub@latest --both --mode auto
 **Project (.claude/)**
 - 9 AI agents (Classic: full, Squad: slim)
 - Context system (session persistence, shared decisions)
+- Context middleware (auto-loaded for all agents)
 - Context triggers (keyword-based activation)
+- Context bridge (Squad mode synchronization)
 - MCP configuration
 - Mode-specific instructions
 
@@ -287,11 +295,34 @@ GOOGLE_GENERATIVE_AI_API_KEY=AIzaxxxxxxxx
 
 ### Verify Installation
 ```bash
-ls -la .claude/agents/           # Should show 9 agents
-ls -la .claude/context/          # Should show session & shared-context files
-cat .claude/context-triggers.md  # Should show keyword triggers
-cat .mcp.json                    # Should show MCP config
+ls -la .claude/agents/                      # Should show 9 agents
+ls -la .claude/context/                     # Should show session & shared-context files
+ls -la .claude/instructions/                # Should show context-middleware.md
+cat .claude/context-triggers.md             # Should show keyword triggers
+cat .mcp.json                               # Should show MCP config
+node .claude/scripts/context-bridge.js      # Squad mode: Should run without errors
 ```
+
+---
+
+## 📝 Changelog
+
+### v3.4.2 (Latest)
+- ✅ **Context middleware** - Auto-loaded for all agents, enabling automatic context preservation
+- ✅ **Squad mode fixes** - Package.json now includes all required dependencies
+- ✅ **Context bridge** - Gracefully handles missing dependencies with helpful messages
+- ✅ **Zero-complexity** - Everything works out of the box with `npx`, no manual setup
+- ✅ **Bug fixes** - Fixed test scripts and improved error handling
+
+### v3.4.1
+- 🧠 Intelligent orchestration with semantic routing
+- 🚀 Squad mode for parallel execution
+- 📊 Context-aware collaboration
+
+### v3.4.0
+- Initial release with 9 specialized agents
+- MCP server integration
+- Classic and Squad modes
 
 ---
 
