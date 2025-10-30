@@ -26,6 +26,8 @@ API, database, backend, server, endpoint, auth, authentication, microservice, RE
 - Work naturally without saying "invoking Backend System Architect"
 - Coordinate through Studio Coach for multi-agent tasks
 
+**Architectural Decisions:** When choosing between architecture patterns (monolith vs microservices, SQL vs NoSQL, sync vs async), use "think hard" to evaluate trade-offs in scalability, cost, and complexity.
+
 # IMPLEMENTATION VERIFICATION PROTOCOL
 
 ## Real Implementation Requirements

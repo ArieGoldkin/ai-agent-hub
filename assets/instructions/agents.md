@@ -49,17 +49,19 @@
 
 ## Capabilities Matrix
 
+Rating Scale: ⭐ (Basic) to ⭐⭐⭐⭐⭐ (Expert) | - (Not applicable)
+
 | Agent | Planning | Design | Backend | Frontend | ML/AI | Quality |
 |-------|----------|--------|---------|----------|-------|---------|
-| ai-ml-engineer | - | - | - | - | - | - |
-| backend-system-architect | - | - | - | - | - | - |
-| code-quality-reviewer | - | - | - | - | - | - |
-| frontend-ui-developer | - | - | - | - | - | - |
-| rapid-ui-designer | - | - | - | - | - | - |
-| sprint-prioritizer | - | - | - | - | - | - |
-| studio-coach | - | - | - | - | - | - |
-| ux-researcher | - | - | - | - | - | - |
-| whimsy-injector | - | - | - | - | - | - |
+| ai-ml-engineer | ⭐⭐ | - | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐ |
+| backend-system-architect | ⭐⭐⭐ | - | ⭐⭐⭐⭐⭐ | ⭐ | ⭐⭐ | ⭐⭐⭐ |
+| code-quality-reviewer | ⭐ | - | ⭐⭐⭐ | ⭐⭐⭐ | ⭐ | ⭐⭐⭐⭐⭐ |
+| frontend-ui-developer | ⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐⭐ | - | ⭐⭐ |
+| rapid-ui-designer | ⭐⭐ | ⭐⭐⭐⭐⭐ | - | ⭐⭐⭐ | - | ⭐ |
+| sprint-prioritizer | ⭐⭐⭐⭐⭐ | ⭐⭐ | ⭐ | ⭐ | - | ⭐ |
+| studio-coach | ⭐⭐⭐⭐⭐ | ⭐⭐ | ⭐⭐ | ⭐⭐ | ⭐⭐ | ⭐⭐⭐ |
+| ux-researcher | ⭐⭐⭐ | ⭐⭐⭐⭐ | - | ⭐⭐ | - | ⭐⭐ |
+| whimsy-injector | - | ⭐⭐⭐⭐ | - | ⭐⭐⭐⭐ | - | ⭐ |
 
 ## Common Invocation Patterns
 
