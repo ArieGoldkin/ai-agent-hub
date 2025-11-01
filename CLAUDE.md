@@ -48,6 +48,25 @@ For semantic routing beyond keywords, load `.claude/instructions/orchestration.m
 - **ux-researcher**
 - **whimsy-injector**
 
+## 📚 Claude Code Skills
+
+Specialized knowledge modules installed in `/skills/` directory:
+
+| Skill | Use When |
+|-------|----------|
+| **architecture-decision-record** | Documenting architectural decisions (ADRs) |
+| **api-design-framework** | Designing REST/GraphQL/gRPC APIs |
+| **testing-strategy-builder** | Building test plans and coverage strategies |
+| **code-review-playbook** | Conducting code reviews with conventional comments |
+| **design-system-starter** | Creating design systems, tokens, components |
+| **database-schema-designer** | Designing SQL/NoSQL schemas and migrations |
+| **security-checklist** | Security audits, OWASP Top 10 compliance |
+
+**How it works:**
+- Skills use progressive disclosure (metadata → SKILL.md → bundled resources)
+- Includes templates, checklists, references, and examples
+- Load automatically when Claude detects relevant tasks
+- Location: Check `/skills/<skill-name>/SKILL.md` for details
 
 ## 🧠 Context Awareness (AUTOMATIC)
 

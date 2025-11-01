@@ -1,15 +1,16 @@
 # 🚀 AI Agent Hub
 
 <div align="center">
-  
+
   ### ✨ Transform Claude into 9 Context-Aware AI Agents Working in Parallel ✨
   ### 🧠 Intelligent Orchestration + 79% Faster with Squad Mode 🚀
+  ### 📚 7 Expert Skills for Architecture, Testing, Security & More 📚
   ### 🎯 Zero-Config Semantic Routing - Agents Auto-Select Based on Intent 🎯
-  
+
   ```bash
   npx ai-agent-hub@latest
   ```
-  
+
   **Works with Claude Desktop & Claude Code**
   
   [![npm version](https://img.shields.io/npm/v/ai-agent-hub?style=flat-square&color=blue)](https://www.npmjs.com/package/ai-agent-hub)
@@ -143,17 +144,225 @@ User: "Build a dashboard with real-time updates"
 
 ## 🎭 Your 9 Expert Agents
 
-| Agent | Expertise | Use When You Need |
-|-------|-----------|-------------------|
-| 🎬 **Studio Coach** | Master orchestrator | Project coordination |
-| 📊 **Sprint Prioritizer** | Agile planning | Sprint planning |
-| 🔍 **UX Researcher** | User insights | Research, testing |
-| 🎨 **Rapid UI Designer** | Fast prototyping | Mockups, UI/UX |
-| 🏗️ **Backend System Architect** | System design | APIs, databases |
-| 💻 **Frontend UI Developer** | UI implementation | React/Vue/Angular |
-| 🤖 **AI/ML Engineer** | AI features | LLMs, ML pipelines |
-| ✨ **Whimsy Injector** | Delight features | Creative touches |
-| ✅ **Code Quality Reviewer** | Quality assurance | Code review |
+Each agent is a specialized AI personality with deep expertise in their domain.
+
+### 🎬 Studio Coach
+**Master Orchestrator & Team Coordinator**
+- Coordinates complex multi-agent projects
+- Assigns optimal agents for each task
+- Motivates team and ensures peak performance
+- Manages parallel execution in Squad Mode
+- Handles project planning and strategy
+
+### 📊 Sprint Prioritizer
+**Agile Planning & Product Strategy**
+- Plans 6-day development sprints
+- Prioritizes features for maximum impact
+- Makes trade-off decisions with ROI analysis
+- Manages product roadmaps
+- Balances user needs with technical constraints
+
+### 🔍 UX Researcher
+**User Research & Testing**
+- Conducts user research and interviews
+- Creates user personas and journey maps
+- Validates design decisions through testing
+- Analyzes user behavior patterns
+- Provides actionable UX insights
+
+### 🎨 Rapid UI Designer
+**Design Systems & Visual Design**
+- Creates mockups and wireframes quickly
+- Designs component architectures
+- Establishes design tokens and styles
+- Ensures accessibility compliance (WCAG 2.1)
+- Balances aesthetics with implementation speed
+
+### 🏗️ Backend System Architect
+**API Design & System Architecture**
+- Designs scalable backend systems
+- Creates REST/GraphQL/gRPC APIs
+- Plans database schemas and migrations
+- Implements authentication strategies
+- Optimizes for performance and scale
+
+### 💻 Frontend UI Developer
+**React/Vue/Angular Implementation**
+- Builds responsive user interfaces
+- Implements design system components
+- Ensures cross-browser compatibility
+- Optimizes frontend performance
+- Handles state management and routing
+
+### 🤖 AI/ML Engineer
+**AI Integration & ML Pipelines**
+- Integrates LLM APIs (OpenAI, Anthropic, Google)
+- Builds ML pipelines and inference systems
+- Implements recommendation engines
+- Optimizes model performance
+- Handles AI/ML production deployment
+
+### ✨ Whimsy Injector
+**Delightful UX & Creative Touches**
+- Adds personality to user experiences
+- Creates memorable interaction moments
+- Designs engaging loading states
+- Transforms errors into delightful surprises
+- Makes products fun and shareable
+
+### ✅ Code Quality Reviewer
+**Quality Assurance & Code Standards**
+- Reviews code for best practices
+- Checks security vulnerabilities (OWASP Top 10)
+- Ensures proper error handling
+- Validates test coverage
+- Enforces code style and patterns
+
+---
+
+## 📚 Claude Code Skills
+
+**NEW in 3.4.2**: 7 comprehensive skills that supercharge your development workflow!
+
+### What Are Skills?
+
+Skills are specialized knowledge modules that Claude Code dynamically loads when needed.
+They transform Claude from a general assistant into a domain expert.
+Each skill provides frameworks, templates, examples, and battle-tested best practices.
+
+### Why Skills Matter for Development
+
+**Consistency Across Projects**
+- Use the same proven patterns every time
+- No reinventing the wheel for common tasks
+- Team members follow identical standards
+
+**Faster Onboarding**
+- New developers learn best practices instantly
+- Comprehensive examples show the "right way"
+- Checklists ensure nothing is forgotten
+
+**Higher Quality Code**
+- Security vulnerabilities caught early (OWASP Top 10)
+- Test coverage strategies built-in
+- Code review standards automated
+
+**Time Savings**
+- Templates eliminate boilerplate writing
+- Examples provide copy-paste starting points
+- Checklists prevent costly mistakes
+
+### Available Skills
+
+#### 🏗️ Architecture Decision Record (ADR)
+**Document why you made technical choices**
+- Creates ADRs following Nygard format
+- Captures context, decision, and consequences
+- Includes templates with alternatives considered
+- Preserves architectural memory for teams
+- Prevents endless debates about settled decisions
+
+#### 🌐 API Design Framework
+**Build consistent, well-documented APIs**
+- REST, GraphQL, and gRPC best practices
+- OpenAPI 3.1 specification templates
+- Proper HTTP status codes and error handling
+- Pagination, filtering, and versioning patterns
+- Authentication and rate limiting strategies
+
+#### ✅ Testing Strategy Builder
+**Comprehensive test coverage made easy**
+- Unit, integration, and E2E test patterns
+- Coverage targets and quality gates
+- Test plan and test case templates
+- Performance testing with k6 examples
+- CI/CD integration strategies
+
+#### 👀 Code Review Playbook
+**Consistent, constructive code reviews**
+- Conventional comments format (praise, issue, nitpick)
+- Language-specific checklists (TypeScript, Python)
+- Security and performance review patterns
+- PR templates and review workflows
+- Feedback patterns that improve code quality
+
+#### 🎨 Design System Starter
+**Build scalable UI component libraries**
+- Design token structures (colors, typography, spacing)
+- Atomic design methodology (atoms → organisms)
+- WCAG 2.1 accessibility compliance
+- Dark mode and theming patterns
+- Component API design best practices
+
+#### 🗄️ Database Schema Designer
+**Design performant, scalable databases**
+- SQL normalization (1NF, 2NF, 3NF)
+- NoSQL embedding vs referencing patterns
+- Indexing strategies for query optimization
+- Zero-downtime migration patterns
+- N+1 query prevention techniques
+
+#### 🔒 Security Checklist
+**Protect your app from vulnerabilities**
+- OWASP Top 10 mitigations (SQL injection, XSS, CSRF)
+- Authentication and authorization patterns
+- Input validation and sanitization
+- Security headers configuration
+- GDPR and SOC2 compliance guidelines
+
+### How They Work
+
+Skills use **progressive disclosure** to optimize token usage:
+
+```
+1. Claude sees skill metadata (description, tags)
+2. Decides if skill is relevant to your task
+3. Loads SKILL.md with core framework (~4k words)
+4. Accesses detailed examples/templates only when needed
+```
+
+### What's Included
+
+Each skill contains:
+- **SKILL.md** - Core framework and workflow (~300-400 lines)
+- **templates/** - Reusable file templates
+- **references/** - Detailed code examples
+- **checklists/** - Verification checklists
+- **assets/** - Additional resources
+
+### Example Usage
+
+```markdown
+# Architecture Decision
+"Document why we chose microservices over monolith"
+→ Claude loads architecture-decision-record skill
+→ Creates ADR following Nygard format
+→ Includes context, decision, consequences
+
+# API Design
+"Design a REST API for user management"
+→ Claude loads api-design-framework skill
+→ Follows OpenAPI 3.1 specification
+→ Implements proper resource naming, status codes
+
+# Security Audit
+"Review authentication implementation"
+→ Claude loads security-checklist skill
+→ Checks OWASP Top 10 vulnerabilities
+→ Provides mitigation recommendations
+```
+
+### Token Optimization
+
+Skills are designed for maximum efficiency:
+- **Main file**: <5k words (compressed, focused)
+- **References**: Loaded only when needed
+- **Templates**: Accessed on-demand
+- **Total savings**: ~80% compared to monolithic documentation
+
+### Location
+
+All skills are installed in `/skills/` directory in your project.
 
 ---
 
@@ -204,6 +413,7 @@ npx ai-agent-hub@latest --both --mode auto
 
 **Project (.claude/)**
 - 9 AI agents (Classic: full, Squad: slim)
+- 7 Claude Code skills (comprehensive frameworks & templates)
 - Context system (session persistence, shared decisions)
 - Context middleware (auto-loaded for all agents)
 - Context triggers (keyword-based activation)
@@ -296,6 +506,7 @@ GOOGLE_GENERATIVE_AI_API_KEY=AIzaxxxxxxxx
 ### Verify Installation
 ```bash
 ls -la .claude/agents/                      # Should show 9 agents
+ls -la skills/                              # Should show 7 skills directories
 ls -la .claude/context/                     # Should show session & shared-context files
 ls -la .claude/instructions/                # Should show context-middleware.md
 cat .claude/context-triggers.md             # Should show keyword triggers
@@ -308,6 +519,7 @@ node .claude/scripts/context-bridge.js      # Squad mode: Should run without err
 ## 📝 Changelog
 
 ### v3.4.2 (Latest)
+- 🎓 **7 Claude Code Skills** - Comprehensive frameworks for architecture, API design, testing, code review, design systems, databases, and security
 - ✅ **Context middleware** - Auto-loaded for all agents, enabling automatic context preservation
 - ✅ **Squad mode fixes** - Package.json now includes all required dependencies
 - ✅ **Context bridge** - Gracefully handles missing dependencies with helpful messages

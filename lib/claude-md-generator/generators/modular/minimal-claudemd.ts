@@ -79,6 +79,18 @@ export function generateMinimalClaudeMd(
   sections.push('## ⚙️ MCP Servers\n');
   sections.push('Configured in `.mcp.json` - includes memory, thinking, browsing, and more.\n');
 
+  // Skills
+  sections.push('## 📚 Claude Code Skills\n');
+  sections.push('7 comprehensive skills available in `/skills/` directory:');
+  sections.push('- **architecture-decision-record** - Document architectural decisions');
+  sections.push('- **api-design-framework** - REST/GraphQL/gRPC API design');
+  sections.push('- **testing-strategy-builder** - Comprehensive testing strategies');
+  sections.push('- **code-review-playbook** - Structured code review process');
+  sections.push('- **design-system-starter** - Design tokens & component architecture');
+  sections.push('- **database-schema-designer** - SQL/NoSQL schema design');
+  sections.push('- **security-checklist** - OWASP Top 10 security guidance');
+  sections.push('\nClaude automatically discovers and uses these skills when relevant.\n');
+
   // Footer
   sections.push('---');
   sections.push('*💡 This minimal CLAUDE.md saves ~80% context tokens through dynamic loading*');
