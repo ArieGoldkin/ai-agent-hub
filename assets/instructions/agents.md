@@ -5,12 +5,44 @@
 ## Available Agents
 
 ### ai-ml-engineer 🤖
-**Role**: Use this agent when you need to design, implement, or optimize AI/ML solutions for production applications. This includes selecting appropriate models, integrating AI APIs, building ML pipelines, optimizing inference performance, or architecting intelligent features. Perfect for tasks involving LLMs, computer vision, recommendation engines, or any practical AI implementation challenges. <example>Context: The user needs help implementing an AI feature in their application. user: 'I want to add a feature that automatically categorizes user-uploaded images' assistant: 'I'll use the ai-ml-engineer agent to help design and implement an image categorization solution for your application.' <commentary>Since the user needs to implement an AI-powered image categorization feature, the ai-ml-engineer agent is perfect for designing the computer vision solution and integration approach.</commentary></example> <example>Context: The user is working on integrating LLM capabilities. user: 'How should I implement a chat interface with Claude API that handles rate limiting and retries?' assistant: 'Let me engage the ai-ml-engineer agent to architect a robust LLM integration with proper error handling.' <commentary>The user needs guidance on production-ready LLM integration, which requires the ai-ml-engineer agent's expertise in API integration and system design.</commentary></example> <example>Context: The user needs to optimize an existing ML system. user: 'Our recommendation system is too slow and uses too much memory' assistant: 'I'll invoke the ai-ml-engineer agent to analyze and optimize your recommendation system's performance.' <commentary>Performance optimization of ML systems requires the specialized knowledge of the ai-ml-engineer agent.</commentary></example>
+**Role**: Use this agent when you need to design, implement, or optimize AI/ML solutions for production applications. This includes selecting appropriate models, integrating AI APIs, building ML pipelines, optimizing inference performance, or architecting intelligent features. Perfect for tasks involving LLMs, computer vision, recommendation engines, or any practical AI implementation challenges.
+
+**2025 Expertise**: RAG pipelines (Pinecone, Weaviate, Chroma), Vector databases & embeddings, Agentic workflows (ReAct, Tree of Thoughts, multi-agent), LLM streaming with SSE, Function calling & tool use, Prompt engineering & caching, AI observability (LangSmith, LangFuse), Token counting & cost optimization
+
+<example>Context: The user needs help implementing an AI feature in their application. user: 'I want to add a feature that automatically categorizes user-uploaded images' assistant: 'I'll use the ai-ml-engineer agent to help design and implement an image categorization solution for your application.' <commentary>Since the user needs to implement an AI-powered image categorization feature, the ai-ml-engineer agent is perfect for designing the computer vision solution and integration approach.</commentary></example> <example>Context: The user is working on integrating LLM capabilities. user: 'How should I implement a chat interface with Claude API that handles rate limiting and retries?' assistant: 'Let me engage the ai-ml-engineer agent to architect a robust LLM integration with proper error handling.' <commentary>The user needs guidance on production-ready LLM integration, which requires the ai-ml-engineer agent's expertise in API integration and system design.</commentary></example> <example>Context: The user needs to optimize an existing ML system. user: 'Our recommendation system is too slow and uses too much memory' assistant: 'I'll invoke the ai-ml-engineer agent to analyze and optimize your recommendation system's performance.' <commentary>Performance optimization of ML systems requires the specialized knowledge of the ai-ml-engineer agent.</commentary></example>
 **Tools**: Bash, Glob, Grep, LS, Read...
 **Trigger**: "Use ai-ml-engineer to [task]"
 
 ### backend-system-architect 🤖
-**Role**: Use this agent when you need to design, review, or optimize backend architecture and server-side systems. This includes making decisions about API design, database schemas, microservice boundaries, authentication strategies, caching layers, message queues, deployment patterns, and overall system architecture. Perfect for initial system design, architecture reviews, scaling strategies, or when facing complex backend architectural decisions.\n\nExamples:\n- <example>\n  Context: User needs help designing a new backend system\n  user: "I need to build a backend for a social media app that can handle millions of users"\n  assistant: "I'll use the backend-system-architect agent to help design a scalable architecture for your social media backend"\n  <commentary>\n  The user needs architectural guidance for a high-scale backend system, so the backend-system-architect agent is the right choice.\n  </commentary>\n</example>\n- <example>\n  Context: User wants to review their current architecture\n  user: "Can you review my current API structure and suggest improvements?"\n  assistant: "Let me engage the backend-system-architect agent to analyze your API structure and provide recommendations"\n  <commentary>\n  Architecture review request triggers the use of the backend-system-architect agent.\n  </commentary>\n</example>\n- <example>\n  Context: User is facing a scaling challenge\n  user: "Our database is becoming a bottleneck as we grow. What should we do?"\n  assistant: "I'll invoke the backend-system-architect agent to analyze your scaling challenges and propose solutions"\n  <commentary>\n  Database scaling and performance optimization requires architectural expertise.\n  </commentary>\n</example>
+**Role**: Use this agent when you need to design, review, or optimize backend architecture and server-side systems. This includes making decisions about API design, database schemas, microservice boundaries, authentication strategies, caching layers, message queues, deployment patterns, and overall system architecture. Perfect for initial system design, architecture reviews, scaling strategies, or when facing complex backend architectural decisions.
+
+**2025 Expertise**: Edge Computing (Cloudflare Workers, Vercel Edge, Deno Deploy), Streaming APIs (SSE, WebSockets, backpressure), Type Safety (tRPC, Zod, Prisma), Server Actions, Route Handlers, revalidation strategies, AI Integration (LLM APIs, vector databases), OpenTelemetry observability, structured logging
+
+Examples:
+- <example>
+  Context: User needs help designing a new backend system
+  user: "I need to build a backend for a social media app that can handle millions of users"
+  assistant: "I'll use the backend-system-architect agent to help design a scalable architecture for your social media backend"
+  <commentary>
+  The user needs architectural guidance for a high-scale backend system, so the backend-system-architect agent is the right choice.
+  </commentary>
+</example>
+- <example>
+  Context: User wants to review their current architecture
+  user: "Can you review my current API structure and suggest improvements?"
+  assistant: "Let me engage the backend-system-architect agent to analyze your API structure and provide recommendations"
+  <commentary>
+  Architecture review request triggers the use of the backend-system-architect agent.
+  </commentary>
+</example>
+- <example>
+  Context: User is facing a scaling challenge
+  user: "Our database is becoming a bottleneck as we grow. What should we do?"
+  assistant: "I'll invoke the backend-system-architect agent to analyze your scaling challenges and propose solutions"
+  <commentary>
+  Database scaling and performance optimization requires architectural expertise.
+  </commentary>
+</example>
 **Tools**: Bash, Glob, Grep, LS, Read...
 **Trigger**: "Use backend-system-architect to [task]"
 
@@ -20,7 +52,35 @@
 **Trigger**: "Use code-quality-reviewer to [task]"
 
 ### frontend-ui-developer 🤖
-**Role**: Use this agent when you need to create, modify, or optimize frontend user interfaces and components. This includes building React/Vue/Angular components, implementing responsive layouts, fixing UI bugs, improving performance, ensuring accessibility compliance, creating interactive features, or refactoring frontend code for better maintainability. The agent excels at translating design requirements into production-ready code and solving complex frontend challenges.\n\nExamples:\n<example>\nContext: User needs help building a new React component\nuser: "I need a searchable dropdown component with keyboard navigation"\nassistant: "I'll use the frontend-ui-developer agent to create a fully accessible, keyboard-navigable dropdown component for you."\n<commentary>\nSince the user needs a specific UI component built, use the frontend-ui-developer agent to handle the implementation with proper accessibility and interaction patterns.\n</commentary>\n</example>\n<example>\nContext: User has a performance issue in their frontend application\nuser: "My React app is re-rendering too frequently and feels sluggish"\nassistant: "Let me engage the frontend-ui-developer agent to analyze your rendering patterns and optimize the performance."\n<commentary>\nThe user has a frontend performance issue, so the frontend-ui-developer agent should be used to diagnose and fix the rendering problems.\n</commentary>\n</example>\n<example>\nContext: User needs responsive design implementation\nuser: "This layout breaks on mobile devices and tablets"\nassistant: "I'll use the frontend-ui-developer agent to implement a proper responsive design that works across all device sizes."\n<commentary>\nResponsive design issues require the frontend-ui-developer agent's expertise in CSS and layout systems.\n</commentary>\n</example>
+**Role**: Use this agent when you need to create, modify, or optimize frontend user interfaces and components. This includes building React/Vue/Angular components, implementing responsive layouts, fixing UI bugs, improving performance, ensuring accessibility compliance, creating interactive features, or refactoring frontend code for better maintainability. The agent excels at translating design requirements into production-ready code and solving complex frontend challenges.
+
+**2025 Expertise**: React Server Components (RSC), Next.js 15 App Router, Server Actions, Streaming SSR with Suspense, Partial Prerendering (PPR), Parallel & Intercepting Routes, Tailwind 4 CSS-first, Modern CSS (container queries, View Transitions, oklch), Turbopack, Vite 6, tRPC client, Zod forms, Edge middleware
+
+Examples:
+<example>
+Context: User needs help building a new React component
+user: "I need a searchable dropdown component with keyboard navigation"
+assistant: "I'll use the frontend-ui-developer agent to create a fully accessible, keyboard-navigable dropdown component for you."
+<commentary>
+Since the user needs a specific UI component built, use the frontend-ui-developer agent to handle the implementation with proper accessibility and interaction patterns.
+</commentary>
+</example>
+<example>
+Context: User has a performance issue in their frontend application
+user: "My React app is re-rendering too frequently and feels sluggish"
+assistant: "Let me engage the frontend-ui-developer agent to analyze your rendering patterns and optimize the performance."
+<commentary>
+The user has a frontend performance issue, so the frontend-ui-developer agent should be used to diagnose and fix the rendering problems.
+</commentary>
+</example>
+<example>
+Context: User needs responsive design implementation
+user: "This layout breaks on mobile devices and tablets"
+assistant: "I'll use the frontend-ui-developer agent to implement a proper responsive design that works across all device sizes."
+<commentary>
+Responsive design issues require the frontend-ui-developer agent's expertise in CSS and layout systems.
+</commentary>
+</example>
 **Trigger**: "Use frontend-ui-developer to [task]"
 
 ### rapid-ui-designer 🤖

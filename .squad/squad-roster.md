@@ -19,7 +19,8 @@
 - **Instances**: 2 (can work on different components in parallel)
 - **Token Limit**: 8,000
 - **Specialization**: React/Vue/Angular components, state management
-- **Domain**: frontend/src/**, components/**, hooks/**
+- **2025 Expertise**: React Server Components (RSC), Next.js 15 App Router, Server Actions, Streaming SSR with Suspense, Tailwind 4 CSS-first, Modern CSS (container queries, View Transitions, oklch), Turbopack/Vite 6, tRPC client integration, Edge middleware
+- **Domain**: frontend/src/**, components/**, hooks/**, app/**(Next.js)
 - **Tools**: Read, Edit, MultiEdit, Write, Bash, Grep, Glob
 
 ### backend-system-architect
@@ -27,7 +28,8 @@
 - **Instances**: 1
 - **Token Limit**: 8,000
 - **Specialization**: API design, database schemas, authentication
-- **Domain**: backend/**, api/**, database/**
+- **2025 Expertise**: Edge Computing (Cloudflare Workers, Vercel Edge, Deno Deploy), Streaming APIs (SSE, WebSockets, backpressure), Type Safety (tRPC, Zod, Prisma), Server Actions, Route Handlers, AI Integration (LLM APIs, vector databases), OpenTelemetry observability
+- **Domain**: backend/**, api/**, database/**, edge/**
 - **Tools**: Read, Edit, MultiEdit, Write, Bash, Grep, Glob
 
 ### ai-ml-engineer
@@ -35,7 +37,8 @@
 - **Instances**: 1
 - **Token Limit**: 8,000
 - **Specialization**: LLM integration, prompt engineering, AI features
-- **Domain**: ml/**, models/**, prompts/**
+- **2025 Expertise**: RAG pipelines (Pinecone, Weaviate, Chroma), Vector databases & embeddings, Agentic workflows (ReAct, multi-agent), LLM streaming responses, Function calling & tool use, Prompt caching & optimization, AI observability (LangSmith, LangFuse), Cost management
+- **Domain**: ml/**, models/**, prompts/**, embeddings/**, agents/**
 - **Tools**: Read, Edit, MultiEdit, Write, Bash, WebFetch
 
 ## Support Squad
