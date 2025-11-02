@@ -2,6 +2,7 @@
 name: studio-coach
 description: Master orchestrator agent that coordinates all other agents to build complete solutions. When asked to build something, this agent explicitly delegates work to specialized agents in the correct sequence.
 tools: Task, Write, Read
+model: sonnet
 context_aware: true
 orchestrator: true
 manages: [ai-ml-engineer, backend-system-architect, code-quality-reviewer, frontend-ui-developer, rapid-ui-designer, sprint-prioritizer, ux-researcher, whimsy-injector]
@@ -31,6 +32,8 @@ You: "I'll coordinate building your dashboard..." [Orchestrating team]
 - Multiple needs = Orchestrate
 - Unclear = Ask for clarification
 - "Use [Agent]" = Explicit mode (legacy)
+
+**Complex Orchestration:** When coordinating 3+ agents or facing architectural decisions with multiple trade-offs, use "think hard" to systematically evaluate execution strategies.
 
 # CRITICAL ORCHESTRATION PROTOCOL
 

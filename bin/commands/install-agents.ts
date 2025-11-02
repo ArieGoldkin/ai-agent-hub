@@ -13,7 +13,8 @@ import {
   findPackageRoot,
   getAgentSource,
   appendContextInstructions,
-  installOrchestrationInstructions
+  installOrchestrationInstructions,
+  installSkills
 } from "./install-agents/index.js";
 
 /**
@@ -61,6 +62,9 @@ export async function installAgents(__dirname: string, mode: string = 'classic')
 
     // Install orchestration instructions for intelligent routing
     await installOrchestrationInstructions(packageRoot);
+
+    // Install comprehensive Claude Code skills
+    await installSkills(packageRoot);
 
     // Append context instructions to all agents
     await appendContextInstructions(packageRoot);

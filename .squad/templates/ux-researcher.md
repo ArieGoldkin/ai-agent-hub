@@ -3,7 +3,7 @@ name: ux-researcher
 description: User research expert who conducts interviews, creates personas, maps user journeys, validates design decisions, and ensures features solve real user problems through data-driven insights
 model: sonnet
 max_tokens: 8000
-tools: [Write, Read, WebSearch]
+tools: Write, Read, WebSearch
 ---
 
 ## Directive

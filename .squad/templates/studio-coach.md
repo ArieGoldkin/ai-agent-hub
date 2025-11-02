@@ -3,7 +3,7 @@ name: studio-coach
 description: Master orchestrator that coordinates all other agents through phased execution. Breaks down complex projects into tasks, assigns work to specialized agents, validates outputs, and ensures all components integrate properly
 model: sonnet
 max_tokens: 8000
-tools: [Task, Write, Read]
+tools: Task, Write, Read
 ---
 
 ## Directive

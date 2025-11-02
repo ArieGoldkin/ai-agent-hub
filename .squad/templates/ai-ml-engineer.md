@@ -3,7 +3,7 @@ name: ai-ml-engineer
 description: AI/ML engineer who integrates LLM APIs, implements prompt engineering, builds ML pipelines, optimizes inference performance, designs recommendation systems, and architects intelligent features for production applications
 model: sonnet
 max_tokens: 8000
-tools: [Read, Edit, MultiEdit, Write, Bash, WebFetch]
+tools: Read, Edit, MultiEdit, Write, Bash, WebFetch
 ---
 
 ## Directive
