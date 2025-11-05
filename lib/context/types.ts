@@ -88,16 +88,127 @@ export interface SharedContext {
     timestamp: string;
     files_modified: string[];
   }>;
-  
+
   tasks_pending?: Array<{
     task: string;
     assigned_to?: string;
     priority?: 'low' | 'medium' | 'high';
     dependencies?: string[];
+    status?: 'pending' | 'blocked' | 'in_progress' | 'complete';
+    blocker_reason?: string;
   }>;
+
+  // Evidence-Based Verification (v3.5.0)
+  quality_evidence?: QualityEvidence;
+
+  // Quality Gates (v3.5.0)
+  quality_gates?: Array<{
+    task_id: string;
+    timestamp: string;
+    complexity_score: number;
+    gate_status: 'pass' | 'warning' | 'blocked';
+    critical_questions_count: number;
+    unanswered_questions: number;
+    dependencies_blocked: number;
+    attempt_count: number;
+    can_proceed: boolean;
+    blocking_reasons?: string[];
+    assumptions?: string[];
+  }>;
+
+  // Attempt Tracking (v3.5.0)
+  attempt_tracking?: {
+    [taskId: string]: {
+      attempts: Array<{
+        timestamp: string;
+        approach: string;
+        outcome: 'success' | 'failed';
+        failure_reason?: string;
+        learnings?: string;
+      }>;
+      first_attempt: string;
+    };
+  };
 
   // Intelligent Orchestration Enhancements
   orchestration_state?: OrchestrationState;
+}
+
+/**
+ * Quality evidence tracking for production-grade verification
+ * Records proof of testing, building, and quality checks
+ */
+export interface QualityEvidence {
+  // Test evidence
+  tests?: {
+    executed: boolean;
+    command?: string;
+    exit_code?: number;
+    passed?: number;
+    failed?: number;
+    skipped?: number;
+    coverage_percent?: number;
+    duration_seconds?: number;
+    timestamp: string;
+    evidence_file?: string;
+  };
+
+  // Build evidence
+  build?: {
+    executed: boolean;
+    command?: string;
+    exit_code?: number;
+    errors?: number;
+    warnings?: number;
+    artifacts?: Array<{ file: string; size_kb: number }>;
+    duration_seconds?: number;
+    timestamp: string;
+    evidence_file?: string;
+  };
+
+  // Code quality evidence
+  linter?: {
+    executed: boolean;
+    tool?: string;
+    command?: string;
+    exit_code?: number;
+    errors?: number;
+    warnings?: number;
+    timestamp: string;
+  };
+
+  type_checker?: {
+    executed: boolean;
+    tool?: string;
+    command?: string;
+    exit_code?: number;
+    errors?: number;
+    timestamp: string;
+  };
+
+  security_scan?: {
+    executed: boolean;
+    tool?: string;
+    critical?: number;
+    high?: number;
+    moderate?: number;
+    low?: number;
+    timestamp: string;
+  };
+
+  // Deployment evidence
+  deployment?: {
+    executed: boolean;
+    environment?: string;
+    exit_code?: number;
+    health_check_passed?: boolean;
+    timestamp: string;
+  };
+
+  // Quality standard assessment
+  quality_standard_met?: 'minimum' | 'production-grade' | 'gold-standard';
+  all_checks_passed?: boolean;
+  last_updated: string;
 }
 
 /**

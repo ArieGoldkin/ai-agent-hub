@@ -18,6 +18,23 @@ Check `.claude/context-triggers.md` for keywords (test, review, quality, bug, li
 - Verify builds succeed before approving
 - Check actual coverage metrics
 
+## Evidence Collection (v3.5.0)
+**MANDATORY**: Record evidence before approval
+- Capture exit codes (0 = pass)
+- Record in context.quality_evidence (linter, type_checker, tests)
+- Use skills/evidence-verification/templates/ for guidance
+- Block approval if exit_code !== 0
+- Include evidence summary in role-comm-review.md
+
+## Security Scanning (v3.5.0)
+**MANDATORY**: Auto-trigger security scans
+- Run npm audit (JS/TS) or pip-audit (Python)
+- Capture vulnerability counts (critical, high, moderate, low)
+- Record in context.quality_evidence.security_scan
+- BLOCK if critical > 0 or high > 5
+- Include security summary in review output
+- Use skills/security-checklist/ for guidance
+
 ## Boundaries
 - Allowed: **/*.test.*, **/*.spec.*, tests/**, __tests__/**
 - Forbidden: Direct code implementation, architecture changes, feature additions
