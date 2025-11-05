@@ -21,6 +21,57 @@ This skill provides comprehensive security guidance for building secure applicat
 - Preparing for security assessments or penetration tests
 - Reviewing third-party dependencies for vulnerabilities
 
+## Required Tools
+
+This skill requires the following tools to be installed on your system:
+
+### For JavaScript/TypeScript Projects
+- **Node.js 18+** with npm
+- **Command:** `npm audit`
+- **Install:** Node.js comes with npm pre-installed
+
+### For Python Projects
+- **Python 3.8+** with pip
+- **pip-audit:** Security scanner for Python dependencies
+  - **Install:** `pip install pip-audit`
+  - **Command:** `pip-audit`
+
+### Optional (Advanced Security Scanning)
+- **Semgrep:** Static analysis tool
+  - **Install (macOS):** `brew install semgrep`
+  - **Install (pip):** `pip install semgrep`
+  - **Command:** `semgrep --config=auto .`
+
+- **Bandit:** Python security linter
+  - **Install:** `pip install bandit`
+  - **Command:** `bandit -r .`
+
+- **TruffleHog:** Secrets detection
+  - **Install (macOS):** `brew install trufflesecurity/trufflehog/trufflehog`
+  - **Install (Go):** `go install github.com/trufflesecurity/trufflehog/v3@latest`
+  - **Command:** `trufflehog filesystem .`
+
+### Installation Verification
+```bash
+# Verify Node.js & npm
+node --version
+npm --version
+
+# Verify Python & pip
+python --version
+pip --version
+
+# Verify pip-audit
+pip-audit --version
+
+# Verify optional tools
+semgrep --version
+bandit --version
+trufflehog --version
+```
+
+**Note:** The skill will automatically detect which tools are available and use appropriate commands for your project type.
+
 ## Security Principles
 
 ### Defense in Depth
@@ -486,6 +537,360 @@ def set_security_headers(response):
     response.headers['X-XSS-Protection'] = '1; mode=block'
     response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
     return response
+```
+
+---
+
+## 🔍 Automated Security Scanning (v3.5.0)
+
+### Overview
+
+Automated security scanning catches vulnerabilities early. This section teaches agents HOW to run security tools and record evidence.
+
+**When to auto-scan:**
+- Before marking code review as complete
+- After installing/updating dependencies
+- During CI/CD pipeline execution
+- When adding new external integrations
+- Before production deployments
+
+### Scanning Workflow
+
+```
+1. Identify Scan Type (dependencies, code, configuration)
+2. Run Appropriate Tool (npm audit, pip-audit, semgrep)
+3. Capture Results (exit codes, vulnerability counts)
+4. Record Evidence in Context
+5. Escalate Critical Findings
+```
+
+---
+
+### 1. Dependency Vulnerability Scanning
+
+#### JavaScript/TypeScript (NPM)
+
+```bash
+# Run npm audit and capture results
+npm audit --json > security-audit.json
+EXIT_CODE=$?
+
+# Check exit code
+if [ $EXIT_CODE -eq 0 ]; then
+  echo "✅ No vulnerabilities found"
+else
+  echo "⚠️ Vulnerabilities detected (exit code: $EXIT_CODE)"
+fi
+
+# Parse for critical/high vulnerabilities
+CRITICAL=$(npm audit --json | jq '.metadata.vulnerabilities.critical')
+HIGH=$(npm audit --json | jq '.metadata.vulnerabilities.high')
+
+if [ "$CRITICAL" -gt 0 ] || [ "$HIGH" -gt 0 ]; then
+  echo "🚨 CRITICAL: $CRITICAL critical, $HIGH high severity vulnerabilities"
+fi
+```
+
+**Record evidence:**
+```javascript
+context.quality_evidence = context.quality_evidence || { last_updated: new Date().toISOString() };
+context.quality_evidence.security_scan = {
+  executed: true,
+  tool: 'npm audit',
+  critical: 2,
+  high: 5,
+  moderate: 10,
+  low: 3,
+  timestamp: new Date().toISOString()
+};
+context.writeContext();
+```
+
+#### Python (pip-audit / safety)
+
+```bash
+# Using pip-audit (official tool)
+pip-audit --format=json > security-audit.json
+EXIT_CODE=$?
+
+# Alternative: using safety
+safety check --json > security-audit.json
+
+# Check for critical vulnerabilities
+CRITICAL_COUNT=$(cat security-audit.json | jq '[.vulnerabilities[] | select(.severity == "critical")] | length')
+```
+
+**Evidence recording:**
+```python
+# Record in context
+context['quality_evidence'] = context.get('quality_evidence', {})
+context['quality_evidence']['security_scan'] = {
+    'executed': True,
+    'tool': 'pip-audit',
+    'critical': critical_count,
+    'high': high_count,
+    'moderate': moderate_count,
+    'low': low_count,
+    'timestamp': datetime.now().isoformat()
+}
+```
+
+---
+
+### 2. Static Code Analysis (SAST)
+
+#### Semgrep (Multi-language)
+
+```bash
+# Run Semgrep with security rules
+semgrep --config=auto --json > semgrep-results.json
+EXIT_CODE=$?
+
+# Count findings by severity
+CRITICAL=$(cat semgrep-results.json | jq '[.results[] | select(.extra.severity == "ERROR")] | length')
+HIGH=$(cat semgrep-results.json | jq '[.results[] | select(.extra.severity == "WARNING")] | length')
+```
+
+**Common security patterns detected:**
+- SQL Injection
+- XSS (Cross-Site Scripting)
+- Command Injection
+- Path Traversal
+- Hardcoded secrets
+- Insecure cryptography
+
+#### Bandit (Python)
+
+```bash
+# Run Bandit for Python security issues
+bandit -r . -f json -o bandit-report.json
+EXIT_CODE=$?
+
+# Count high/medium severity issues
+HIGH=$(cat bandit-report.json | jq '[.results[] | select(.issue_severity == "HIGH")] | length')
+MEDIUM=$(cat bandit-report.json | jq '[.results[] | select(.issue_severity == "MEDIUM")] | length')
+```
+
+---
+
+### 3. Secret Detection
+
+#### TruffleHog / Gitleaks
+
+```bash
+# Scan for secrets in git history
+trufflehog git file://. --json > secrets-scan.json
+
+# Check if any secrets found
+SECRET_COUNT=$(cat secrets-scan.json | jq '. | length')
+
+if [ "$SECRET_COUNT" -gt 0 ]; then
+  echo "🚨 CRITICAL: $SECRET_COUNT secrets detected!"
+  # Extract types
+  cat secrets-scan.json | jq -r '.[] | .DetectorType' | sort | uniq
+fi
+```
+
+**Common secrets detected:**
+- AWS API keys
+- GitHub tokens
+- Private keys (RSA, SSH)
+- Database credentials
+- API keys (Stripe, Twilio, etc.)
+
+---
+
+### 4. Container Security (Docker)
+
+```bash
+# Scan Docker images with Trivy
+trivy image myapp:latest --format json > trivy-scan.json
+
+# Count vulnerabilities
+CRITICAL=$(cat trivy-scan.json | jq '[.Results[].Vulnerabilities[]? | select(.Severity == "CRITICAL")] | length')
+HIGH=$(cat trivy-scan.json | jq '[.Results[].Vulnerabilities[]? | select(.Severity == "HIGH")] | length')
+```
+
+---
+
+### 5. Evidence Recording Template
+
+After running security scans, record evidence in shared context:
+
+```typescript
+import { ContextManager } from '../lib/context/context-manager.js';
+
+const context = new ContextManager();
+
+// Record security scan evidence
+context.recordSecurityScanEvidence({
+  executed: true,
+  tool: 'npm audit + semgrep',
+  critical: 2,
+  high: 5,
+  moderate: 10,
+  low: 3,
+  timestamp: new Date().toISOString(),
+  scan_details: {
+    dependency_scan: {
+      tool: 'npm audit',
+      critical: 2,
+      high: 3,
+      vulnerabilities: [
+        { id: 'GHSA-xxxx', severity: 'critical', package: 'lodash@4.17.19' }
+      ]
+    },
+    code_scan: {
+      tool: 'semgrep',
+      critical: 0,
+      high: 2,
+      patterns: ['sql-injection', 'xss']
+    }
+  }
+});
+```
+
+---
+
+### 6. Critical Threshold Escalation
+
+**MANDATORY: Escalate if critical/high vulnerabilities found**
+
+```javascript
+// After scanning
+const securityEvidence = context.getQualityEvidence()?.security_scan;
+
+if (!securityEvidence) {
+  console.log('⚠️ WARNING: No security scan performed');
+  return;
+}
+
+// Check for critical/high vulnerabilities
+if (securityEvidence.critical > 0 || securityEvidence.high > 5) {
+  console.log('🚨 SECURITY ALERT: Critical vulnerabilities detected');
+
+  // BLOCK deployment
+  const blockingReasons = [];
+
+  if (securityEvidence.critical > 0) {
+    blockingReasons.push(`${securityEvidence.critical} CRITICAL vulnerabilities`);
+  }
+
+  if (securityEvidence.high > 5) {
+    blockingReasons.push(`${securityEvidence.high} HIGH vulnerabilities (>5 threshold)`);
+  }
+
+  // Escalate to user
+  console.log('BLOCKED: ' + blockingReasons.join(', '));
+  console.log('Action Required: Fix critical/high vulnerabilities before proceeding');
+
+  return { approved: false, blockingReasons };
+}
+
+console.log('✅ Security scan passed');
+```
+
+**Escalation Thresholds:**
+- **CRITICAL**: Any critical vulnerability → BLOCK
+- **HIGH**: >5 high severity vulnerabilities → BLOCK
+- **MODERATE**: >20 moderate vulnerabilities → WARNING
+- **LOW**: >50 low vulnerabilities → WARNING
+
+---
+
+### 7. Auto-Scan Checklist
+
+Use this checklist when performing security reviews:
+
+```markdown
+## Security Scan Checklist
+
+- [ ] **Dependency Scan**: npm audit / pip-audit executed
+- [ ] **Exit Code Captured**: 0 = clean, non-zero = vulnerabilities
+- [ ] **Severity Counts**: Critical, High, Moderate, Low recorded
+- [ ] **Evidence Recorded**: Added to context.quality_evidence.security_scan
+- [ ] **Critical Threshold Check**: BLOCK if critical > 0 or high > 5
+- [ ] **Scan Results Saved**: JSON output saved for review
+- [ ] **False Positives Noted**: Known safe issues documented
+- [ ] **Fix Recommendations**: Upgrade paths or mitigations documented
+```
+
+---
+
+### 8. Integration with Code Quality Reviewer
+
+When Code Quality Reviewer agent performs review:
+
+```markdown
+1. Run linter/type checker (already implemented)
+2. **AUTO-TRIGGER**: Run security scan
+   - npm audit (for JS/TS projects)
+   - pip-audit (for Python projects)
+3. Capture and record evidence
+4. Check critical thresholds
+5. BLOCK approval if critical vulnerabilities found
+6. Include security scan summary in review output
+```
+
+**Example output:**
+```
+## Code Quality Review
+
+### Lint & Type Check: ✅ PASS
+- ESLint: 0 errors, 2 warnings
+- TypeScript: 0 errors
+
+### Security Scan: ⚠️ WARNING
+- Tool: npm audit
+- Critical: 0
+- High: 3
+- Moderate: 8
+- Low: 2
+
+**Recommendation**: 3 high severity vulnerabilities detected. Run `npm audit fix` to address:
+- lodash@4.17.19 (Prototype Pollution - High)
+- minimist@1.2.5 (Prototype Pollution - High)
+- axios@0.21.1 (SSRF - High)
+
+### Overall Status: BLOCKED
+Security vulnerabilities must be resolved before approval.
+```
+
+---
+
+### 9. Tool Installation Guide
+
+**JavaScript/TypeScript:**
+```bash
+# npm audit (built-in, no install needed)
+npm audit
+
+# Semgrep
+pip install semgrep
+
+# TruffleHog
+docker run --rm trufflesecurity/trufflehog:latest
+```
+
+**Python:**
+```bash
+# pip-audit (official tool)
+pip install pip-audit
+
+# safety
+pip install safety
+
+# Bandit
+pip install bandit
+```
+
+**General:**
+```bash
+# Trivy (containers, dependencies, code)
+brew install aquasecurity/trivy/trivy
+
+# Gitleaks (secrets)
+brew install gitleaks
 ```
 
 ---

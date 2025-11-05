@@ -27,6 +27,69 @@ This skill provides comprehensive guidance for building effective testing strate
 - `templates/test-case-template.md` - Test case documentation template
 - `checklists/test-coverage-checklist.md` - Coverage verification checklist
 
+## Required Tools
+
+This skill references the following testing tools. Not all are required - the skill will recommend appropriate tools based on your project.
+
+### JavaScript/TypeScript Testing
+- **Jest:** Most popular testing framework
+  - **Install:** `npm install --save-dev jest @types/jest`
+  - **Config:** `npx jest --init`
+
+- **Vitest:** Vite-native testing framework
+  - **Install:** `npm install --save-dev vitest`
+  - **Config:** Add to vite.config.ts
+
+- **Playwright:** End-to-end testing
+  - **Install:** `npm install --save-dev @playwright/test`
+  - **Setup:** `npx playwright install`
+
+- **k6:** Performance testing
+  - **Install (macOS):** `brew install k6`
+  - **Install (Linux):** Download from k6.io
+  - **Command:** `k6 run script.js`
+
+### Python Testing
+- **pytest:** Standard Python testing framework
+  - **Install:** `pip install pytest`
+  - **Command:** `pytest`
+
+- **pytest-cov:** Coverage reporting
+  - **Install:** `pip install pytest-cov`
+  - **Command:** `pytest --cov=.`
+
+- **Locust:** Performance testing
+  - **Install:** `pip install locust`
+  - **Command:** `locust -f locustfile.py`
+
+### Coverage Tools
+- **c8:** JavaScript/TypeScript coverage
+  - **Install:** `npm install --save-dev c8`
+  - **Command:** `c8 npm test`
+
+- **Istanbul/nyc:** Alternative JS coverage
+  - **Install:** `npm install --save-dev nyc`
+  - **Command:** `nyc npm test`
+
+### Installation Verification
+```bash
+# JavaScript/TypeScript
+jest --version
+vitest --version
+playwright --version
+k6 version
+
+# Python
+pytest --version
+locust --version
+
+# Coverage
+c8 --version
+nyc --version
+```
+
+**Note:** The skill will guide you to select tools based on your project framework (React, Vue, FastAPI, Django, etc.) and testing needs.
+
 ## Testing Philosophy
 
 ### The Testing Trophy 🏆
