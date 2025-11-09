@@ -25,7 +25,9 @@ export async function installOrchestrationInstructions(packageRoot: string): Pro
       'agents.md',
       'context.md',
       'workflows.md',
-      'cli-integration.md'
+      'cli-integration.md',
+      'context-middleware-essential.md',  // v3.5.1: Auto-loaded for all agents
+      'context-middleware-advanced.md'     // v3.5.1: Loaded on-demand for complex scenarios
     ];
 
     // Copy each instruction file from assets

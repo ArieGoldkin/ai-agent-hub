@@ -20,7 +20,7 @@ export function generateMinimalClaudeMd(
   sections.push('---');
   sections.push('name: claude-main');
   sections.push('description: AI Agent Hub - Modular Intelligence System');
-  sections.push('version: 3.4.2');
+  sections.push('version: 3.5.0');
   sections.push('---\n');
 
   // Title
@@ -81,15 +81,42 @@ export function generateMinimalClaudeMd(
 
   // Skills
   sections.push('## 📚 Claude Code Skills\n');
-  sections.push('7 comprehensive skills available in `/skills/` directory:');
-  sections.push('- **architecture-decision-record** - Document architectural decisions');
-  sections.push('- **api-design-framework** - REST/GraphQL/gRPC API design');
-  sections.push('- **testing-strategy-builder** - Comprehensive testing strategies');
-  sections.push('- **code-review-playbook** - Structured code review process');
-  sections.push('- **design-system-starter** - Design tokens & component architecture');
-  sections.push('- **database-schema-designer** - SQL/NoSQL schema design');
-  sections.push('- **security-checklist** - OWASP Top 10 security guidance');
-  sections.push('\nClaude automatically discovers and uses these skills when relevant.\n');
+  sections.push('Specialized knowledge modules installed in `/skills/` directory:\n');
+  sections.push('| Skill | Use When |');
+  sections.push('|-------|----------|');
+  sections.push('| **architecture-decision-record** | Documenting architectural decisions (ADRs) |');
+  sections.push('| **api-design-framework** | Designing REST/GraphQL/gRPC APIs |');
+  sections.push('| **testing-strategy-builder** | Building test plans and coverage strategies |');
+  sections.push('| **code-review-playbook** | Conducting code reviews with conventional comments |');
+  sections.push('| **design-system-starter** | Creating design systems, tokens, components |');
+  sections.push('| **database-schema-designer** | Designing SQL/NoSQL schemas and migrations |');
+  sections.push('| **security-checklist** | Security audits, OWASP Top 10 compliance |');
+  sections.push('| **evidence-verification** | Collecting quality evidence (v3.5.0) |');
+  sections.push('| **quality-gates** | Complexity assessment and gate validation (v3.5.0) |');
+  sections.push('');
+  sections.push('**How it works:**');
+  sections.push('- Skills use progressive disclosure (metadata → SKILL.md → bundled resources)');
+  sections.push('- Includes templates, checklists, references, and examples');
+  sections.push('- Load automatically when Claude detects relevant tasks');
+  sections.push('- Location: Check `/skills/<skill-name>/SKILL.md` for details\n');
+
+  // Production Features (v3.5.0)
+  sections.push('## 🏭 Production Features (v3.5.0)\n');
+  sections.push('### Evidence-Based Verification');
+  sections.push('- **Proof over promises**: Exit codes, test results, build logs');
+  sections.push('- **Quality standards**: Minimum → Production-Grade → Gold Standard');
+  sections.push('- **Auto-recorded**: All agents record evidence in shared context');
+  sections.push('- **No hallucinations**: Evidence proves completion, not claims\n');
+  sections.push('### Quality Gates');
+  sections.push('- **Complexity scoring**: 1-5 scale prevents overwhelming tasks');
+  sections.push('- **Blocking thresholds**: >3 questions, missing deps, 3+ attempts');
+  sections.push('- **Stuck detection**: Auto-escalate after 3 failed attempts');
+  sections.push('- **Failure cascades**: Block dependent tasks when upstream fails\n');
+  sections.push('### Auto-Scanning');
+  sections.push('- **Security scans**: npm audit / pip-audit on every review');
+  sections.push('- **Auto-trigger**: Code Quality Reviewer runs security checks');
+  sections.push('- **Blocking**: Critical vulnerabilities block approval');
+  sections.push('- **Fix commands**: Actionable remediation guidance\n');
 
   // Footer
   sections.push('---');

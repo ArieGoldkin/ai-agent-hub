@@ -258,11 +258,193 @@ function validateContext(context) {
 }
 ```
 
-## 🎯 Integration Checklist
+## 🛡️ Evidence Collection Protocol (v3.5.0)
+
+### CRITICAL: Evidence Required Before Task Completion
+
+All agents MUST collect evidence before marking tasks complete. Evidence proves that code actually works, not just that it was written.
+
+### Evidence Types
+
+**1. Test Evidence** (Highest Priority)
+```javascript
+// After running tests, record evidence
+context.quality_evidence = context.quality_evidence || { last_updated: new Date().toISOString() };
+context.quality_evidence.tests = {
+  executed: true,
+  command: 'npm test',
+  exit_code: 0,  // MUST be 0 for success
+  passed: 24,
+  failed: 0,
+  skipped: 1,
+  coverage_percent: 87.5,
+  duration_seconds: 12.4,
+  timestamp: new Date().toISOString(),
+  evidence_file: '.claude/quality-gates/evidence/tests-2025-11-02-143022.log'
+};
+context.quality_evidence.last_updated = new Date().toISOString();
+fs.writeFileSync(contextPath, JSON.stringify(context, null, 2));
+```
+
+**2. Build Evidence**
+```javascript
+// After successful build
+context.quality_evidence = context.quality_evidence || { last_updated: new Date().toISOString() };
+context.quality_evidence.build = {
+  executed: true,
+  command: 'npm run build',
+  exit_code: 0,  // MUST be 0 for success
+  errors: 0,
+  warnings: 2,
+  artifacts: [
+    { file: 'dist/main.js', size_kb: 245 },
+    { file: 'dist/vendor.js', size_kb: 512 }
+  ],
+  duration_seconds: 24.3,
+  timestamp: new Date().toISOString(),
+  evidence_file: '.claude/quality-gates/evidence/build-2025-11-02-143022.log'
+};
+context.quality_evidence.last_updated = new Date().toISOString();
+fs.writeFileSync(contextPath, JSON.stringify(context, null, 2));
+```
+
+**3. Code Quality Evidence**
+```javascript
+// After linting and type checking
+context.quality_evidence = context.quality_evidence || { last_updated: new Date().toISOString() };
+
+// Linter evidence
+context.quality_evidence.linter = {
+  executed: true,
+  tool: 'ESLint',
+  command: 'npm run lint',
+  exit_code: 0,  // MUST be 0 for no critical errors
+  errors: 0,
+  warnings: 3,
+  timestamp: new Date().toISOString()
+};
+
+// Type checker evidence
+context.quality_evidence.type_checker = {
+  executed: true,
+  tool: 'TypeScript',
+  command: 'npm run typecheck',
+  exit_code: 0,  // MUST be 0 for no type errors
+  errors: 0,
+  timestamp: new Date().toISOString()
+};
+
+context.quality_evidence.last_updated = new Date().toISOString();
+fs.writeFileSync(contextPath, JSON.stringify(context, null, 2));
+```
+
+### Evidence Quality Standards
+
+The context system automatically assesses quality standards based on evidence:
+
+**Minimum Standard** (at least ONE passes):
+- Tests pass (exit_code 0) OR
+- Build succeeds (exit_code 0) OR
+- Linter passes (exit_code 0)
+
+**Production-Grade** (ALL must pass):
+- Tests pass (exit_code 0)
+- Coverage ≥70%
+- Build succeeds (exit_code 0)
+- No critical linter errors (exit_code 0)
+- Type checker passes (exit_code 0)
+
+**Gold Standard** (ALL must pass):
+- Tests pass (exit_code 0)
+- Coverage ≥80%
+- Build succeeds (exit_code 0)
+- No linter warnings (warnings: 0)
+- Type checker passes (exit_code 0)
+
+### Enforcement Rules
+
+**Rule 1: Evidence Before Completion**
+```javascript
+// ❌ BAD: No evidence
+context.tasks_completed.push({
+  description: "Implemented user login",
+  agent: myAgentName
+  // Missing evidence!
+});
+
+// ✅ GOOD: With evidence
+if (context.quality_evidence?.tests?.exit_code === 0) {
+  context.tasks_completed.push({
+    description: "Implemented user login",
+    agent: myAgentName,
+    evidence_summary: "Tests passed (exit 0), coverage 87%",
+    quality_standard: context.quality_evidence.quality_standard_met
+  });
+} else {
+  console.warn('⚠️ Cannot mark complete - no passing test evidence');
+}
+```
+
+**Rule 2: Failed Evidence = Task Not Complete**
+```javascript
+// Check evidence before claiming completion
+if (context.quality_evidence?.tests?.exit_code !== 0) {
+  // Tests failed - DO NOT mark complete
+  context.tasks_pending.push({
+    id: 'pending-' + Date.now(),
+    description: "Fix failing tests in user login",
+    blocker: `${context.quality_evidence.tests.failed} tests failing`,
+    agent: myAgentName,
+    priority: "high"
+  });
+  return; // Stop here
+}
+
+// Only proceed if evidence shows success
+context.tasks_completed.push({...});
+```
+
+**Rule 3: Reference Evidence in Completion Messages**
+```javascript
+// Always include evidence summary when marking complete
+const evidenceSummary = `
+Evidence:
+- Tests: ${context.quality_evidence.tests?.exit_code === 0 ? '✅' : '❌'} (${context.quality_evidence.tests?.passed} passed, ${context.quality_evidence.tests?.failed} failed)
+- Build: ${context.quality_evidence.build?.exit_code === 0 ? '✅' : '❌'}
+- Coverage: ${context.quality_evidence.tests?.coverage_percent}%
+- Quality: ${context.quality_evidence.quality_standard_met || 'below-minimum'}
+`;
+
+context.tasks_completed.push({
+  description: "Implemented user authentication",
+  agent: myAgentName,
+  evidence_summary: evidenceSummary,
+  artifacts: ["/components/UserAuth.tsx"],
+  timestamp: new Date().toISOString()
+});
+```
+
+### Using the Evidence Verification Skill
+
+All agents have access to the `evidence-verification` skill which provides:
+- Evidence collection templates
+- Verification workflows
+- Quality checklists
+- Command references by language
+
+Load the skill when you need guidance on collecting evidence:
+```
+I need to collect evidence for this implementation. Loading evidence-verification skill...
+```
+
+## 🎯 Integration Checklist (Updated v3.5.0)
 
 - [ ] Context loaded at agent start
 - [ ] Decisions tracked during work
+- [ ] **Evidence collected during work** ⭐ NEW
+- [ ] **Evidence verified before completion** ⭐ NEW
 - [ ] Tasks marked completed/pending
+- [ ] **Completion includes evidence summary** ⭐ NEW
 - [ ] Context saved before exit
 - [ ] Squad system synchronized (if applicable)
 - [ ] Patterns detected and followed
@@ -270,3 +452,5 @@ function validateContext(context) {
 - [ ] Session continuity maintained
 
 Remember: **Context preservation is NOT optional**. It's the foundation of intelligent, continuous AI development.
+
+**NEW in v3.5.0:** Evidence collection is MANDATORY. No task can be marked complete without verifiable proof of success.

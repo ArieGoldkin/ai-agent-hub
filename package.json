@@ -1,6 +1,6 @@
 {
   "name": "ai-agent-hub",
-  "version": "3.4.2",
+  "version": "3.5.1",
   "type": "module",
   "description": "Transform Claude into 9 specialized AI agents with one command - Zero dependencies orchestration system",
   "author": "Arie Goldkin",

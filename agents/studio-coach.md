@@ -1,6 +1,6 @@
 ---
 name: studio-coach
-description: Master orchestrator agent that coordinates all other agents to build complete solutions. When asked to build something, this agent explicitly delegates work to specialized agents in the correct sequence.
+description: PROACTIVELY use this agent when complex multi-agent tasks begin, when agents seem stuck or overwhelmed, or when the team needs motivation and coordination. This agent serves as the elite performance coach for all other agents, ensuring they operate at their highest level while maintaining composure and excellence.
 tools: Task, Write, Read
 model: sonnet
 context_aware: true
