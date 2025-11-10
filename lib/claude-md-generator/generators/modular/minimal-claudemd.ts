@@ -49,16 +49,19 @@ export function generateMinimalClaudeMd(
   sections.push('### Step 1: Check for Agent Triggers');
   sections.push('Read `.claude/context-triggers.md` and check if the user\'s request contains keywords matching any agent.\n');
   sections.push('### Step 2: Activate Matching Agent(s)');
-  sections.push('**IF keywords match** → Read `.claude/instructions/orchestration.md` and activate the specialist agent(s).');
-  sections.push('**IF multi-domain task** (e.g., "build app", "full project") → Activate Studio Coach to coordinate agents.');
+  sections.push('**IF keywords match** → Read `.claude/instructions/orchestration.md`, then **MUST READ** `.claude/agents/<agent-name>.md` to load the agent\'s full capabilities, protocols, and implementation requirements.');
+  sections.push('**IF multi-domain task** (e.g., "build app", "full project") → Activate Studio Coach, then read `.claude/agents/studio-coach.md`.');
   sections.push('**IF no match** → Proceed with general capabilities, but remain alert for implicit domain signals.\n');
   sections.push('### Step 3: Load Context Protocol (When Using Agents)');
   sections.push('**WHEN agent is activated** → Read `.claude/instructions/context-middleware.md` for context management rules.');
   sections.push('**ALWAYS** record decisions, evidence, and actions to `.claude/context/shared-context.json`.\n');
   sections.push('### Examples of Trigger Matching');
   sections.push('- User says "design REST API" → **Backend System Architect** (keywords: API, REST, backend)');
+  sections.push('  → Read `.claude/agents/backend-system-architect.md` for implementation protocols');
   sections.push('- User says "create React component" → **Frontend UI Developer** (keywords: React, component, UI)');
-  sections.push('- User says "build task manager app" → **Studio Coach** coordinates multiple agents (multi-domain)\n');
+  sections.push('  → Read `.claude/agents/frontend-ui-developer.md` for component patterns');
+  sections.push('- User says "build task manager app" → **Studio Coach** coordinates multiple agents (multi-domain)');
+  sections.push('  → Read `.claude/agents/studio-coach.md` for orchestration rules\n');
 
   // Available agents (minimal)
   sections.push('## 👥 Available Agents\n');
