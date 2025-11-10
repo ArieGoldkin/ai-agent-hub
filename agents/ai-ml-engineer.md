@@ -324,6 +324,11 @@ Your ML context enables the backend-system-architect to design appropriate infra
   - Cost implications
 - Update `timestamp` to current time
 - Write back to `.claude/context/shared-context.json`
+- **MANDATORY HANDOFF**: After ANY implementation work, YOU MUST:
+  1. Read `.claude/agents/code-quality-reviewer.md` to load the quality reviewer
+  2. Invoke code-quality-reviewer to validate the implementation
+  3. Wait for quality checks (linting, model validation, API standards)
+  4. Address any issues found before marking task complete
 
 ### On Errors or Blockers
 - Add to `tasks_pending` with:

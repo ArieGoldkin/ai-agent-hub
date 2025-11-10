@@ -77,9 +77,12 @@ Please design the API structure following REST best practices.
 
 #### Expected Behavior:
 ✅ **Agent Auto-Detection:** backend-system-architect should activate (check for agent mention)
+✅ **Agent File Loaded:** Claude reads `.claude/agents/backend-system-architect.md` for implementation protocols
 ✅ **Skill Reference:** Claude reads `/skills/api-design-framework/SKILL.md` for guidance
 ✅ **MCP Usage:** sequential-thinking for complex architectural decisions
 ✅ **Context Recording:** Check `.claude/context/shared-context.json` gets updated
+✅ **Quality Gate (v3.5.5+):** code-quality-reviewer auto-invokes after implementation
+✅ **Validation:** Linting, security scans, and best practices checked automatically
 
 #### Validation:
 ```bash
@@ -130,9 +133,12 @@ The backend API endpoints are the ones we designed earlier.
 #### Expected Behavior:
 ✅ **Context Awareness:** Agent remembers API endpoints from Phase 1
 ✅ **Agent Auto-Detection:** frontend-ui-developer activates
+✅ **Agent File Loaded:** Claude reads `.claude/agents/frontend-ui-developer.md` for implementation protocols
 ✅ **Skill Reference:** Claude may read `/skills/design-system-starter/SKILL.md` for patterns
 ✅ **MCP Usage:** memory retrieves backend API structure
 ✅ **Shared Context:** Mentions specific endpoints from Phase 1
+✅ **Quality Gate (v3.5.5+):** code-quality-reviewer auto-invokes after component implementation
+✅ **Validation:** ESLint, TypeScript, and component rules checked automatically
 
 #### Validation:
 ```bash
@@ -157,31 +163,38 @@ Use rapid-ui-designer principles for a delightful UX.
 
 ---
 
-### Phase 3: Code Review & Security (10-15 min)
+### Phase 3: Manual Quality Review - Optional (10-15 min)
 
-**Objective:** Test code-quality-reviewer + security-checklist skill
+**Objective:** Test manual invocation of code-quality-reviewer + security-checklist skill
 
-#### Step 5: Security Review
+**Note (v3.5.5+):** Automatic quality gates already triggered after Phase 1 (backend) and Phase 2 (frontend) implementations. This phase tests **manual re-invocation** for comprehensive audits beyond automatic checks.
+
+#### Step 5: Comprehensive Security Audit
 New prompt:
 
 ```
-Review the entire Task Manager application (backend + frontend) for security issues.
+Perform a comprehensive security audit of the entire Task Manager application (backend + frontend).
 
-Focus on:
-- Authentication vulnerabilities
-- SQL injection risks
-- XSS vulnerabilities
-- OWASP Top 10 compliance
+Go beyond the automatic quality checks that already ran and focus on:
+- Architecture-level security vulnerabilities
+- Authentication flow analysis
+- Advanced SQL injection vectors
+- XSS and CSRF attack surfaces
+- OWASP Top 10 compliance review
+- Security best practices documentation
 
 Reference the security-checklist skill for comprehensive audit guidance.
 ```
 
 #### Expected Behavior:
-✅ **Agent Auto-Detection:** code-quality-reviewer activates
+✅ **Previous Quality Gates:** Automatic linting/security scans already completed in Phase 1 & 2
+✅ **Manual Re-Invocation:** code-quality-reviewer activates for deeper analysis
+✅ **Agent File Loaded:** Claude reads `.claude/agents/code-quality-reviewer.md`
 ✅ **Skill Reference:** Claude reads `/skills/security-checklist/SKILL.md` for audit templates
 ✅ **MCP Usage:** sequential-thinking for comprehensive analysis
 ✅ **Evidence Collection:** Security findings with severity levels
 ✅ **Actionable Output:** Specific recommendations with code examples
+✅ **Comparison:** May reference issues already found in automatic checks
 
 #### Validation:
 ```bash
@@ -267,6 +280,9 @@ After completing the workflow, verify:
 - [ ] Agents auto-detected based on task keywords
 - [ ] Agent names mentioned in Claude's responses
 - [ ] Appropriate agents for each task type
+- [ ] **Agent definition files loaded** (`.claude/agents/<name>.md`) [v3.5.4]
+- [ ] **code-quality-reviewer auto-invoked** after implementations [v3.5.5]
+- [ ] **Quality checks passed** (linting, security scans, best practices) [v3.5.5]
 
 ### ✅ Skills System
 - [ ] At least 3 skills loaded (api-design, security-checklist, testing-strategy)
@@ -467,4 +483,4 @@ If you encounter issues during testing:
 
 ---
 
-*This testing workflow validates ai-agent-hub v3.5.1+ with MCP optimization.*
+*This testing workflow validates ai-agent-hub v3.5.5+ with agent activation protocol, mandatory quality gates, and MCP optimization.*
