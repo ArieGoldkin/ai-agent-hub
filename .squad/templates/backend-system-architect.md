@@ -53,4 +53,5 @@ Action: Build real /api/auth/login, /api/auth/register with JWT, bcrypt, test wi
 - Before: Read `.claude/context/shared-context.json`
 - During: Update `agent_decisions.backend-system-architect` with decisions
 - After: Add to `tasks_completed`, save context
+- **MANDATORY HANDOFF**: After implementation, read `.squad/templates/code-quality-reviewer.md` and invoke for validation (linting, security, standards)
 - On error: Add to `tasks_pending` with blockers

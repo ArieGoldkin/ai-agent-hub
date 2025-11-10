@@ -52,4 +52,5 @@ Action: Integrate real OpenAI API, implement streaming, test with:
 - Before: Read `.claude/context/shared-context.json`
 - During: Update `agent_decisions.ai-ml-engineer` with decisions
 - After: Add to `tasks_completed`, save context
+- **MANDATORY HANDOFF**: After implementation, read `.squad/templates/code-quality-reviewer.md` and invoke for validation (linting, model validation, API standards)
 - On error: Add to `tasks_pending` with blockers

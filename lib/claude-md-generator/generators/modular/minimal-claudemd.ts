@@ -20,41 +20,48 @@ export function generateMinimalClaudeMd(
   sections.push('---');
   sections.push('name: claude-main');
   sections.push('description: AI Agent Hub - Modular Intelligence System');
-  sections.push('version: 3.5.0');
+  sections.push('version: 3.5.3');
   sections.push('---\n');
 
   // Title
   sections.push('# 🚀 AI Agent Hub - Intelligent Orchestration\n');
   sections.push(`**Mode**: ${mode === 'squad' ? '⚡ Squad (Parallel)' : '📚 Classic (Sequential)'}\n`);
 
-  // Core instruction
-  sections.push('## 📋 Dynamic Instruction Loading\n');
-  sections.push('This project uses a modular instruction system to optimize token usage.\n');
-  sections.push('**IMPORTANT**: Load instructions dynamically based on the task:\n');
+  // Core instruction - DIRECTIVE LANGUAGE (Anthropic best practices)
+  sections.push('## 📋 Modular Instruction System\n');
+  sections.push('This project uses specialized instruction files to optimize tokens while maintaining agent capabilities.\n');
+  sections.push('**YOU MUST** follow the agent activation protocol below for every task.\n');
 
-  // Instruction modules
-  sections.push('### 📁 Available Instruction Modules\n');
-  sections.push('| Module | Purpose | When to Load |');
-  sections.push('|--------|---------|--------------|');
-  sections.push('| `.claude/instructions/orchestration.md` | Routing & coordination | Complex tasks, multi-agent work |');
-  sections.push('| `.claude/instructions/agents.md` | Agent capabilities | When invoking specific agents |');
-  sections.push('| `.claude/instructions/context.md` | Context system | Session continuity, handoffs |');
-  sections.push('| `.claude/instructions/workflows.md` | Workflow patterns | Multi-step projects |');
-  sections.push('| `.claude/instructions/context-middleware.md` | **AUTO-LOADED** Context protocol | Always active for ALL agents |');
-  sections.push('| `.claude/instructions/cli-integration.md` | CLI auto-detection | Claude Code CLI interactions |\n');
+  // Instruction modules - descriptive reference
+  sections.push('### 📁 Available Instruction Files\n');
+  sections.push('| File | Contains |');
+  sections.push('|------|----------|');
+  sections.push('| `.claude/instructions/orchestration.md` | Agent routing & coordination rules |');
+  sections.push('| `.claude/instructions/agents.md` | Full agent capabilities & specializations |');
+  sections.push('| `.claude/instructions/context.md` | Context persistence system details |');
+  sections.push('| `.claude/instructions/workflows.md` | Multi-step project patterns |');
+  sections.push('| `.claude/instructions/context-middleware.md` | Context protocol (load when using agents) |');
+  sections.push('| `.claude/instructions/cli-integration.md` | Claude Code CLI behavior |\n');
 
-  // Quick start
-  sections.push('## 🎯 Quick Start\n');
-  sections.push('1. **Simple tasks**: Work directly without loading extra instructions');
-  sections.push('2. **Agent work**: Read `.claude/instructions/agents.md` for capabilities');
-  sections.push('3. **Complex projects**: Read `.claude/instructions/orchestration.md` for routing');
-  sections.push('4. **Multi-session**: Read `.claude/instructions/context.md` for continuity');
-  sections.push('5. **CLI usage**: Read `.claude/instructions/cli-integration.md` for auto-detection\n');
-
-  // Agent trigger detection
-  sections.push('## 🔍 Auto-Detection\n');
-  sections.push('Check `.claude/context-triggers.md` for keyword-based agent activation.');
-  sections.push('For semantic routing beyond keywords, load `.claude/instructions/orchestration.md`.\n');
+  // MANDATORY activation protocol (Anthropic pattern: directive + action-oriented)
+  sections.push('## ⚡ MANDATORY: Agent Activation Protocol\n');
+  sections.push('**BEFORE responding to ANY user task, YOU MUST execute this protocol:**\n');
+  sections.push('### Step 1: Check for Agent Triggers');
+  sections.push('Read `.claude/context-triggers.md` and check if the user\'s request contains keywords matching any agent.\n');
+  sections.push('### Step 2: Activate Matching Agent(s)');
+  sections.push('**IF keywords match** → Read `.claude/instructions/orchestration.md`, then **MUST READ** `.claude/agents/<agent-name>.md` to load the agent\'s full capabilities, protocols, and implementation requirements.');
+  sections.push('**IF multi-domain task** (e.g., "build app", "full project") → Activate Studio Coach, then read `.claude/agents/studio-coach.md`.');
+  sections.push('**IF no match** → Proceed with general capabilities, but remain alert for implicit domain signals.\n');
+  sections.push('### Step 3: Load Context Protocol (When Using Agents)');
+  sections.push('**WHEN agent is activated** → Read `.claude/instructions/context-middleware.md` for context management rules.');
+  sections.push('**ALWAYS** record decisions, evidence, and actions to `.claude/context/shared-context.json`.\n');
+  sections.push('### Examples of Trigger Matching');
+  sections.push('- User says "design REST API" → **Backend System Architect** (keywords: API, REST, backend)');
+  sections.push('  → Read `.claude/agents/backend-system-architect.md` for implementation protocols');
+  sections.push('- User says "create React component" → **Frontend UI Developer** (keywords: React, component, UI)');
+  sections.push('  → Read `.claude/agents/frontend-ui-developer.md` for component patterns');
+  sections.push('- User says "build task manager app" → **Studio Coach** coordinates multiple agents (multi-domain)');
+  sections.push('  → Read `.claude/agents/studio-coach.md` for orchestration rules\n');
 
   // Available agents (minimal)
   sections.push('## 👥 Available Agents\n');
@@ -67,17 +74,26 @@ export function generateMinimalClaudeMd(
   }
   sections.push('\n');
 
-  // Context awareness (minimal)
-  sections.push('## 🧠 Context Awareness (AUTOMATIC)\n');
-  sections.push('- **ALL agents auto-load** `.claude/instructions/context-middleware.md`');
-  sections.push('- Session data: `.claude/context/shared-context.json`');
-  sections.push('- Context protocol is **mandatory** - agents read/write context automatically');
-  sections.push('- For full context rules: Read `.claude/instructions/context.md`');
-  sections.push('- No configuration needed - works out of the box\n');
+  // Context protocol - MANDATORY (Anthropic pattern: "YOU MUST")
+  sections.push('## 🧠 IMPORTANT: Context Protocol\n');
+  sections.push('**WHEN working with activated agents, YOU MUST:**\n');
+  sections.push('1. **Read** `.claude/instructions/context-middleware.md` before agent work begins');
+  sections.push('2. **Record** all decisions, architectural choices, and evidence to `.claude/context/shared-context.json`');
+  sections.push('3. **Check** existing context at session start to maintain continuity across conversations');
+  sections.push('4. **Share** context between agents when coordinating multi-agent tasks\n');
+  sections.push('**Context file location:** `.claude/context/shared-context.json`');
+  sections.push('**Full protocol details:** Read `.claude/instructions/context.md` for advanced scenarios\n');
 
   // MCP servers
   sections.push('## ⚙️ MCP Servers\n');
-  sections.push('Configured in `.mcp.json` - includes memory, thinking, browsing, and more.\n');
+  sections.push('**Installed (3 core servers):** ~7k tokens');
+  sections.push('- **memory** - Conversation persistence across sessions');
+  sections.push('- **sequential-thinking** - Advanced multi-step reasoning');
+  sections.push('- **context7** - Library documentation lookup\n');
+  sections.push('**Optional (add to `.mcp.json` as needed):**');
+  sections.push('- **browsermcp** - Browser automation');
+  sections.push('- **shadcn** - UI component integration\n');
+  sections.push('📖 **Full guide**: Read `.claude/instructions/mcp-optimization.md` for task-based recommendations, monitoring with `/context`, and advanced optimizations.\n');
 
   // Skills
   sections.push('## 📚 Claude Code Skills\n');
@@ -94,11 +110,11 @@ export function generateMinimalClaudeMd(
   sections.push('| **evidence-verification** | Collecting quality evidence (v3.5.0) |');
   sections.push('| **quality-gates** | Complexity assessment and gate validation (v3.5.0) |');
   sections.push('');
-  sections.push('**How it works:**');
-  sections.push('- Skills use progressive disclosure (metadata → SKILL.md → bundled resources)');
-  sections.push('- Includes templates, checklists, references, and examples');
-  sections.push('- Load automatically when Claude detects relevant tasks');
-  sections.push('- Location: Check `/skills/<skill-name>/SKILL.md` for details\n');
+  sections.push('**How to use skills:**');
+  sections.push('- **PROACTIVELY read** `/skills/<skill-name>/SKILL.md` when the user\'s task matches the skill description');
+  sections.push('- **Progressive loading** - Start with SKILL.md, then access templates/examples as needed');
+  sections.push('- **Apply patterns** - Use templates, checklists, and best practices from skill files');
+  sections.push('- **Examples:** API design task → read `api-design-framework/SKILL.md`; Security review → read `security-checklist/SKILL.md`\n');
 
   // Production Features (v3.5.0)
   sections.push('## 🏭 Production Features (v3.5.0)\n');
@@ -120,7 +136,7 @@ export function generateMinimalClaudeMd(
 
   // Footer
   sections.push('---');
-  sections.push('*💡 This minimal CLAUDE.md saves ~80% context tokens through dynamic loading*');
+  sections.push('*💡 This CLAUDE.md uses directive language patterns from Anthropic best practices (2025) to ensure proactive agent activation and context awareness while saving ~80% tokens through on-demand instruction loading.*');
 
   return sections.join('\n');
 }
