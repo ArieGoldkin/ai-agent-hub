@@ -77,7 +77,7 @@ Please design the API structure following REST best practices.
 
 #### Expected Behavior:
 ✅ **Agent Auto-Detection:** backend-system-architect should activate (check for agent mention)
-✅ **Skill Loading:** api-design-framework skill should be referenced
+✅ **Skill Reference:** Claude reads `/skills/api-design-framework/SKILL.md` for guidance
 ✅ **MCP Usage:** sequential-thinking for complex architectural decisions
 ✅ **Context Recording:** Check `.claude/context/shared-context.json` gets updated
 
@@ -97,11 +97,11 @@ Continue the conversation:
 
 ```
 Now design the PostgreSQL database schema with migrations.
-Use the database-schema-designer skill if available.
+Reference the database-schema-designer skill documentation for best practices.
 ```
 
 #### Expected Behavior:
-✅ **Skill Loading:** database-schema-designer skill loads progressively
+✅ **Skill Reference:** Claude reads `/skills/database-schema-designer/SKILL.md` for templates
 ✅ **MCP Usage:** memory recalls previous API design decisions
 ✅ **Output:** SQL migration files or schema definitions
 
@@ -130,7 +130,7 @@ The backend API endpoints are the ones we designed earlier.
 #### Expected Behavior:
 ✅ **Context Awareness:** Agent remembers API endpoints from Phase 1
 ✅ **Agent Auto-Detection:** frontend-ui-developer activates
-✅ **Skill Loading:** design-system-starter may be referenced
+✅ **Skill Reference:** Claude may read `/skills/design-system-starter/SKILL.md` for patterns
 ✅ **MCP Usage:** memory retrieves backend API structure
 ✅ **Shared Context:** Mentions specific endpoints from Phase 1
 
@@ -173,12 +173,12 @@ Focus on:
 - XSS vulnerabilities
 - OWASP Top 10 compliance
 
-Use the security-checklist skill.
+Reference the security-checklist skill for comprehensive audit guidance.
 ```
 
 #### Expected Behavior:
 ✅ **Agent Auto-Detection:** code-quality-reviewer activates
-✅ **Skill Loading:** security-checklist skill loads
+✅ **Skill Reference:** Claude reads `/skills/security-checklist/SKILL.md` for audit templates
 ✅ **MCP Usage:** sequential-thinking for comprehensive analysis
 ✅ **Evidence Collection:** Security findings with severity levels
 ✅ **Actionable Output:** Specific recommendations with code examples
@@ -208,11 +208,11 @@ Include:
 - E2E tests for critical flows
 - Test coverage targets
 
-Use the testing-strategy-builder skill.
+Reference the testing-strategy-builder skill for comprehensive test planning.
 ```
 
 #### Expected Behavior:
-✅ **Skill Loading:** testing-strategy-builder loads with templates
+✅ **Skill Reference:** Claude reads `/skills/testing-strategy-builder/SKILL.md` for test templates
 ✅ **MCP Usage:** memory recalls all components from previous phases
 ✅ **Comprehensive Output:** Test plan covering backend, frontend, integration
 ✅ **Context Integration:** References specific components discussed earlier

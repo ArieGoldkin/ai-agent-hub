@@ -452,8 +452,8 @@ Simply run `npx ai-agent-hub@latest` to update and everything works out of the b
 - **Intelligent Orchestration System**: Semantic routing with intent analysis
 - **Context-Aware Collaboration**: Automatic context preservation across sessions
 - **7 Claude Code Skills**: Architecture, API design, testing, code review, design systems, database design, security
-- **Progressive Disclosure**: Skills load dynamically to optimize tokens
-- **Modular Instruction System**: ~80% token savings through dynamic loading
+- **Progressive Disclosure**: Skills referenced on-demand to optimize token usage
+- **Modular Instruction System**: ~80% token savings through on-demand file reads
 
 ---
 

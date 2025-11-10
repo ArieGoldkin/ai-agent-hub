@@ -234,9 +234,9 @@ Each agent is a specialized AI personality with deep expertise in their domain.
 
 ### What Are Skills?
 
-Skills are specialized knowledge modules that Claude Code dynamically loads when needed.
+Skills are specialized knowledge modules that Claude Code references when needed.
 They transform Claude from a general assistant into a domain expert.
-Each skill provides frameworks, templates, examples, and battle-tested best practices.
+Each skill provides frameworks, templates, examples, and battle-tested best practices in markdown files that Claude reads during task execution.
 
 ### Why Skills Matter for Development
 
@@ -340,10 +340,10 @@ Each skill provides frameworks, templates, examples, and battle-tested best prac
 Skills use **progressive disclosure** to optimize token usage:
 
 ```
-1. Claude sees skill metadata (description, tags)
+1. Claude sees skill metadata in SKILL.md frontmatter (description, tags)
 2. Decides if skill is relevant to your task
-3. Loads SKILL.md with core framework (~4k words)
-4. Accesses detailed examples/templates only when needed
+3. Reads SKILL.md with core framework (~4k words)
+4. Accesses detailed examples/templates only when needed via file reads
 ```
 
 ### What's Included
@@ -360,19 +360,19 @@ Each skill contains:
 ```markdown
 # Architecture Decision
 "Document why we chose microservices over monolith"
-→ Claude loads architecture-decision-record skill
+→ Claude reads /skills/architecture-decision-record/SKILL.md
 → Creates ADR following Nygard format
 → Includes context, decision, consequences
 
 # API Design
 "Design a REST API for user management"
-→ Claude loads api-design-framework skill
+→ Claude reads /skills/api-design-framework/SKILL.md
 → Follows OpenAPI 3.1 specification
 → Implements proper resource naming, status codes
 
 # Security Audit
 "Review authentication implementation"
-→ Claude loads security-checklist skill
+→ Claude reads /skills/security-checklist/SKILL.md
 → Checks OWASP Top 10 vulnerabilities
 → Provides mitigation recommendations
 ```

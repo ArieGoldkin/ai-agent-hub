@@ -102,10 +102,10 @@ export function generateMinimalClaudeMd(
   sections.push('| **quality-gates** | Complexity assessment and gate validation (v3.5.0) |');
   sections.push('');
   sections.push('**How it works:**');
-  sections.push('- Skills use progressive disclosure (metadata → SKILL.md → bundled resources)');
-  sections.push('- Includes templates, checklists, references, and examples');
-  sections.push('- Load automatically when Claude detects relevant tasks');
-  sections.push('- Location: Check `/skills/<skill-name>/SKILL.md` for details\n');
+  sections.push('- **Reference documentation** - Claude reads `/skills/<skill-name>/SKILL.md` when needed');
+  sections.push('- **Progressive disclosure** - Metadata → SKILL.md → bundled resources');
+  sections.push('- **Templates & checklists** - Includes examples, patterns, and best practices');
+  sections.push('- **Usage** - Read skill files when tasks match skill descriptions above\n');
 
   // Production Features (v3.5.0)
   sections.push('## 🏭 Production Features (v3.5.0)\n');
