@@ -55,6 +55,13 @@ export function generateMinimalClaudeMd(
   sections.push('### Step 3: Load Context Protocol (When Using Agents)');
   sections.push('**WHEN agent is activated** → Read `.claude/instructions/context-middleware.md` for context management rules.');
   sections.push('**ALWAYS** record decisions, evidence, and actions to `.claude/context/shared-context.json`.\n');
+  sections.push('### Step 4: Quality Validation (v3.5.5+)');
+  sections.push('**AFTER any implementation work completes, YOU MUST:**');
+  sections.push('1. Read `.claude/agents/code-quality-reviewer.md` to load quality reviewer');
+  sections.push('2. Invoke code-quality-reviewer to validate implementation');
+  sections.push('3. Wait for quality checks: linting, security scans, best practices');
+  sections.push('4. Address any issues found before marking task complete');
+  sections.push('**Applies to:** backend-system-architect, frontend-ui-developer, ai-ml-engineer implementations\n');
   sections.push('### Examples of Trigger Matching');
   sections.push('- User says "design REST API" → **Backend System Architect** (keywords: API, REST, backend)');
   sections.push('  → Read `.claude/agents/backend-system-architect.md` for implementation protocols');
