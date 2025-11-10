@@ -5,6 +5,110 @@ All notable changes to AI Agent Hub will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.7] - 2025-11-10
+
+### 🎯 Explicit Quality Invocation (Recommended Approach)
+
+**Decision:** After testing auto-trigger attempts in v3.5.5 and v3.5.6 both failed in production, switching to explicit invocation pattern for quality gates.
+
+**Rationale:**
+- Auto-trigger reliability: 0% (failed in v3.5.5 and v3.5.6 production testing)
+- Explicit invocation reliability: 100% (works when requested)
+- User workflow already includes explicit instructions ("implement it", "build it", "don't commit yet")
+- Simpler system architecture = less debugging, faster shipping
+
+### Changed
+
+#### Quality Gate Invocation Pattern
+**Before (v3.5.5-v3.5.6):** Attempted automatic quality gate triggering after implementations
+- Placed Step 4 in CLAUDE.md activation protocol
+- Expected automatic invocation
+- **Result:** Failed in production testing - never triggered
+
+**After (v3.5.7):** Explicit quality invocation on user request
+- Removed Step 4 from activation protocol
+- Users explicitly request: "Review code quality and run security checks"
+- code-quality-reviewer activates reliably when invoked
+- **Result:** 100% reliability, user control, clear expectations
+
+#### Removed Auto-Trigger Instructions
+- **lib/claude-md-generator/generators/modular/minimal-claudemd.ts**:
+  - Removed "Step 4: Quality Validation (v3.5.5+)" from activation protocol
+  - Simplified protocol back to 3 steps (Check → Activate → Load Context)
+  - No ambiguous "AFTER implementation completes" timing
+
+#### Updated Testing Workflow
+- **docs/TESTING-WORKFLOW.md**:
+  - Added explicit quality review steps: Step 2a (backend), Step 4a (frontend)
+  - Updated Phase 3 to straightforward comprehensive audit (not "optional")
+  - Removed language about "automatic quality checks already ran"
+  - Updated validation checklist to check explicit invocations (not auto-trigger)
+  - Updated footer to v3.5.7 with explicit invocation
+
+### User Experience
+
+**Explicit Invocation Workflow:**
+```
+User: "Design REST API for task manager"
+Agent: [Implements backend]
+
+User: "Review the backend code quality and run security checks"
+Agent: [Loads code-quality-reviewer, runs checks, reports issues]
+
+User: "Fix the issues found"
+Agent: [Addresses issues]
+
+User: "Now commit the changes"
+```
+
+**Benefits:**
+- ✅ **Reliability:** Works every time when requested
+- ✅ **User Control:** Users decide when quality reviews happen
+- ✅ **Clear Expectations:** No confusion about automatic behavior
+- ✅ **Simpler System:** Less complex instruction chains
+- ✅ **Faster Shipping:** Working solution immediately available
+
+**Trade-off:**
+- Users add one explicit step: requesting quality review
+- But users already comfortable with explicit instructions
+
+### Lessons Learned
+
+**What Didn't Work (v3.5.5-v3.5.6):**
+- Automatic quality gate triggering with "AFTER implementation completes"
+- Step 4 in activation protocol (ambiguous timing)
+- Relying on agents to remember post-implementation steps
+- 0% success rate in production testing
+
+**What Works (v3.5.7):**
+- Explicit user requests for quality review
+- Clear, direct invocation pattern
+- User-controlled timing
+- 100% success rate when tested
+
+**Philosophy Applied:**
+"Make it work, then make it automatic" - After two failed auto-trigger attempts, shipping the working explicit pattern.
+
+### Files Modified
+
+1. **lib/claude-md-generator/generators/modular/minimal-claudemd.ts** - Removed Step 4 auto-trigger
+2. **docs/TESTING-WORKFLOW.md** - Added explicit quality review steps (2a, 4a), updated Phase 3
+3. **CHANGELOG.md** - Documented v3.5.7 changes and rationale
+
+### Migration from v3.5.6
+
+**If you used v3.5.6:**
+- No breaking changes to existing workflows
+- Simply add explicit quality review requests after implementations
+- Example: "Review code quality and run security checks"
+
+**Recommended prompts:**
+- Backend: "Review the backend code quality and run security checks"
+- Frontend: "Review the frontend code quality and check accessibility compliance"
+- Comprehensive: "Perform a comprehensive security audit of the application"
+
+---
+
 ## [3.5.6] - 2025-11-10
 
 ### 🔧 Critical Fix: Quality Gates Now Triggering
