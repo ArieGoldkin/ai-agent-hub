@@ -77,7 +77,14 @@ export function generateMinimalClaudeMd(
 
   // MCP servers
   sections.push('## ⚙️ MCP Servers\n');
-  sections.push('Configured in `.mcp.json` - includes memory, thinking, browsing, and more.\n');
+  sections.push('**Installed (3 core servers):** ~7k tokens');
+  sections.push('- **memory** - Conversation persistence across sessions');
+  sections.push('- **sequential-thinking** - Advanced multi-step reasoning');
+  sections.push('- **context7** - Library documentation lookup\n');
+  sections.push('**Optional (add to `.mcp.json` as needed):**');
+  sections.push('- **browsermcp** - Browser automation');
+  sections.push('- **shadcn** - UI component integration\n');
+  sections.push('📖 **Full guide**: Read `.claude/instructions/mcp-optimization.md` for task-based recommendations, monitoring with `/context`, and advanced optimizations.\n');
 
   // Skills
   sections.push('## 📚 Claude Code Skills\n');
