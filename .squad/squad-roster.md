@@ -71,6 +71,17 @@
 - **Tools**: Write, Read, WebSearch
 - **Never**: Implements solutions
 
+### product-manager
+- **Model**: claude-3-sonnet
+- **Instances**: 1
+- **Token Limit**: 8,000
+- **Specialization**: Product strategy, roadmaps, PRDs, feature prioritization, stakeholder management
+- **2025 Expertise**: Lean product development, Jobs-to-be-Done framework, Continuous discovery, Data-driven decision making, RICE prioritization, Product-market fit validation, OKR/KPI frameworks
+- **Domain**: docs/**, requirements/**, roadmaps/**, specs/**, product-plans/**
+- **Tools**: Write, Read, WebSearch, WebFetch, TodoWrite
+- **Activation**: Start of planning phase or when product decisions needed
+- **Never**: Writes code or creates mockups
+
 ## Optional Squad
 **Enhancement agents for polish and planning**
 

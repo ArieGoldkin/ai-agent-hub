@@ -111,11 +111,12 @@ npx ai-agent-hub@latest
 
 ## 📚 Package Components
 
-### Agents (9 Specialists)
+### Agents (10 Specialists)
 - ai-ml-engineer
 - backend-system-architect
 - code-quality-reviewer
 - frontend-ui-developer
+- product-manager
 - rapid-ui-designer
 - sprint-prioritizer
 - studio-coach
@@ -182,3 +183,9 @@ This repo includes extensive docs (not all published):
 ---
 
 *💡 This CLAUDE.md is for package development. User installations get auto-generated configuration.*
+
+## 🎨 UI & Frontend Design
+
+When asked to design UI & frontend interfaces, load `.claude/instructions/super-design.md` for detailed design workflows, styling guidelines, and tool integration.
+
+---

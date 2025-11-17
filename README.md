@@ -2,7 +2,7 @@
 
 <div align="center">
 
-  ### ✨ Transform Claude into 9 Context-Aware AI Agents Working in Parallel ✨
+  ### ✨ Transform Claude into 10 Context-Aware AI Agents Working in Parallel ✨
   ### 🧠 Intelligent Orchestration + 79% Faster with Squad Mode 🚀
   ### 📚 9 Expert Skills + Production-Grade Quality Enforcement 📚
   ### 🎯 Evidence-Based Verification - Proof Over Promises 🎯
@@ -72,7 +72,7 @@ Total: 30 minutes (66% faster!)
 ```markdown
 # 1. Allocate Tasks
 /allocate-tasks-parallel real-time dashboard with user analytics
-# Analyzes and distributes to optimal agents (1-9)
+# Analyzes and distributes to optimal agents (1-10)
 
 # 2. Start Execution
 /start-parallel
@@ -144,7 +144,7 @@ User: "Build a dashboard with real-time updates"
 
 ---
 
-## 🎭 Your 9 Expert Agents
+## 🎭 Your 10 Expert Agents
 
 Each agent is a specialized AI personality with deep expertise in their domain.
 
@@ -166,6 +166,15 @@ Each agent is a specialized AI personality with deep expertise in their domain.
 - Makes trade-off decisions with ROI analysis
 - Manages product roadmaps
 - Balances user needs with technical constraints
+
+### 📦 Product Manager
+**Product Strategy & Requirements**
+- Defines product vision and roadmap
+- Creates product requirements documents (PRDs)
+- Prioritizes features based on business value
+- Manages stakeholder expectations
+- Validates product-market fit
+- Makes data-driven product decisions
 
 ### 🔍 UX Researcher
 **User Research & Testing**
@@ -743,7 +752,7 @@ npx ai-agent-hub@latest --both --mode auto
 ### What Gets Installed
 
 **Project (.claude/)**
-- 9 AI agents (Classic: full, Squad: slim)
+- 10 AI agents (Classic: full, Squad: slim)
 - 7 Claude Code skills (comprehensive frameworks & templates)
 - Context system (session persistence, shared decisions)
 - Context middleware (auto-loaded for all agents)
@@ -836,7 +845,7 @@ GOOGLE_GENERATIVE_AI_API_KEY=AIzaxxxxxxxx
 
 ### Verify Installation
 ```bash
-ls -la .claude/agents/                      # Should show 9 agents
+ls -la .claude/agents/                      # Should show 10 agents
 ls -la skills/                              # Should show 7 skills directories
 ls -la .claude/context/                     # Should show session & shared-context files
 ls -la .claude/instructions/                # Should show context-middleware.md
