@@ -5,6 +5,48 @@ All notable changes to AI Agent Hub will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.8] - 2025-01-17
+
+### ✨ Added
+
+#### New Agent: Product Manager
+- **New agent**: `product-manager` - Product strategy and requirements specialist
+- Transforms business goals into actionable development plans
+- Creates comprehensive Product Requirements Documents (PRDs)
+- Prioritizes features using RICE, Jobs-to-be-Done, and Kano model frameworks
+- Validates product-market fit with data-driven metrics
+- Manages stakeholder expectations and strategic roadmaps
+
+### 📦 Package Updates
+- Updated agent count from 9 to 10 specialists
+- Added product-manager to REQUIRED_AGENTS registration
+- Created Squad mode versions (analysis + templates)
+- Added product management keywords to context triggers
+- Updated all documentation (README, CLAUDE.md, agents.md)
+
+### 🎯 Agent Integration
+- **Context-aware**: Reads from studio-coach, ux-researcher, sprint-prioritizer
+- **Writes to**: sprint-prioritizer, ux-researcher, backend-system-architect, frontend-ui-developer
+- **Provides**: product_vision, roadmap, requirements, success_metrics, market_analysis, feature_priorities
+- **Squad tier**: Support Squad (Sonnet model, 8K tokens)
+
+### 📝 Files Added
+- `/agents/product-manager.md` - Full agent definition (621 lines)
+- `/.squad/analysis/product-manager-core.md` - Squad core analysis
+- `/.squad/templates/product-manager.md` - Squad template
+
+### 🔧 Files Updated
+- `/bin/commands/components/agent-copier.ts` - Agent registration
+- `/assets/context-triggers.md` - Product management keywords
+- `/.squad/squad-roster.md` - Squad configuration
+- `/assets/instructions/agents.md` - Agent documentation
+- `/agents/studio-coach.md` - Managed agents list
+- `/README.md` - Agent count and descriptions
+- `/CLAUDE.md` - Agent list
+- `/package.json` - Version and description
+
+---
+
 ## [3.5.7] - 2025-11-10
 
 ### 🎯 Explicit Quality Invocation (Recommended Approach)

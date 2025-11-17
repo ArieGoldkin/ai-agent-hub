@@ -102,6 +102,48 @@ Responsive design issues require the frontend-ui-developer agent's expertise in 
 **Tools**: Write, Read, MultiEdit, WebSearch, WebFetch
 **Trigger**: "Use ux-researcher to [task]"
 
+### product-manager 🤖
+**Role**: Use this agent when defining product strategy, creating roadmaps, writing product requirements (PRDs), prioritizing features based on business value, or making strategic product decisions. This agent specializes in transforming business goals and user needs into actionable development plans with clear success metrics. Perfect for strategic planning, requirements documentation, feature prioritization, and stakeholder communication. Examples:
+
+<example>
+Context: New product idea needs validation
+user: "We want to build a meal planning app for busy professionals"
+assistant: "I'll help validate and structure this product idea. Let me use the product-manager agent to define the vision, identify target users, and create a strategic roadmap."
+<commentary>
+Product strategy starts with clear problem definition and market validation before development begins.
+</commentary>
+</example>
+
+<example>
+Context: Feature requests accumulating
+user: "We have 100 feature requests from customers but limited resources"
+assistant: "Let's prioritize strategically based on business value. I'll use the product-manager agent to evaluate each feature against product goals and create a data-driven roadmap."
+<commentary>
+Product managers must balance customer requests with strategic vision and resource constraints.
+</commentary>
+</example>
+
+<example>
+Context: Need comprehensive requirements documentation
+user: "Engineering needs detailed requirements for the payment integration feature"
+assistant: "I'll create a comprehensive PRD with user stories and acceptance criteria. Let me use the product-manager agent to document requirements, edge cases, and success metrics."
+<commentary>
+Clear requirements prevent costly rework and ensure alignment across teams.
+</commentary>
+</example>
+
+<example>
+Context: Product-market fit validation
+user: "How do we know if our product is solving the right problem?"
+assistant: "Let's validate product-market fit with data. I'll use the product-manager agent to define success metrics, analyze user feedback, and recommend strategic adjustments."
+<commentary>
+Product-market fit is validated through measurable user outcomes, not assumptions.
+</commentary>
+</example>
+
+**Tools**: Write, Read, WebSearch, WebFetch, TodoWrite, Grep
+**Trigger**: "Use product-manager to [task]"
+
 ### whimsy-injector 🤖
 **Role**: PROACTIVELY use this agent after any UI/UX changes to ensure delightful, playful elements are incorporated. This agent specializes in adding joy, surprise, and memorable moments to user experiences. The agent should be triggered automatically when design or interface updates are made. Examples:\n\n<example>\nContext: After implementing new features or UI components\nuser: "I've added the new onboarding flow for the app"\nassistant: "Great! I've implemented the onboarding flow. Now let me use the whimsy-injector agent to add delightful touches that will make users smile during their first experience."\n<commentary>\nEvery new UI addition is an opportunity to inject personality and delight.\n</commentary>\n</example>\n\n<example>\nContext: When error states or empty states are created\nuser: "Set up error handling for the payment flow"\nassistant: "I've implemented the error handling. Let me use the whimsy-injector agent to transform those error messages into moments that reduce user frustration."\n<commentary>\nError states are perfect opportunities to show personality and maintain user goodwill.\n</commentary>\n</example>\n\n<example>\nContext: After creating standard UI components\nuser: "Build a loading spinner for the data fetch"\nassistant: "I've created the basic loading functionality. Now I'll use the whimsy-injector agent to make the loading experience entertaining rather than frustrating."\n<commentary>\nLoading states can become memorable moments instead of boring waits.\n</commentary>\n</example>\n\n<example>\nContext: When reviewing completed features\nuser: "The user profile page is done"\nassistant: "Perfect! The profile page is complete. Let me use the whimsy-injector agent to audit it for opportunities to add surprising delights and shareable moments."\n<commentary>\nCompleted features often miss opportunities for delight that can differentiate the app.\n</commentary>\n</example>
 **Tools**: Read, Write, MultiEdit, Grep, Glob
@@ -117,6 +159,7 @@ Rating Scale: ⭐ (Basic) to ⭐⭐⭐⭐⭐ (Expert) | - (Not applicable)
 | backend-system-architect | ⭐⭐⭐ | - | ⭐⭐⭐⭐⭐ | ⭐ | ⭐⭐ | ⭐⭐⭐ |
 | code-quality-reviewer | ⭐ | - | ⭐⭐⭐ | ⭐⭐⭐ | ⭐ | ⭐⭐⭐⭐⭐ |
 | frontend-ui-developer | ⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐⭐ | - | ⭐⭐ |
+| product-manager | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ⭐⭐ | - | ⭐⭐ |
 | rapid-ui-designer | ⭐⭐ | ⭐⭐⭐⭐⭐ | - | ⭐⭐⭐ | - | ⭐ |
 | sprint-prioritizer | ⭐⭐⭐⭐⭐ | ⭐⭐ | ⭐ | ⭐ | - | ⭐ |
 | studio-coach | ⭐⭐⭐⭐⭐ | ⭐⭐ | ⭐⭐ | ⭐⭐ | ⭐⭐ | ⭐⭐⭐ |

@@ -21,6 +21,9 @@ KEYWORDS: test, review, quality, bug, lint, coverage, refactor, standard, securi
 ## Sprint Prioritizer
 KEYWORDS: sprint, plan, prioritize, roadmap, timeline, scope, estimate, backlog, agile, scrum, kanban, velocity, story points, deadline, milestone, release, iteration, MVP, feature flag, dependency, blocker
 
+## Product Manager
+KEYWORDS: product, strategy, feature, PRD, product requirements, user story, epic, theme, vision, market, competitor, competitive, pricing, positioning, GTM, go-to-market, product-market fit, PMF, customer, stakeholder, requirement, specification, OKR, KPI, metrics, success criteria, trade-off, launch, beta, feedback, persona, journey, value proposition, business model, revenue, monetization, target audience, market research, product roadmap
+
 ## Whimsy Injector
 KEYWORDS: delight, animation, fun, interaction, creative, playful, easter egg, micro-interaction, surprise, engaging, gamify, confetti, particle, bounce, hover, transition, loading, empty state, success, celebration, personality
 
