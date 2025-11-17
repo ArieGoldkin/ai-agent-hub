@@ -41,7 +41,8 @@ export function generateMinimalClaudeMd(
   sections.push('| `.claude/instructions/context.md` | Context persistence system details |');
   sections.push('| `.claude/instructions/workflows.md` | Multi-step project patterns |');
   sections.push('| `.claude/instructions/context-middleware.md` | Context protocol (load when using agents) |');
-  sections.push('| `.claude/instructions/cli-integration.md` | Claude Code CLI behavior |\n');
+  sections.push('| `.claude/instructions/cli-integration.md` | Claude Code CLI behavior |');
+  sections.push('| `.claude/instructions/super-design.md` | UI/frontend design workflow & tools |\n');
 
   // MANDATORY activation protocol (Anthropic pattern: directive + action-oriented)
   sections.push('## ⚡ MANDATORY: Agent Activation Protocol\n');

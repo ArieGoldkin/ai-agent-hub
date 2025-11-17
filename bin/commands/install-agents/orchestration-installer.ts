@@ -28,7 +28,8 @@ export async function installOrchestrationInstructions(packageRoot: string): Pro
       'cli-integration.md',
       'context-middleware-essential.md',  // v3.5.1: Auto-loaded for all agents
       'context-middleware-advanced.md',   // v3.5.1: Loaded on-demand for complex scenarios
-      'mcp-optimization.md'               // v3.5.1: MCP server optimization guide
+      'mcp-optimization.md',              // v3.5.1: MCP server optimization guide
+      'super-design.md'                   // UI/frontend design workflow & tools
     ];
 
     // Copy each instruction file from assets
