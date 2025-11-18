@@ -65,7 +65,7 @@ export async function runSetup(__dirname: string, installTargets: InstallationTa
     
     if (installTargets.project) {
       console.log("📁 Project setup:");
-      console.log("   • 9 AI agents installed in .claude/agents/");
+      console.log("   • 10 AI agents installed in .claude/agents/");
       console.log("   • MCP servers configured in .mcp.json");
       console.log("   • Instructions available in CLAUDE.md");
     }
@@ -79,9 +79,10 @@ export async function runSetup(__dirname: string, installTargets: InstallationTa
     console.log(chalk.cyan("🎯 Quick Start:"));
     console.log(`   Open Claude and say: "Use Studio Coach to help me build..."`);
     console.log();
-    console.log("📚 Your 9 specialized agents:");
+    console.log("📚 Your 10 specialized agents:");
     console.log("   • Studio Coach - Master orchestrator");
     console.log("   • Sprint Prioritizer - Agile planning");
+    console.log("   • Product Manager - Product strategy & roadmap");
     console.log("   • UX Researcher - User research");
     console.log("   • Rapid UI Designer - Design systems");
     console.log("   • Backend System Architect - API design");

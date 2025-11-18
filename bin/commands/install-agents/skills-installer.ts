@@ -8,11 +8,11 @@ import { cp } from "fs/promises";
 import { join } from "path";
 
 /**
- * Install skills directory with all 7 comprehensive skills
+ * Install skills directory with all 14 comprehensive skills
  */
 export async function installSkills(packageRoot: string): Promise<void> {
   const sourceDir = join(packageRoot, "skills");
-  const targetDir = "skills";
+  const targetDir = ".claude/skills";
 
   try {
     // Check if skills already exist
@@ -30,14 +30,21 @@ export async function installSkills(packageRoot: string): Promise<void> {
     // Copy entire skills directory recursively
     await cp(sourceDir, targetDir, { recursive: true });
 
-    console.log("✅ Installed 7 comprehensive Claude Code skills:");
-    console.log("   • architecture-decision-record - Document architectural decisions");
-    console.log("   • api-design-framework - REST/GraphQL/gRPC API design");
-    console.log("   • testing-strategy-builder - Comprehensive testing strategies");
+    console.log("✅ Installed 14 comprehensive Claude Code skills:");
+    console.log("   • ai-native-development - RAG, embeddings, vector DBs & LLM integration");
+    console.log("   • api-design-framework - REST/GraphQL/gRPC API design patterns");
+    console.log("   • architecture-decision-record - Document architectural decisions (ADR)");
     console.log("   • code-review-playbook - Structured code review process");
+    console.log("   • database-schema-designer - SQL/NoSQL schema design & optimization");
     console.log("   • design-system-starter - Design tokens & component architecture");
-    console.log("   • database-schema-designer - SQL/NoSQL schema design");
+    console.log("   • edge-computing-patterns - Cloudflare Workers, Vercel Edge deployment");
+    console.log("   • evidence-verification - Evidence-based task completion");
+    console.log("   • quality-gates - Task complexity assessment & risk management");
+    console.log("   • react-server-components-framework - Next.js 15 App Router & RSC");
     console.log("   • security-checklist - OWASP Top 10 security guidance");
+    console.log("   • streaming-api-patterns - SSE, WebSockets & real-time streaming");
+    console.log("   • testing-strategy-builder - Comprehensive testing strategies");
+    console.log("   • type-safety-validation - End-to-end type safety with Zod & tRPC");
 
   } catch (error) {
     // Skills are optional - don't fail installation

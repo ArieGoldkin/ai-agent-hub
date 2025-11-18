@@ -254,7 +254,7 @@ def recommend_agent_count(analysis):
 
 ### High Quality (Formal PRD)
 - Full parallelization possible
-- Can use 3-9 agents safely
+- Can use 3-10 agents safely
 - Clear file ownership boundaries
 - Explicit dependencies
 

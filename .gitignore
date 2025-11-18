@@ -93,3 +93,6 @@ data/
 test-session/
 *.bak
 *.tmp
+# IDE and design iterations
+.cursor/
+.superdesign/
