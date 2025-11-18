@@ -4,7 +4,7 @@
 
   ### ✨ Transform Claude into 10 Context-Aware AI Agents Working in Parallel ✨
   ### 🧠 Intelligent Orchestration + 79% Faster with Squad Mode 🚀
-  ### 📚 9 Expert Skills + Production-Grade Quality Enforcement 📚
+  ### 📚 14 Expert Skills + Production-Grade Quality Enforcement 📚
   ### 🎯 Evidence-Based Verification - Proof Over Promises 🎯
 
   ```bash
@@ -239,7 +239,7 @@ Each agent is a specialized AI personality with deep expertise in their domain.
 
 ## 📚 Claude Code Skills
 
-**NEW in 3.5.0**: 9 comprehensive skills including production-grade quality enforcement!
+**Updated in 3.5.9**: 14 comprehensive skills including production-grade quality enforcement and 2025+ modern patterns!
 
 ### What Are Skills?
 
@@ -344,6 +344,47 @@ Each skill provides frameworks, templates, examples, and battle-tested best prac
 - Requirements completeness checklists
 - Integration with Squad mode and Studio Coach
 
+#### 🤖 AI-Native Development **(NEW in v3.5.9)**
+**Build AI-first applications with LLMs**
+- RAG (Retrieval-Augmented Generation) pipelines
+- Vector databases and embeddings patterns
+- Agentic workflows and tool integration
+- LLM prompt engineering and function calling
+- Streaming responses and cost optimization
+- AI observability and monitoring patterns
+
+#### ⚡ Edge Computing Patterns **(NEW in v3.5.9)**
+**Deploy to globally distributed edge runtimes**
+- Cloudflare Workers, Vercel Edge, Deno Deploy patterns
+- Edge middleware and request handling
+- Streaming and fetch APIs at the edge
+- Runtime constraints and optimization
+- KV storage and caching strategies
+
+#### ⚛️ React Server Components Framework **(NEW in v3.5.9)**
+**Modern Next.js 15 App Router patterns**
+- React Server Components (RSC) architecture
+- Server Actions and form handling
+- Streaming SSR and Suspense boundaries
+- Data fetching and caching patterns
+- Client/Server component composition
+
+#### 🌊 Streaming API Patterns **(NEW in v3.5.9)**
+**Real-time data streaming and live updates**
+- Server-Sent Events (SSE) implementation
+- WebSockets patterns and reconnection logic
+- ReadableStream and backpressure handling
+- LLM streaming response patterns
+- Real-time collaborative features
+
+#### 🛡️ Type-Safety Validation **(NEW in v3.5.9)**
+**End-to-end type safety across the stack**
+- Zod runtime validation schemas
+- tRPC type-safe APIs
+- Prisma ORM type generation
+- TypeScript 5.7+ advanced features
+- Full-stack type inference patterns
+
 ### How They Work
 
 Skills use **progressive disclosure** to optimize token usage:
@@ -351,11 +392,13 @@ Skills use **progressive disclosure** to optimize token usage:
 ```
 1. Claude sees skill metadata in SKILL.md frontmatter (description, tags)
 2. Decides if skill is relevant to your task
-3. Reads SKILL.md with core framework (~4k words)
+3. Reads .claude/skills/<skill-name>/SKILL.md with core framework (~4k words)
 4. Accesses detailed examples/templates only when needed via file reads
 ```
 
 ### What's Included
+
+**Location**: `.claude/skills/` (v3.5.9+ unified structure)
 
 Each skill contains:
 - **SKILL.md** - Core framework and workflow (~300-400 lines)

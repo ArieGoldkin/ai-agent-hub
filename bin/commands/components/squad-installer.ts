@@ -59,7 +59,7 @@ async function installSquadCommands(packageRoot: string): Promise<void> {
 async function installSquadRules(packageRoot: string): Promise<void> {
   const squadRulesPath = join(packageRoot, ".squad", "parallel-execution-rules.md");
   if (existsSync(squadRulesPath)) {
-    const destPath = ".claude/parallel-execution-rules.md";
+    const destPath = ".claude/instructions/parallel-execution-rules.md";
     const content = await readFile(squadRulesPath);
     await writeFile(destPath, content);
     console.log("   📋 Installed parallel execution rules");
@@ -87,15 +87,15 @@ async function installSquadExamples(packageRoot: string): Promise<void> {
 async function installSquadInfraFiles(packageRoot: string): Promise<void> {
   const squadInfraFiles = [
     'supervisor-rules.md',
-    'squad-roster.md', 
+    'squad-roster.md',
     'communication-protocol.md',
     'architecture-decisions.md'
   ];
-  
+
   for (const file of squadInfraFiles) {
     const sourcePath = join(packageRoot, ".squad", file);
     if (existsSync(sourcePath)) {
-      const destPath = join(".claude", file);
+      const destPath = join(".claude", "instructions", file);
       const content = await readFile(sourcePath);
       await writeFile(destPath, content);
     }

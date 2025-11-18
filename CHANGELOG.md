@@ -5,6 +5,110 @@ All notable changes to AI Agent Hub will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.9] - 2025-01-18
+
+### 🔧 Fixed - Installation Structure
+
+#### Critical File Structure Issue
+Fixed installation paths to follow Anthropic's recommended `.claude/` structure pattern:
+
+**Skills Location:**
+- **Before**: Installed to root-level `skills/`
+- **After**: Installed to `.claude/skills/`
+- **Impact**: Skills now properly integrated with Claude's context system
+- **File**: `bin/commands/install-agents/skills-installer.ts`
+
+**Squad Infrastructure Files:**
+- **Before**: Installed to `.claude/` root (5 files scattered)
+- **After**: Installed to `.claude/instructions/` (organized)
+- **Files moved**:
+  - `supervisor-rules.md` → `.claude/instructions/`
+  - `squad-roster.md` → `.claude/instructions/`
+  - `communication-protocol.md` → `.claude/instructions/`
+  - `architecture-decisions.md` → `.claude/instructions/`
+  - `parallel-execution-rules.md` → `.claude/instructions/`
+- **File**: `bin/commands/components/squad-installer.ts`
+
+### ✨ Added
+
+#### Migration Command
+- **New command**: `npx ai-agent-hub migrate`
+- Automatically migrates existing installations to v3.5.9+ structure
+- Moves `skills/` from root to `.claude/skills/`
+- Moves squad files to `.claude/instructions/`
+- Safe for existing installations (checks before moving)
+- Provides detailed migration report
+- **File**: `bin/commands/migrate-structure.ts`
+
+### 📝 Updated
+
+#### Skills Documentation
+- **Fixed count**: Updated from "7 skills" to "14 skills"
+- **Added missing skills to output**:
+  - ai-native-development
+  - edge-computing-patterns
+  - evidence-verification
+  - quality-gates
+  - react-server-components-framework
+  - streaming-api-patterns
+  - type-safety-validation
+- All 14 skills now listed in installation output
+- **File**: `bin/commands/install-agents/skills-installer.ts`
+
+#### Help Command
+- Added `npx ai-agent-hub migrate` to usage documentation
+- **File**: `bin/commands/help.ts`
+
+### 🎯 New Installation Structure
+
+```
+.claude/
+├── agents/              (10 specialist agents)
+├── instructions/        (14 instruction files including squad rules)
+├── skills/              (14 skill modules) ← MOVED from root
+├── context/             (shared context system)
+├── commands/            (squad parallel commands)
+├── examples/            (squad examples)
+├── context-triggers.md
+└── settings.local.json
+```
+
+### 📦 Migration Guide
+
+**For existing users with old structure:**
+```bash
+cd your-project
+npx ai-agent-hub migrate
+```
+
+The migration command will:
+1. Check if migration is needed
+2. Move `skills/` to `.claude/skills/`
+3. Move squad infrastructure files to `.claude/instructions/`
+4. Provide detailed report of changes
+5. Skip already-migrated files (safe to re-run)
+
+**For new installations:**
+- No action needed - v3.5.9+ installs with correct structure automatically
+
+### 🔍 Technical Details
+
+**Files Changed:**
+- `bin/commands/install-agents/skills-installer.ts` - Skills path & count
+- `bin/commands/components/squad-installer.ts` - Squad file paths
+- `bin/commands/migrate-structure.ts` - New migration command
+- `bin/cli.ts` - Added migrate command handler
+- `bin/commands/help.ts` - Updated help text
+
+**Why This Matters:**
+- Follows Anthropic's recommended patterns
+- Keeps all Claude resources under `.claude/`
+- Improves discoverability for Claude Desktop/Code
+- Cleaner project root structure
+- Better organization for instructions vs. assets
+
+---
+
 ## [3.5.8] - 2025-01-17
 
 ### ✨ Added

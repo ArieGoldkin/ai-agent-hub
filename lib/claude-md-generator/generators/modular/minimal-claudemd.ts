@@ -20,7 +20,7 @@ export function generateMinimalClaudeMd(
   sections.push('---');
   sections.push('name: claude-main');
   sections.push('description: AI Agent Hub - Modular Intelligence System');
-  sections.push('version: 3.5.3');
+  sections.push('version: 3.5.9');
   sections.push('---\n');
 
   // Title
@@ -42,7 +42,18 @@ export function generateMinimalClaudeMd(
   sections.push('| `.claude/instructions/workflows.md` | Multi-step project patterns |');
   sections.push('| `.claude/instructions/context-middleware.md` | Context protocol (load when using agents) |');
   sections.push('| `.claude/instructions/cli-integration.md` | Claude Code CLI behavior |');
-  sections.push('| `.claude/instructions/super-design.md` | UI/frontend design workflow & tools |\n');
+  sections.push('| `.claude/instructions/super-design.md` | UI/frontend design workflow & tools |');
+
+  // Add Squad mode files if in squad mode
+  if (mode === 'squad') {
+    sections.push('| `.claude/instructions/supervisor-rules.md` | Squad supervisor orchestration rules |');
+    sections.push('| `.claude/instructions/squad-roster.md` | Agent assignments & capabilities |');
+    sections.push('| `.claude/instructions/communication-protocol.md` | File-based messaging protocol |');
+    sections.push('| `.claude/instructions/parallel-execution-rules.md` | Conflict prevention & locking |');
+    sections.push('| `.claude/instructions/architecture-decisions.md` | Shared architectural context |');
+  }
+
+  sections.push('\n');
 
   // MANDATORY activation protocol (Anthropic pattern: directive + action-oriented)
   sections.push('## ⚡ MANDATORY: Agent Activation Protocol\n');
@@ -98,24 +109,29 @@ export function generateMinimalClaudeMd(
 
   // Skills
   sections.push('## 📚 Claude Code Skills\n');
-  sections.push('Specialized knowledge modules installed in `/skills/` directory:\n');
+  sections.push('**14 specialized knowledge modules** installed in `.claude/skills/` directory:\n');
   sections.push('| Skill | Use When |');
   sections.push('|-------|----------|');
-  sections.push('| **architecture-decision-record** | Documenting architectural decisions (ADRs) |');
+  sections.push('| **ai-native-development** | Building RAG pipelines, embeddings, vector DBs, LLM integration |');
   sections.push('| **api-design-framework** | Designing REST/GraphQL/gRPC APIs |');
-  sections.push('| **testing-strategy-builder** | Building test plans and coverage strategies |');
+  sections.push('| **architecture-decision-record** | Documenting architectural decisions (ADRs) |');
   sections.push('| **code-review-playbook** | Conducting code reviews with conventional comments |');
-  sections.push('| **design-system-starter** | Creating design systems, tokens, components |');
   sections.push('| **database-schema-designer** | Designing SQL/NoSQL schemas and migrations |');
-  sections.push('| **security-checklist** | Security audits, OWASP Top 10 compliance |');
+  sections.push('| **design-system-starter** | Creating design systems, tokens, components |');
+  sections.push('| **edge-computing-patterns** | Deploying to Cloudflare Workers, Vercel Edge, Deno Deploy |');
   sections.push('| **evidence-verification** | Collecting quality evidence (v3.5.0) |');
   sections.push('| **quality-gates** | Complexity assessment and gate validation (v3.5.0) |');
+  sections.push('| **react-server-components-framework** | Next.js 15 App Router, RSC, Server Actions |');
+  sections.push('| **security-checklist** | Security audits, OWASP Top 10 compliance |');
+  sections.push('| **streaming-api-patterns** | SSE, WebSockets, ReadableStream, real-time APIs |');
+  sections.push('| **testing-strategy-builder** | Building test plans and coverage strategies |');
+  sections.push('| **type-safety-validation** | End-to-end type safety with Zod, tRPC, Prisma |');
   sections.push('');
   sections.push('**How to use skills:**');
-  sections.push('- **PROACTIVELY read** `/skills/<skill-name>/SKILL.md` when the user\'s task matches the skill description');
+  sections.push('- **PROACTIVELY read** `.claude/skills/<skill-name>/SKILL.md` when the user\'s task matches the skill description');
   sections.push('- **Progressive loading** - Start with SKILL.md, then access templates/examples as needed');
   sections.push('- **Apply patterns** - Use templates, checklists, and best practices from skill files');
-  sections.push('- **Examples:** API design task → read `api-design-framework/SKILL.md`; Security review → read `security-checklist/SKILL.md`\n');
+  sections.push('- **Examples:** API design → read `.claude/skills/api-design-framework/SKILL.md`; Security review → read `.claude/skills/security-checklist/SKILL.md`\n');
 
   // Production Features (v3.5.0)
   sections.push('## 🏭 Production Features (v3.5.0)\n');
@@ -135,9 +151,32 @@ export function generateMinimalClaudeMd(
   sections.push('- **Blocking**: Critical vulnerabilities block approval');
   sections.push('- **Fix commands**: Actionable remediation guidance\n');
 
+  // File Structure (v3.5.9+)
+  sections.push('## 📁 Project Structure (v3.5.9+)\n');
+  sections.push('```');
+  sections.push('.claude/');
+  sections.push('├── agents/              # 10 specialist agent personalities');
+  sections.push('├── instructions/        # Orchestration & context rules');
+  if (mode === 'squad') {
+    sections.push('│   ├── ...              # Core instructions');
+    sections.push('│   └── supervisor-rules.md, squad-roster.md, ... # Squad coordination');
+  }
+  sections.push('├── skills/              # 14 specialized knowledge modules');
+  sections.push('├── context/             # Shared context & session data');
+  sections.push('│   └── shared-context.json');
+  if (mode === 'squad') {
+    sections.push('├── commands/            # Squad parallel execution commands');
+    sections.push('├── examples/            # Squad workflow examples');
+  }
+  sections.push('├── context-triggers.md  # Keyword-based agent activation');
+  sections.push('└── settings.local.json  # MCP server configuration');
+  sections.push('```\n');
+
   // Footer
   sections.push('---');
   sections.push('*💡 This CLAUDE.md uses directive language patterns from Anthropic best practices (2025) to ensure proactive agent activation and context awareness while saving ~80% tokens through on-demand instruction loading.*');
+  sections.push('');
+  sections.push(`*📦 v3.5.9: All Claude resources unified under \`.claude/\` following Anthropic's recommended patterns.*`);
 
   return sections.join('\n');
 }

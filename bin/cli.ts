@@ -2,8 +2,8 @@
 
 /**
  * AI Agent Hub CLI - Lean Agent Deployment Tool
- * 
- * Simple tool to deploy 9 AI agents with MCP configuration
+ *
+ * Simple tool to deploy 10 AI agents with MCP configuration
  */
 
 import { dirname } from "path";
@@ -18,12 +18,13 @@ const __dirname = dirname(__filename);
 // Import commands and utilities
 import { showHelp } from "./commands/help.js";
 import { runSetup } from "./commands/setup.js";
+import { migrateFileStructure, checkMigrationNeeded } from "./commands/migrate-structure.js";
 import { promptForInstallationTargets, promptForExecutionMode } from "./utils/prompt.js";
 import { loadCurrentMode, saveMode } from "./utils/mode-manager.js";
 import { parseArguments, getInstallTargets } from "../lib/cli/arg-parser.js";
 import { handleModeSelection } from "../lib/cli/mode-detector.js";
 
-const CURRENT_VERSION = "3.4.0";
+const CURRENT_VERSION = "3.5.9";
 const VALID_MODES = ['classic', 'squad', 'auto'];
 
 // Main CLI router
@@ -41,6 +42,22 @@ async function main() {
     // Handle version command
     if (parsedArgs.command === "--version" || parsedArgs.command === "-v") {
       console.log(`ai-agent-hub v${CURRENT_VERSION}`);
+      return;
+    }
+
+    // Handle migrate command
+    if (parsedArgs.command === "migrate") {
+      const migrationCheck = checkMigrationNeeded();
+
+      if (!migrationCheck.needed) {
+        console.log("✅ Your installation is already using the latest structure!");
+        return;
+      }
+
+      console.log("📋 Migration needed:");
+      migrationCheck.reasons.forEach(reason => console.log(`   • ${reason}`));
+
+      await migrateFileStructure();
       return;
     }
 
