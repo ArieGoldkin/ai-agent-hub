@@ -753,23 +753,20 @@ Action Required:
 
 Your Claude gets enhanced capabilities through MCP servers:
 
-### Always Included
-- **Memory** - Conversation history
+### Core Servers (Always Included)
+- **Memory** - Conversation history and context preservation
 - **Sequential Thinking** - Step-by-step reasoning
-- **Context7** - Large project management
-- **Playwright** - Browser automation
-- **Browser MCP** - Web control (requires [extension](https://docs.browsermcp.io/setup-extension))
-- **Shadcn** - UI component registry integration
+- **Context7** - Library documentation lookup
+- **Playwright** - Browser automation and testing
 
 ### Desktop-Specific
-- **Filesystem** - File system access
+- **Filesystem** - File system access (read-only)
 - **GitHub** - Repository management
 
 ### Optional (with API Keys)
 - **GitHub** (project) - `GITHUB_TOKEN`
 - **Supabase** - `SUPABASE_ACCESS_TOKEN`
 - **Postgres** - `POSTGRES_CONNECTION_STRING`
-- **Brave Search** - `BRAVE_API_KEY`
 
 ---
 
