@@ -4,7 +4,7 @@
 
   ### ✨ Transform Claude into 10 Context-Aware AI Agents Working in Parallel ✨
   ### 🧠 Intelligent Orchestration + 79% Faster with Squad Mode 🚀
-  ### 📚 14 Expert Skills + Production-Grade Quality Enforcement 📚
+  ### 📚 15 Expert Skills + Production-Grade Quality Enforcement 📚
   ### 🎯 Evidence-Based Verification - Proof Over Promises 🎯
 
   ```bash
@@ -278,6 +278,14 @@ Each skill provides frameworks, templates, examples, and battle-tested best prac
 - Includes templates with alternatives considered
 - Preserves architectural memory for teams
 - Prevents endless debates about settled decisions
+
+#### 💡 Brainstorming **(NEW in v3.5.9)**
+**Transform rough ideas into fully-formed designs**
+- Structured Socratic questioning workflow
+- Phase-based approach: Understanding → Exploration → Design
+- Alternative exploration (2-3 approaches with trade-offs)
+- Incremental validation and feedback loops
+- YAGNI ruthlessly applied to prevent over-engineering
 
 #### 🌐 API Design Framework
 **Build consistent, well-documented APIs**
@@ -753,23 +761,20 @@ Action Required:
 
 Your Claude gets enhanced capabilities through MCP servers:
 
-### Always Included
-- **Memory** - Conversation history
+### Core Servers (Always Included)
+- **Memory** - Conversation history and context preservation
 - **Sequential Thinking** - Step-by-step reasoning
-- **Context7** - Large project management
-- **Playwright** - Browser automation
-- **Browser MCP** - Web control (requires [extension](https://docs.browsermcp.io/setup-extension))
-- **Shadcn** - UI component registry integration
+- **Context7** - Library documentation lookup
+- **Playwright** - Browser automation and testing
 
 ### Desktop-Specific
-- **Filesystem** - File system access
+- **Filesystem** - File system access (read-only)
 - **GitHub** - Repository management
 
 ### Optional (with API Keys)
 - **GitHub** (project) - `GITHUB_TOKEN`
 - **Supabase** - `SUPABASE_ACCESS_TOKEN`
 - **Postgres** - `POSTGRES_CONNECTION_STRING`
-- **Brave Search** - `BRAVE_API_KEY`
 
 ---
 

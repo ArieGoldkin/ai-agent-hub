@@ -8,7 +8,7 @@ import { cp } from "fs/promises";
 import { join } from "path";
 
 /**
- * Install skills directory with all 14 comprehensive skills
+ * Install skills directory with all 15 comprehensive skills
  */
 export async function installSkills(packageRoot: string): Promise<void> {
   const sourceDir = join(packageRoot, "skills");
@@ -30,10 +30,11 @@ export async function installSkills(packageRoot: string): Promise<void> {
     // Copy entire skills directory recursively
     await cp(sourceDir, targetDir, { recursive: true });
 
-    console.log("✅ Installed 14 comprehensive Claude Code skills:");
+    console.log("✅ Installed 15 comprehensive Claude Code skills:");
     console.log("   • ai-native-development - RAG, embeddings, vector DBs & LLM integration");
     console.log("   • api-design-framework - REST/GraphQL/gRPC API design patterns");
     console.log("   • architecture-decision-record - Document architectural decisions (ADR)");
+    console.log("   • brainstorming - Transform rough ideas into fully-formed designs");
     console.log("   • code-review-playbook - Structured code review process");
     console.log("   • database-schema-designer - SQL/NoSQL schema design & optimization");
     console.log("   • design-system-starter - Design tokens & component architecture");

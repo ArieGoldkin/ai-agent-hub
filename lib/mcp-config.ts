@@ -25,13 +25,13 @@ export interface MCPConfig {
 /**
  * Get base MCP servers that are always included
  *
- * Core servers (3) optimized for token efficiency (~7k tokens):
+ * Core servers (4) always included:
  * - memory: Conversation persistence across sessions
  * - sequential-thinking: Advanced multi-step reasoning
  * - context7: Library documentation lookup
+ * - playwright: Browser automation and testing
  *
  * Task-specific servers (add to .mcp.json as needed):
- * - browsermcp: Browser automation (@browsermcp/mcp@latest)
  * - shadcn: UI components (shadcn@latest mcp)
  */
 export function getBaseMCPServers(): Record<string, MCPServerConfig> {
@@ -47,6 +47,10 @@ export function getBaseMCPServers(): Record<string, MCPServerConfig> {
     context7: {
       command: "npx",
       args: ["-y", "@upstash/context7-mcp@latest"]
+    },
+    playwright: {
+      command: "npx",
+      args: ["-y", "@playwright/mcp@latest"]
     }
   };
 }
