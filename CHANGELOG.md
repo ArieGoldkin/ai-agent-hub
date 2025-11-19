@@ -5,6 +5,102 @@ All notable changes to AI Agent Hub will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.6.0] - 2025-01-19
+
+### ✨ Added
+
+#### Playwright MCP Server (4 Core MCP Servers)
+- **New core server**: Playwright MCP for browser automation and testing
+- **Updated base configuration**: `lib/mcp-config.ts` now includes 4 core servers:
+  - Memory (conversation history)
+  - Sequential Thinking (step-by-step reasoning)
+  - Context7 (library documentation lookup)
+  - **Playwright** (browser automation and testing) ← NEW
+- **Impact**: Users now get browser automation capabilities out of the box
+
+#### Brainstorming Skill (15th Skill)
+- **New skill**: `brainstorming` - Transform rough ideas into fully-formed designs
+- **Core principle**: Structured Socratic questioning, alternative exploration, incremental validation
+- **Three-phase process**:
+  - Phase 1: Understanding (gather purpose, constraints, criteria)
+  - Phase 2: Exploration (propose 2-3 approaches with trade-offs)
+  - Phase 3: Design Presentation (present in sections with validation)
+- **File**: `skills/brainstorming/SKILL.md` (819 words)
+- **Auto-installation**: Automatically installed via `npx ai-agent-hub`
+- **Squad command**: New `/brainstorm` command in Squad mode
+
+#### Brainstorming Skill Bundled Resources
+- **Example Sessions** (references/ folder):
+  - `example-session-auth.md` - Authentication storage brainstorming (JWT vs Session vs Cookies)
+  - `example-session-dashboard.md` - Real-time dashboard brainstorming (SSE vs WebSockets vs Polling)
+- **Output Templates** (assets/ folder):
+  - `design-doc-template.md` - Structured design document format
+  - `decision-matrix-template.md` - Weighted decision comparison format
+- **Progressive disclosure**: SKILL.md loads first, bundled resources load on-demand
+- **Token savings**: ~45% reduction through optimized SKILL.md + lazy-loaded examples
+
+### 🔧 Fixed
+
+#### Documentation Accuracy
+- **MCP count**: Fixed "6+ MCP Servers" → "4 Core MCP Servers"
+- **Skills count**: Updated "14 skills" → "15 skills" across all documentation
+- **Removed misleading claims**: Browser MCP removed from setup instructions (not included by default)
+- **Updated files**:
+  - README.md (MCP section + skills count)
+  - CLAUDE.md (skills count)
+  - bin/commands/setup.ts (removed Browser MCP setup)
+  - bin/commands/install-agents/skills-installer.ts (15 skills output)
+  - landing_1_1.html (accurate counts)
+
+### 🎯 Improved
+
+#### Brainstorming Skill Optimization
+- **Size reduction**: 1500 words → 819 words (45% reduction)
+- **Writing style**: Fixed to imperative form (removed first/second person)
+- **Added "When to Use This Skill" section**: Clear activation triggers
+- **Moved inline examples to references/**: Better progressive disclosure
+- **Simplified explanations**: Removed dot graph, streamlined non-linear progression
+- **Skill-creator score**: 7/10 → 9.5/10
+- **Token efficiency**: Metadata (frontmatter) → SKILL.md → Bundled resources (lazy-loaded)
+
+### 📝 Updated
+
+#### Skills Installer Output
+- **Console output**: "✅ Installed 15 comprehensive Claude Code skills:" (was 14)
+- **Added brainstorming**: Listed in installation output with description
+- **File**: `bin/commands/install-agents/skills-installer.ts`
+
+#### Landing Page Design Prototype
+- **Created**: `landing_1_1.html` - Landing page with accurate information
+- **Design**: Green/emerald color scheme, minimalist clean style
+- **Sections**: Hero, agents, skills, MCP servers, production features
+- **Accurate counts**: 10 agents, 15 skills, 4 core MCP servers
+- **Location**: `.superdesign/design_iterations/` (gitignored)
+
+### 🔍 Technical Details
+
+**Files Changed:**
+- `lib/mcp-config.ts` - Added Playwright to base MCP servers
+- `bin/commands/setup.ts` - Removed Browser MCP references
+- `bin/commands/install-agents/skills-installer.ts` - Updated skill count and output
+- `skills/brainstorming/SKILL.md` - New skill file (819 words)
+- `skills/brainstorming/references/` - 2 example sessions
+- `skills/brainstorming/assets/` - 2 templates
+- `.squad/commands/brainstorm.md` - New squad command
+- `README.md` - MCP section + skills count
+- `CLAUDE.md` - Skills count
+- `package.json` - Version 3.6.0
+- `bin/cli.ts` - Version 3.6.0
+
+**Why This Matters:**
+- Accurate documentation builds user trust
+- Playwright MCP adds browser automation out of the box
+- Brainstorming skill fills critical gap in design workflow
+- Token optimization through progressive disclosure
+- Better first-run experience with correct expectations
+
+---
+
 ## [3.5.9] - 2025-01-18
 
 ### 🔧 Fixed - Installation Structure
