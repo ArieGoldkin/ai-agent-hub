@@ -167,7 +167,7 @@ docs/
 - ✅ Skills moved to `.claude/skills/` (from root `skills/`)
 - ✅ Squad files unified in `.claude/instructions/`
 - ✅ Migration command: `npx ai-agent-hub migrate`
-- ✅ All 14 skills documented
+- ✅ All 15 skills documented
 - ✅ All 10 agents listed
 
 **Details**: See [migrations/v3.5.9-structure-update.md](docs/migrations/v3.5.9-structure-update.md)

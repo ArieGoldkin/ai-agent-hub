@@ -4,7 +4,7 @@
 
   ### ✨ Transform Claude into 10 Context-Aware AI Agents Working in Parallel ✨
   ### 🧠 Intelligent Orchestration + 79% Faster with Squad Mode 🚀
-  ### 📚 14 Expert Skills + Production-Grade Quality Enforcement 📚
+  ### 📚 15 Expert Skills + Production-Grade Quality Enforcement 📚
   ### 🎯 Evidence-Based Verification - Proof Over Promises 🎯
 
   ```bash
@@ -278,6 +278,14 @@ Each skill provides frameworks, templates, examples, and battle-tested best prac
 - Includes templates with alternatives considered
 - Preserves architectural memory for teams
 - Prevents endless debates about settled decisions
+
+#### 💡 Brainstorming **(NEW in v3.5.9)**
+**Transform rough ideas into fully-formed designs**
+- Structured Socratic questioning workflow
+- Phase-based approach: Understanding → Exploration → Design
+- Alternative exploration (2-3 approaches with trade-offs)
+- Incremental validation and feedback loops
+- YAGNI ruthlessly applied to prevent over-engineering
 
 #### 🌐 API Design Framework
 **Build consistent, well-documented APIs**
