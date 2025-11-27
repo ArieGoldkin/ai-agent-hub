@@ -5,6 +5,26 @@ All notable changes to AI Agent Hub will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.7.1] - 2025-11-27
+
+### ✨ Added
+
+#### Squad Agent Color Indicators
+- Added `color` field to all 10 squad agent templates for visual identification
+- Color assignments match classic mode agents for consistency:
+  - studio-coach: blue (orchestration)
+  - frontend-ui-developer: purple (frontend)
+  - backend-system-architect: yellow (backend)
+  - ai-ml-engineer: orange (AI/ML)
+  - code-quality-reviewer: green (quality)
+  - product-manager: teal (product)
+  - rapid-ui-designer: pink (design)
+  - sprint-prioritizer: indigo (planning)
+  - ux-researcher: cyan (research)
+  - whimsy-injector: yellow (delight)
+
+---
+
 ## [3.7.0] - 2025-11-27
 
 ### ✨ Added

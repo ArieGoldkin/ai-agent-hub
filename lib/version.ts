@@ -25,7 +25,7 @@ export function getVersion(): string {
     return packageJson.version;
   } catch {
     // Fallback for development or if package.json is not found
-    return '3.7.0';
+    return '3.7.1';
   }
 }
 
