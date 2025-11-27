@@ -23,9 +23,7 @@ import { promptForInstallationTargets, promptForExecutionMode } from "./utils/pr
 import { loadCurrentMode, saveMode } from "./utils/mode-manager.js";
 import { parseArguments, getInstallTargets } from "../lib/cli/arg-parser.js";
 import { handleModeSelection } from "../lib/cli/mode-detector.js";
-
-const CURRENT_VERSION = "3.6.0";
-const VALID_MODES = ['classic', 'squad', 'auto'];
+import { VERSION, VALID_MODES } from "../lib/version.js";
 
 // Main CLI router
 async function main() {
@@ -41,7 +39,7 @@ async function main() {
 
     // Handle version command
     if (parsedArgs.command === "--version" || parsedArgs.command === "-v") {
-      console.log(`ai-agent-hub v${CURRENT_VERSION}`);
+      console.log(`ai-agent-hub v${VERSION}`);
       return;
     }
 
@@ -82,7 +80,7 @@ async function main() {
         console.log(`\n📋 Using saved mode: ${selectedMode.toUpperCase()}`);
       } else {
         selectedMode = await promptForExecutionMode();
-        saveMode(selectedMode, CURRENT_VERSION);
+        saveMode(selectedMode, VERSION);
         console.log(`\n✅ Mode selected: ${selectedMode.toUpperCase()}`);
       }
     }

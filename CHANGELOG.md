@@ -5,6 +5,89 @@ All notable changes to AI Agent Hub will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.7.0] - 2025-11-26
+
+### ✨ Added
+
+#### Opus 4.5 Extended Thinking Integration
+- **Model Selection Protocol**: New protocol in `orchestration.md` for choosing between Opus 4.5, Sonnet, and Haiku based on task complexity
+- **Extended Thinking Triggers**: Agents now escalate to Opus 4.5 for complex reasoning tasks:
+  - Multi-agent coordination puzzles (3+ agents)
+  - Architectural trade-off analysis (3+ options)
+  - Systemic pattern analysis
+  - Strategic decisions and competitive analysis
+  - Complex debugging and root cause analysis
+
+#### Enhanced Agent Capabilities (Opus 4.5)
+- **Studio Coach**: Extended thinking for multi-agent orchestration, conflict resolution, predictive blocker identification, and strategic pivots
+- **Code Quality Reviewer**: Systemic codebase analysis, cross-file pattern detection, technical debt assessment, and deep security audits
+- **Product Manager**: Competitive landscape analysis, multi-quarter roadmap planning, portfolio optimization, and scenario planning
+
+#### New Skills (3 additions, now 18 total)
+- **performance-optimization**: Database query optimization, bundle size reduction, Core Web Vitals, caching strategies
+- **devops-deployment**: CI/CD pipelines, Docker/Kubernetes, GitOps, infrastructure as code, deployment strategies
+- **observability-monitoring**: Structured logging, Prometheus metrics, OpenTelemetry tracing, alerting rules
+
+#### Centralized Version Management
+- **New module**: `lib/version.ts` - Single source of truth for version information
+- **Exports**: VERSION, VALID_MODES, SKILL_COUNT, AGENT_COUNT, MODEL_TIERS, TOKEN_BUDGETS
+- **Eliminates**: Duplicate version strings across cli.ts, mode-detector.ts, minimal-claudemd.ts
+
+### 🔧 Fixed
+
+#### Version Consistency
+- Fixed outdated version "3.0.6" in mode-detector.ts
+- Fixed hardcoded version "3.5.9" in minimal-claudemd.ts
+- All version references now use centralized `VERSION` constant
+
+### 🎯 Improved
+
+#### Agent Frontmatter
+- Added `model_escalation: opus` field to key agents
+- Added `escalation_triggers` array defining when to use extended thinking
+- Agents: studio-coach, code-quality-reviewer, product-manager
+
+#### Token Budget Strategy
+- Supervisor budget: 12,000 tokens (extended reasoning)
+- Agent budget: 6,000 tokens (standard work)
+- Simple task budget: 3,000 tokens (Haiku)
+- Session max: 150,000 tokens
+
+### 📝 Updated
+
+#### Skills Count
+- **Total skills**: 15 → 18 (3 new skills added)
+- **CLAUDE.md generator**: Updated skill count constant
+- **Skills table**: Added performance-optimization, devops-deployment, observability-monitoring
+
+#### Help Output
+- Dynamic version and agent count display
+- Uses centralized constants from version.ts
+
+### 🔍 Technical Details
+
+**Files Changed:**
+- `lib/version.ts` - NEW: Centralized version management
+- `bin/cli.ts` - Use centralized VERSION and VALID_MODES
+- `lib/cli/mode-detector.ts` - Use centralized VERSION
+- `lib/claude-md-generator/generators/modular/minimal-claudemd.ts` - Use version constants
+- `bin/commands/help.ts` - Use version constants
+- `assets/instructions/orchestration.md` - Model Selection Protocol
+- `agents/studio-coach.md` - Opus 4.5 Extended Thinking Protocol
+- `agents/code-quality-reviewer.md` - Systemic Analysis Protocol
+- `agents/product-manager.md` - Strategic Analysis Protocol
+- `skills/performance-optimization/SKILL.md` - NEW skill
+- `skills/devops-deployment/SKILL.md` - NEW skill
+- `skills/observability-monitoring/SKILL.md` - NEW skill
+
+**Why This Matters:**
+- Opus 4.5's extended thinking enables deeper analysis for complex tasks
+- Model tiering optimizes cost while maintaining quality
+- New skills address common development workflow gaps
+- Centralized version management reduces maintenance burden
+
+---
+
 ## [3.6.0] - 2025-01-19
 
 ### ✨ Added

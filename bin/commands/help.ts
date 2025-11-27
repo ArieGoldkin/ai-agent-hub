@@ -2,11 +2,13 @@
  * Help Command - Display usage information
  */
 
+import { VERSION, AGENT_COUNT } from "../../lib/version.js";
+
 export function showHelp(): void {
   console.log(`
-🚀 AI Agent Hub - Deploy 10 AI Agents with MCP Configuration
+🚀 AI Agent Hub v${VERSION} - Deploy ${AGENT_COUNT} AI Agents with MCP Configuration
 
-Transform Claude into a team of 10 specialized AI agents.
+Transform Claude into a team of ${AGENT_COUNT} specialized AI agents.
 
 Usage:
   npx ai-agent-hub                 Interactive setup (asks where to install)
@@ -27,7 +29,7 @@ Quick Start:
   2. Choose installation target
   3. Open Claude and say: "Use Studio Coach to help me build..."
 
-10 Specialized AI Agents:
+${AGENT_COUNT} Specialized AI Agents:
   🎭 Studio Coach         - Master orchestrator
   🎯 Sprint Prioritizer   - Agile planning
   📋 Product Manager      - Product strategy & roadmap planning

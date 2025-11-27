@@ -6,6 +6,7 @@
  */
 
 import { AgentMetadata, ExecutionMode } from '../../types.js';
+import { VERSION, SKILL_COUNT, AGENT_COUNT } from '../../../version.js';
 
 /**
  * Generate minimal CLAUDE.md with dynamic loading instructions
@@ -20,7 +21,7 @@ export function generateMinimalClaudeMd(
   sections.push('---');
   sections.push('name: claude-main');
   sections.push('description: AI Agent Hub - Modular Intelligence System');
-  sections.push('version: 3.5.9');
+  sections.push(`version: ${VERSION}`);
   sections.push('---\n');
 
   // Title
@@ -109,7 +110,7 @@ export function generateMinimalClaudeMd(
 
   // Skills
   sections.push('## 📚 Claude Code Skills\n');
-  sections.push('**14 specialized knowledge modules** installed in `.claude/skills/` directory:\n');
+  sections.push(`**${SKILL_COUNT} specialized knowledge modules** installed in \`.claude/skills/\` directory:\n`);
   sections.push('| Skill | Use When |');
   sections.push('|-------|----------|');
   sections.push('| **ai-native-development** | Building RAG pipelines, embeddings, vector DBs, LLM integration |');
@@ -126,6 +127,9 @@ export function generateMinimalClaudeMd(
   sections.push('| **streaming-api-patterns** | SSE, WebSockets, ReadableStream, real-time APIs |');
   sections.push('| **testing-strategy-builder** | Building test plans and coverage strategies |');
   sections.push('| **type-safety-validation** | End-to-end type safety with Zod, tRPC, Prisma |');
+  sections.push('| **performance-optimization** | Database queries, bundle size, Core Web Vitals, caching (v3.7.0) |');
+  sections.push('| **devops-deployment** | CI/CD pipelines, Docker, Kubernetes, GitOps (v3.7.0) |');
+  sections.push('| **observability-monitoring** | Logging, metrics, tracing, alerting (v3.7.0) |');
   sections.push('');
   sections.push('**How to use skills:**');
   sections.push('- **PROACTIVELY read** `.claude/skills/<skill-name>/SKILL.md` when the user\'s task matches the skill description');
@@ -155,13 +159,13 @@ export function generateMinimalClaudeMd(
   sections.push('## 📁 Project Structure (v3.5.9+)\n');
   sections.push('```');
   sections.push('.claude/');
-  sections.push('├── agents/              # 10 specialist agent personalities');
+  sections.push(`├── agents/              # ${AGENT_COUNT} specialist agent personalities`);
   sections.push('├── instructions/        # Orchestration & context rules');
   if (mode === 'squad') {
     sections.push('│   ├── ...              # Core instructions');
     sections.push('│   └── supervisor-rules.md, squad-roster.md, ... # Squad coordination');
   }
-  sections.push('├── skills/              # 14 specialized knowledge modules');
+  sections.push(`├── skills/              # ${SKILL_COUNT} specialized knowledge modules`);
   sections.push('├── context/             # Shared context & session data');
   sections.push('│   └── shared-context.json');
   if (mode === 'squad') {
@@ -176,7 +180,7 @@ export function generateMinimalClaudeMd(
   sections.push('---');
   sections.push('*💡 This CLAUDE.md uses directive language patterns from Anthropic best practices (2025) to ensure proactive agent activation and context awareness while saving ~80% tokens through on-demand instruction loading.*');
   sections.push('');
-  sections.push(`*📦 v3.5.9: All Claude resources unified under \`.claude/\` following Anthropic's recommended patterns.*`);
+  sections.push(`*📦 v${VERSION}: All Claude resources unified under \`.claude/\` following Anthropic's recommended patterns.*`);
 
   return sections.join('\n');
 }

@@ -1,10 +1,11 @@
 import fs from 'fs';
 import path from 'path';
 import { loadCurrentMode, saveMode } from '../../bin/utils/mode-manager.js';
+import { VERSION } from '../version.js';
 
 export async function handleModeSelection(
   requestedMode: string | null,
-  validModes: string[],
+  validModes: readonly string[],
   currentModeFile: string
 ): Promise<string> {
   let selectedMode = 'classic'; // Default mode
@@ -21,7 +22,7 @@ export async function handleModeSelection(
       process.exit(1);
     }
     selectedMode = requestedMode;
-    saveMode(selectedMode, "3.0.6");
+    saveMode(selectedMode, VERSION);
     console.log(`\n📋 Mode set to: ${selectedMode.toUpperCase()}`);
   }
   
