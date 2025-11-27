@@ -5,6 +5,164 @@ All notable changes to AI Agent Hub will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.7.0] - 2025-11-27
+
+### ✨ Added
+
+#### Opus 4.5 Extended Thinking Integration
+- **Model Selection Protocol**: New protocol in `orchestration.md` for choosing between Opus 4.5, Sonnet, and Haiku based on task complexity
+- **Extended Thinking Triggers**: Agents now escalate to Opus 4.5 for complex reasoning tasks:
+  - Multi-agent coordination puzzles (3+ agents)
+  - Architectural trade-off analysis (3+ options)
+  - Systemic pattern analysis
+  - Strategic decisions and competitive analysis
+  - Complex debugging and root cause analysis
+
+#### Enhanced Agent Capabilities (Opus 4.5)
+- **Studio Coach**: Extended thinking for multi-agent orchestration, conflict resolution, predictive blocker identification, and strategic pivots
+- **Code Quality Reviewer**: Systemic codebase analysis, cross-file pattern detection, technical debt assessment, and deep security audits
+- **Product Manager**: Competitive landscape analysis, multi-quarter roadmap planning, portfolio optimization, and scenario planning
+
+#### New Skills (3 additions, now 18 total)
+- **performance-optimization**: Database query optimization, bundle size reduction, Core Web Vitals, caching strategies
+- **devops-deployment**: CI/CD pipelines, Docker/Kubernetes, GitOps, infrastructure as code, deployment strategies
+- **observability-monitoring**: Structured logging, Prometheus metrics, OpenTelemetry tracing, alerting rules
+
+#### Centralized Version Management
+- **New module**: `lib/version.ts` - Single source of truth for version information
+- **Exports**: VERSION, VALID_MODES, SKILL_COUNT, AGENT_COUNT, MODEL_TIERS, TOKEN_BUDGETS
+- **Eliminates**: Duplicate version strings across cli.ts, mode-detector.ts, minimal-claudemd.ts
+
+### 🔧 Fixed
+
+#### Version Consistency
+- Fixed outdated version "3.0.6" in mode-detector.ts
+- Fixed hardcoded version "3.5.9" in minimal-claudemd.ts
+- All version references now use centralized `VERSION` constant
+
+### 🎯 Improved
+
+#### Squad Mode Token Optimization (46% reduction)
+- **Pattern extraction**: Moved verbose code to reusable TypeScript patterns
+  - `.squad/patterns/semantic-orchestration.ts` (264 lines)
+  - `.squad/patterns/parallel-execution.ts` (178 lines)
+- **supervisor-rules.md**: 25,676 → 13,349 bytes (48% reduction, ~3,081 tokens saved)
+  - Task allocation matrix: 57 lines → 10-row table
+  - Duplicate phase definitions merged
+  - Code examples → table references with pattern file pointers
+- **parallel-execution-rules.md**: 12,307 → 7,310 bytes (41% reduction, ~1,249 tokens saved)
+  - Quality gate code → function reference table
+  - Verbose examples → concise rules with pattern file link
+- **Total Squad Mode savings**: ~4,330 tokens (46% reduction)
+- **Benefit**: Pattern files loaded only when TypeScript runs, markdown stays lean
+
+#### Agent Templates Token Optimization (11% reduction)
+- **frontend-ui-developer.md**: 41,428 → 31,342 bytes (24% reduction, ~2,522 tokens saved)
+  - Removed 400+ lines of verbose Tailwind/CSS validation scripts
+  - Compressed dependency version management to table format
+- **code-quality-reviewer.md**: 37,725 → 24,789 bytes (34% reduction, ~3,234 tokens saved)
+  - Compressed Evidence Collection Protocol from ~250 to ~40 lines
+  - Compressed Security Scanning section from ~200 to ~30 lines
+- **Total Agent savings**: ~5,756 tokens (218KB → 196KB)
+
+#### Agent Frontmatter
+- Added `model_escalation: opus` field to key agents
+- Added `escalation_triggers` array defining when to use extended thinking
+- Agents: studio-coach, code-quality-reviewer, product-manager
+
+#### Token Budget Strategy
+- Supervisor budget: 12,000 tokens (extended reasoning)
+- Agent budget: 6,000 tokens (standard work)
+- Simple task budget: 3,000 tokens (Haiku)
+- Session max: 150,000 tokens
+
+### 📝 Updated
+
+#### Skills Count
+- **Total skills**: 15 → 18 (3 new skills added)
+- **CLAUDE.md generator**: Updated skill count constant
+- **Skills table**: Added performance-optimization, devops-deployment, observability-monitoring
+
+#### Help Output
+- Dynamic version and agent count display
+- Uses centralized constants from version.ts
+
+### 🔍 Technical Details
+
+**Files Changed:**
+- `.squad/patterns/semantic-orchestration.ts` - NEW: Extracted orchestration patterns
+- `.squad/patterns/parallel-execution.ts` - NEW: Extracted parallel execution patterns
+- `.squad/supervisor-rules.md` - Compressed 48%, pattern references
+- `.squad/parallel-execution-rules.md` - Compressed 41%, pattern references
+- `agents/frontend-ui-developer.md` - Compressed 24%, removed verbose CSS docs
+- `agents/code-quality-reviewer.md` - Compressed 34%, streamlined evidence/security sections
+- `lib/version.ts` - NEW: Centralized version management
+- `bin/cli.ts` - Use centralized VERSION and VALID_MODES
+- `lib/cli/mode-detector.ts` - Use centralized VERSION
+- `lib/claude-md-generator/generators/modular/minimal-claudemd.ts` - Use version constants
+- `bin/commands/help.ts` - Use version constants
+- `assets/instructions/orchestration.md` - Model Selection Protocol
+- `agents/studio-coach.md` - Opus 4.5 Extended Thinking Protocol
+- `agents/code-quality-reviewer.md` - Systemic Analysis Protocol
+- `agents/product-manager.md` - Strategic Analysis Protocol
+- `skills/performance-optimization/SKILL.md` - NEW skill
+- `skills/devops-deployment/SKILL.md` - NEW skill
+- `skills/observability-monitoring/SKILL.md` - NEW skill
+
+#### Skill Enhancements (Opus 4.5 Compatible)
+- **AI-Native Development**: Multi-agent orchestration section (5.1) with:
+  - Extended thinking patterns for task planning
+  - Conflict resolution with reasoning
+  - Agent communication protocol
+  - Model tiering strategy
+- **Code Review Playbook**: Advanced pattern detection section with:
+  - Extended thinking for complex reviews
+  - Systemic code smell detection
+  - Security deep analysis with CWE IDs
+  - Cross-file impact analysis
+  - Review automation with model tiering
+
+#### Squad Mode Semantic Orchestration
+- **Semantic task understanding**: Extended thinking for task decomposition
+- **Intelligent agent selection**: Capability matching with confidence scores
+- **Semantic conflict detection**: Domain overlap, data contention, timing conflicts
+- **Dynamic dependency resolution**: Implicit dependency inference
+- **Adaptive phase transitions**: Semantic understanding for phase decisions
+- **Model tiering strategy**: Opus for orchestration, Sonnet for standard, Haiku for checks
+
+#### Context Manager Enhancements (v3.7.0)
+- **Improved token counting**: Content-aware algorithm with:
+  - JSON overhead calculation
+  - Code detection for higher density
+  - Word-based + character-based weighted estimates
+  - 10% safety margin for edge cases
+- **Model-aware token limits**: Per-model configuration (opus, sonnet, haiku)
+- **Token breakdown analysis**: Get token usage by section
+- **Enhanced file locking**:
+  - Atomic lock acquisition with 'wx' flag
+  - Stale lock detection (age + process check)
+  - Lock ownership verification
+  - Configurable timeouts (30s default)
+  - Lock status debugging API
+
+#### Schema Versioning System
+- **Version tracking**: Context files now include schema_version
+- **Automatic migration**: Incremental migrations through version history
+- **Migration functions**: Per-version migration logic
+- **Schema versions**: 1.0.0 → 1.1.0 → 1.2.0 → 1.3.0 → 2.0.0
+- **New context fields**: model_tier, token_metrics
+
+**Why This Matters:**
+- Opus 4.5's extended thinking enables deeper analysis for complex tasks
+- Model tiering optimizes cost while maintaining quality
+- New skills address common development workflow gaps
+- Centralized version management reduces maintenance burden
+- Semantic orchestration enables intelligent multi-agent coordination
+- Context manager improvements ensure reliable operation at scale
+- Schema versioning enables seamless upgrades
+
+---
+
 ## [3.6.0] - 2025-01-19
 
 ### ✨ Added

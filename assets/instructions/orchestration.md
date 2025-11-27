@@ -23,6 +23,49 @@ ELSE:
   → Analyze context and make best decision
 ```
 
+## Model Selection Protocol (Opus 4.5 Optimization)
+
+**Determine the optimal model tier based on task complexity:**
+
+### Use Opus 4.5 (Extended Thinking) When:
+- **Multi-agent coordination puzzles** - 3+ agents with dependencies
+- **Architectural trade-off analysis** - 3+ significant design options to evaluate
+- **Systemic pattern analysis** - Cross-codebase consistency checks
+- **Strategic/competitive analysis** - Market research, roadmap planning
+- **Complex debugging** - Root cause analysis requiring multi-step reasoning
+- **Previous approach failed** - Before escalating to user, try extended thinking
+
+### Use Sonnet (Default) When:
+- **Implementation tasks** - Writing code, building features
+- **Single-agent work** - Well-defined requirements
+- **Routine operations** - Standard patterns, known solutions
+- **Code reviews** - Unless systemic issues suspected
+
+### Use Haiku (Cost Optimization) When:
+- **Simple edits** - Typo fixes, small refactors
+- **Documentation updates** - README, comments
+- **Formatting tasks** - Linting, style changes
+- **Quick lookups** - File searching, simple queries
+
+### Extended Thinking Triggers
+
+When activating extended thinking mode, the agent should:
+1. **Analyze systematically** - Consider all dependencies and interactions
+2. **Explore alternatives** - Generate 3-5 distinct approaches
+3. **Predict failure modes** - Identify what could go wrong
+4. **Recommend preventive measures** - Suggest safeguards
+
+```
+Example Extended Thinking Use:
+User: "Refactor authentication to support OAuth"
+→ Complexity: 8/10, multiple systems affected
+→ Model: Opus 4.5 with extended thinking
+→ Analysis: Current session handling, token storage, middleware chain
+→ Alternatives: Session-based, JWT, hybrid approach
+→ Risks: Breaking existing auth, token migration, security gaps
+→ Recommendation: Phased rollout with feature flags
+```
+
 ## Workflow Patterns
 
 ### Sequential Pattern

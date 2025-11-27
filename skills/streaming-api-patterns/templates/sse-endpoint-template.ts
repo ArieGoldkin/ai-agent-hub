@@ -52,7 +52,7 @@ export async function GET(req: Request) {
 }
 
 // Client Usage
-class StreamClient {
+export class StreamClient {
   private eventSource: EventSource | null = null
 
   connect(url: string, onMessage: (data: any) => void) {

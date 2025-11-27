@@ -23,6 +23,46 @@ export default [
       '@typescript-eslint/no-explicit-any': 'warn'
     }
   },
+  // Override for core library files that legitimately need more lines
+  {
+    files: [
+      'lib/context/types.ts',
+      'lib/quality-gates/gate-validator.ts'
+    ],
+    rules: {
+      'max-lines': ['error', { max: 300, skipBlankLines: true, skipComments: true }]
+    }
+  },
+  // Context manager is the core orchestration file with many responsibilities
+  {
+    files: ['lib/context/context-manager.ts'],
+    rules: {
+      'max-lines': ['error', { max: 850, skipBlankLines: true, skipComments: true }]
+    }
+  },
+  // Override for skill templates (reference implementations meant to be copied)
+  {
+    files: ['skills/**/templates/*.ts', 'skills/**/examples/*.ts'],
+    rules: {
+      'max-lines': ['error', { max: 350, skipBlankLines: true, skipComments: true }],
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unused-vars': 'off'
+    }
+  },
+  // Override for squad patterns (orchestration reference code)
+  {
+    files: ['.squad/patterns/*.ts'],
+    rules: {
+      'max-lines': ['error', { max: 200, skipBlankLines: true, skipComments: true }]
+    }
+  },
+  // Override for CLI commands
+  {
+    files: ['bin/commands/*.ts'],
+    rules: {
+      'max-lines': ['error', { max: 200, skipBlankLines: true, skipComments: true }]
+    }
+  },
   {
     ignores: ['dist/', 'node_modules/', '*.js']
   }

@@ -8,7 +8,7 @@ import { cp } from "fs/promises";
 import { join } from "path";
 
 /**
- * Install skills directory with all 15 comprehensive skills
+ * Install skills directory with all 18 comprehensive skills
  */
 export async function installSkills(packageRoot: string): Promise<void> {
   const sourceDir = join(packageRoot, "skills");
@@ -30,7 +30,7 @@ export async function installSkills(packageRoot: string): Promise<void> {
     // Copy entire skills directory recursively
     await cp(sourceDir, targetDir, { recursive: true });
 
-    console.log("✅ Installed 15 comprehensive Claude Code skills:");
+    console.log("✅ Installed 18 comprehensive Claude Code skills:");
     console.log("   • ai-native-development - RAG, embeddings, vector DBs & LLM integration");
     console.log("   • api-design-framework - REST/GraphQL/gRPC API design patterns");
     console.log("   • architecture-decision-record - Document architectural decisions (ADR)");
@@ -38,8 +38,11 @@ export async function installSkills(packageRoot: string): Promise<void> {
     console.log("   • code-review-playbook - Structured code review process");
     console.log("   • database-schema-designer - SQL/NoSQL schema design & optimization");
     console.log("   • design-system-starter - Design tokens & component architecture");
+    console.log("   • devops-deployment - CI/CD, Docker, Kubernetes & GitOps patterns");
     console.log("   • edge-computing-patterns - Cloudflare Workers, Vercel Edge deployment");
     console.log("   • evidence-verification - Evidence-based task completion");
+    console.log("   • observability-monitoring - Logging, metrics, tracing & alerting");
+    console.log("   • performance-optimization - Full-stack performance tuning");
     console.log("   • quality-gates - Task complexity assessment & risk management");
     console.log("   • react-server-components-framework - Next.js 15 App Router & RSC");
     console.log("   • security-checklist - OWASP Top 10 security guidance");

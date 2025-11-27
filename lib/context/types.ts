@@ -3,12 +3,37 @@
  * Enables structured data exchange between agents
  */
 
+/**
+ * Schema version history (v3.7.0)
+ * Used for automatic context migration
+ */
+export const SCHEMA_VERSIONS = {
+  '1.0.0': 'Initial schema',
+  '1.1.0': 'Added quality_evidence',
+  '1.2.0': 'Added quality_gates and attempt_tracking',
+  '1.3.0': 'Added orchestration_state',
+  '2.0.0': 'Added schema_version, model_tier, token_metrics', // Current
+} as const;
+
+export const CURRENT_SCHEMA_VERSION = '2.0.0';
+
 export interface SharedContext {
   // Metadata
   version: string;
   timestamp: string;
   session_id: string;
   project_type?: string;
+
+  // Schema versioning (v3.7.0)
+  schema_version?: string;  // Tracks schema format version
+  model_tier?: 'opus' | 'sonnet' | 'haiku';  // Current model tier
+  token_metrics?: {
+    last_count: number;
+    last_percentage: number;
+    last_checked: string;
+    peak_usage: number;
+    compressions_performed: number;
+  };
   
   // Agent-specific contributions
   agent_decisions: {

@@ -14,61 +14,18 @@ Coordinate agents through file-based communication to deliver features in parall
 
 ## Task Allocation Matrix
 
-### Frontend Tasks → frontend-ui-developer
-- Component creation (React/Vue/Angular)
-- State management implementation
-- UI logic and interactions
-- Responsive layouts
-- Client-side routing
-
-### Backend Tasks → backend-system-architect
-- API endpoint design
-- Database schema creation
-- Authentication/authorization
-- Server-side logic
-- Microservice boundaries
-
-### AI/ML Tasks → ai-ml-engineer
-- LLM integration (OpenAI/Anthropic)
-- Prompt engineering
-- Model selection
-- Inference optimization
-- AI feature implementation
-
-### Design Tasks → rapid-ui-designer
-- UI mockups and wireframes
-- Design tokens
-- Component specifications
-- Style guides
-- Interaction patterns
-
-### Research Tasks → ux-researcher
-- User requirements gathering
-- Persona creation
-- User journey mapping
-- Success metrics definition
-- Usability analysis
-
-### Quality Tasks → code-quality-reviewer
-- Code review
-- Security audits
-- Performance analysis
-- Test coverage verification
-- Documentation review
-
-### Enhancement Tasks → whimsy-injector
-- Micro-interactions
-- Loading animations
-- Error state improvements
-- Easter eggs
-- Delightful touches
-
-### Planning Tasks → sprint-prioritizer
-- Feature prioritization
-- Sprint planning
-- Risk assessment
-- Timeline estimation
-- Dependency mapping
+| Agent | Domain | Tasks |
+|-------|--------|-------|
+| frontend-ui-developer | Frontend | Components, state management, UI logic, responsive layouts, routing |
+| backend-system-architect | Backend | APIs, database schemas, auth, server logic, microservices |
+| ai-ml-engineer | AI/ML | LLM integration, prompt engineering, model selection, inference |
+| rapid-ui-designer | Design | Mockups, design tokens, component specs, style guides |
+| ux-researcher | Research | Requirements, personas, user journeys, success metrics |
+| code-quality-reviewer | Quality | Code review, security audits, performance, test coverage |
+| whimsy-injector | Enhancement | Micro-interactions, animations, error states, easter eggs |
+| sprint-prioritizer | Planning | Prioritization, sprint planning, risk assessment, dependencies |
+| product-manager | Strategy | PRDs, roadmaps, stakeholder alignment, feature scoping |
+| studio-coach | Orchestration | Multi-agent coordination, conflict resolution, phase management |
 
 ## Communication Protocol
 
@@ -103,43 +60,6 @@ validation:
   build_success: [true|false]
 blockers: |
   [Description of any issues]
-```
-
-## Orchestration Workflow
-
-### Phase 1: Requirements Analysis
-```
-1. Invoke: ux-researcher → requirements gathering
-2. Validate: Requirements document exists
-3. Gate: User stories defined with acceptance criteria
-```
-
-### Phase 2: Design & Architecture
-```
-1. Parallel invoke:
-   - rapid-ui-designer → UI mockups
-   - backend-system-architect → API design
-2. Validate: Designs compatible with implementation
-3. Gate: API contracts match frontend needs
-```
-
-### Phase 3: Implementation
-```
-1. Parallel invoke:
-   - frontend-ui-developer → UI components
-   - backend-system-architect → API implementation
-   - ai-ml-engineer → AI features (if needed)
-2. Validate: All code compiles and runs
-3. Gate: Integration tests passing
-```
-
-### Phase 4: Quality & Enhancement
-```
-1. Sequential invoke:
-   - code-quality-reviewer → code audit
-   - whimsy-injector → delight features
-2. Validate: Quality metrics met
-3. Gate: Ready for deployment
 ```
 
 ## Validation Gates
@@ -390,7 +310,7 @@ function validateCompletion(taskId, agentReport) {
 }
 ```
 
-### Enhanced Validation Gates Per Phase
+### Orchestration Workflow (with Quality Gates)
 
 **Phase 1: Requirements Analysis**
 ```
@@ -490,3 +410,48 @@ Track for each session:
 - Time per phase
 - Rework required
 - Token usage per agent
+
+---
+
+## Semantic Orchestration (Opus 4.5)
+
+Leverages extended thinking for intelligent task allocation, dependency resolution, and conflict detection.
+
+> **Implementation**: See `.squad/patterns/semantic-orchestration.ts` for full code patterns.
+
+### When to Use Extended Thinking
+
+| Trigger | Model | Budget |
+|---------|-------|--------|
+| 3+ agents coordination | Opus | 6,000-10,000 |
+| Circular/ambiguous dependencies | Opus | 8,000 |
+| Conflict resolution | Opus | 5,000 |
+| Phase transitions | Opus | 4,000 |
+| Simple task allocation | Sonnet | 1,024-4,000 |
+| Lock checks, status | Haiku | none |
+
+### Core Functions
+
+| Function | Purpose | Thinking Budget |
+|----------|---------|-----------------|
+| `analyzeTaskSemantics()` | Deep task understanding, domain/agent mapping | 6,000 |
+| `selectOptimalAgent()` | Confidence scoring: domain(40%) + capability(30%) + load(10%) + history(20%) | — |
+| `detectSemanticConflicts()` | Domain overlap, data contention, timing conflicts | 5,000 |
+| `resolveDependencies()` | Implicit deps, execution order, critical path | 8,000 |
+| `evaluatePhaseTransition()` | Safe phase progression check | 4,000 |
+
+### Model Selection Quick Reference
+
+```
+Opus:  task_decomposition, conflict_resolution, phase_transition, error_recovery, 3+ agents, complexity ≥ 4
+Sonnet: task_allocation, progress_check, quality_gate, 1-2 agents, complexity 2-3
+Haiku:  lock_check, status_aggregation, message_routing, complexity 1
+```
+
+### Checklist
+
+- [ ] Task has sufficient detail for semantic analysis
+- [ ] Codebase context available
+- [ ] Agent capabilities documented
+- [ ] Quality gates configured per phase
+- [ ] Extended thinking budgets set

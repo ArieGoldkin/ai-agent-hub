@@ -4,205 +4,28 @@ This document defines the rules and mechanisms for safe parallel agent execution
 
 ---
 
-## Quality Gates for Parallel Execution (v3.5.0)
+## Quality Gates for Parallel Execution (v3.7.0)
 
-### MANDATORY Pre-Execution Gate Check
+> **Implementation**: See `.squad/patterns/parallel-execution.ts` for code patterns.
 
-Before starting ANY parallel execution phase, Studio Coach MUST validate quality gates for ALL tasks:
+### Pre-Execution Gate Check
 
-**Gate Check Workflow:**
-```
-1. For each task in parallel plan:
-   a. Run quality gate check (complexity, questions, dependencies)
-   b. Record gate status in context
-   c. If ANY task BLOCKED → halt entire parallel phase
-   d. If ANY task has 3+ attempts → escalate to user
+Before ANY parallel phase, Studio Coach MUST:
+1. Run quality gate for each task (complexity, dependencies)
+2. If ANY task BLOCKED → halt entire phase
+3. If ANY task has 3+ attempts → escalate to user
+4. Document assumptions for WARNING tasks
 
-2. If all gates PASS or WARNING:
-   a. Document assumptions for WARNING tasks
-   b. Proceed with parallel execution
+### Core Functions
 
-3. If any gates BLOCKED:
-   a. Identify blocking reasons
-   b. Resolve blockers (clarify requirements, wait for dependencies)
-   c. Re-run gate checks
-   d. Only proceed when all gates clear
-```
+| Function | Purpose |
+|----------|---------|
+| `validateParallelPhase()` | Check all gates before starting |
+| `checkAgentProgress()` | Monitor attempts, detect stuck (≥3) |
+| `checkFailureCascade()` | Block dependent tasks on failure |
+| `validateSyncPoint()` | Verify evidence before next phase |
 
-**Example Gate Check Before Parallel Phase:**
-```javascript
-// Before Phase 3: Implementation
-const tasks = [
-  { id: 'task-1', agent: 'frontend-ui-developer', task: 'Build user dashboard' },
-  { id: 'task-2', agent: 'backend-system-architect', task: 'Create metrics API' },
-  { id: 'task-3', agent: 'ai-ml-engineer', task: 'Integrate recommendation engine' }
-];
-
-// Run gates for all tasks
-const gateResults = tasks.map(task => validateQualityGate(task));
-
-// Check for blockers
-const blockedTasks = gateResults.filter(r => r.status === 'blocked');
-if (blockedTasks.length > 0) {
-  console.log(`⛔ PARALLEL PHASE BLOCKED`);
-  console.log(`Blocked tasks: ${blockedTasks.map(t => t.taskId).join(', ')}`);
-  console.log(`Reasons: ${blockedTasks[0].blockingReasons.join(', ')}`);
-
-  // Escalate and halt
-  escalateToUser(blockedTasks);
-  return; // DO NOT START PARALLEL PHASE
-}
-
-// All gates pass/warning - safe to proceed
-console.log(`✅ All quality gates passed - starting parallel phase`);
-startParallelExecution(tasks);
-```
-
-### Stuck Detection During Parallel Execution
-
-**Monitor each agent's attempts:**
-```javascript
-// After each agent reports progress
-function checkAgentProgress(agentId, taskId, status) {
-  if (status === 'failed' || status === 'error') {
-    // Track the attempt
-    context.trackAttempt(taskId, {
-      timestamp: new Date().toISOString(),
-      approach: agent.current_approach,
-      outcome: 'failed',
-      failure_reason: agent.error_message
-    });
-
-    const attemptCount = context.getAttemptCount(taskId);
-
-    if (attemptCount >= 3) {
-      // STUCK - Halt this agent, escalate
-      console.log(`🚨 Agent ${agentId} stuck on ${taskId} after ${attemptCount} attempts`);
-
-      // Mark task as blocked
-      tasks[taskId].status = 'blocked';
-      tasks[taskId].blocker_reason = `Stuck after ${attemptCount} attempts`;
-
-      // Check for cascade
-      checkFailureCascade(taskId);
-
-      // Escalate to user
-      escalateStuckTask(agentId, taskId, context.attempt_tracking[taskId]);
-
-      return 'ESCALATED';
-    }
-  }
-}
-```
-
-### Failure Cascade Detection
-
-**Before assigning next task to agent, check for upstream failures:**
-```javascript
-function checkFailureCascade(failedTaskId) {
-  // Find all tasks depending on failed task
-  const dependentTasks = allTasks.filter(t =>
-    t.dependencies && t.dependencies.includes(failedTaskId)
-  );
-
-  if (dependentTasks.length === 0) {
-    return; // No cascade
-  }
-
-  console.log(`⚠️ CASCADE DETECTED: ${dependentTasks.length} tasks blocked by ${failedTaskId}`);
-
-  // Block all dependent tasks
-  dependentTasks.forEach(task => {
-    task.status = 'blocked';
-    task.blocker_reason = `Upstream dependency ${failedTaskId} failed`;
-
-    // Stop agent if currently working on this task
-    if (task.assigned_agent) {
-      stopAgent(task.assigned_agent, task.id);
-    }
-
-    // Log cascade
-    console.log(`  ⛔ Blocked: ${task.id} (assigned to ${task.assigned_agent})`);
-
-    // Recursively check for further cascades
-    checkFailureCascade(task.id);
-  });
-
-  // Update shared context
-  context.writeContext({
-    ...context,
-    cascade_events: [
-      ...(context.cascade_events || []),
-      {
-        timestamp: new Date().toISOString(),
-        failed_task: failedTaskId,
-        blocked_tasks: dependentTasks.map(t => t.id),
-        impact: dependentTasks.length
-      }
-    ]
-  });
-}
-```
-
-### Sync Point Gate Validation
-
-**At each sync point (e.g., after parallel phase), validate:**
-```javascript
-function validateSyncPoint(completedTasks) {
-  const syncResults = {
-    all_passed: true,
-    evidence_collected: true,
-    quality_standard_met: true,
-    failures: []
-  };
-
-  completedTasks.forEach(task => {
-    // Check 1: Evidence exists
-    const taskEvidence = getEvidenceForTask(task.id);
-    if (!taskEvidence) {
-      syncResults.all_passed = false;
-      syncResults.evidence_collected = false;
-      syncResults.failures.push({
-        task: task.id,
-        reason: 'No evidence collected'
-      });
-    }
-
-    // Check 2: Evidence shows passing
-    if (taskEvidence && !evidenceShowsPassing(taskEvidence)) {
-      syncResults.all_passed = false;
-      syncResults.failures.push({
-        task: task.id,
-        reason: 'Evidence shows failures (tests/build/lint)'
-      });
-    }
-
-    // Check 3: Quality standard met
-    if (taskEvidence?.quality_standard_met === 'below-minimum') {
-      syncResults.quality_standard_met = false;
-      syncResults.failures.push({
-        task: task.id,
-        reason: 'Quality standard not met'
-      });
-    }
-  });
-
-  if (!syncResults.all_passed) {
-    console.log(`❌ SYNC POINT FAILED`);
-    syncResults.failures.forEach(f => {
-      console.log(`  Task ${f.task}: ${f.reason}`);
-    });
-
-    // Block next phase
-    return { canProceed: false, failures: syncResults.failures };
-  }
-
-  console.log(`✅ SYNC POINT PASSED - All evidence verified`);
-  return { canProceed: true };
-}
-```
-
-### Parallel Execution Rules (Updated)
+### Parallel Execution Rules
 
 **Rule 1: Gate Check Before Starting**
 - ❌ **OLD:** Start parallel work immediately

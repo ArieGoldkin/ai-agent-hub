@@ -1,7 +1,7 @@
 ---
 name: claude-main
 description: AI Agent Hub - Source Repository (Package Development)
-version: 3.5.9
+version: 3.7.0
 scope: development
 ---
 
@@ -24,7 +24,7 @@ This repository builds the NPM package: `npx ai-agent-hub@latest`
 ```
 /agents/        # 10 agent personality definitions (source)
 /assets/        # Instruction templates (source)
-/skills/        # 14 knowledge modules (source)
+/skills/        # 18 knowledge modules (source)
 /lib/           # TypeScript CLI & generators
 /bin/           # CLI entry point
 /.squad/        # Squad mode orchestration
@@ -99,10 +99,10 @@ For comprehensive guides, see the `docs/` folder:
 
 ## ⚡ Quick Reference
 
-### Package Components (v3.5.9)
+### Package Components (v3.7.0)
 
 - **Agents**: 10 specialists (ai-ml-engineer, backend-system-architect, code-quality-reviewer, frontend-ui-developer, product-manager, rapid-ui-designer, sprint-prioritizer, studio-coach, ux-researcher, whimsy-injector)
-- **Skills**: 14 modules (ai-native-development, api-design-framework, architecture-decision-record, code-review-playbook, database-schema-designer, design-system-starter, edge-computing-patterns, evidence-verification, quality-gates, react-server-components-framework, security-checklist, streaming-api-patterns, testing-strategy-builder, type-safety-validation)
+- **Skills**: 18 modules (ai-native-development, api-design-framework, architecture-decision-record, brainstorming, code-review-playbook, database-schema-designer, design-system-starter, devops-deployment, edge-computing-patterns, evidence-verification, observability-monitoring, performance-optimization, quality-gates, react-server-components-framework, security-checklist, streaming-api-patterns, testing-strategy-builder, type-safety-validation)
 - **Modes**: Classic (sequential) + Squad (parallel, 97% token reduction)
 
 ### File Paths (Always Use These)
@@ -161,13 +161,22 @@ docs/
 
 ## 🔄 Recent Changes
 
+### v3.7.0 (2025-11-27) - New Skills & Optimization
+
+**Major Changes:**
+- ✅ 3 new skills: devops-deployment, performance-optimization, observability-monitoring
+- ✅ Skills restructured with templates/ folders (70%+ size reduction)
+- ✅ Squad Mode token optimization (46% reduction)
+- ✅ Agent templates optimization (11% reduction)
+- ✅ ESLint complexity fixes with helper function extraction
+- ✅ Total skills: 18 (was 15)
+
 ### v3.5.9 (2025-01-18) - Structure Update
 
 **Major Changes:**
 - ✅ Skills moved to `.claude/skills/` (from root `skills/`)
 - ✅ Squad files unified in `.claude/instructions/`
 - ✅ Migration command: `npx ai-agent-hub migrate`
-- ✅ All 15 skills documented
 - ✅ All 10 agents listed
 
 **Details**: See [migrations/v3.5.9-structure-update.md](docs/migrations/v3.5.9-structure-update.md)

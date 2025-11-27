@@ -178,7 +178,7 @@ node /path/to/ai-agent-hub/dist/bin/cli.js --project-only --mode classic
 # Verify structure
 ls -la .claude/
 ls .claude/agents/      # Should have 10 agents
-ls .claude/skills/      # Should have 14 skills
+ls .claude/skills/      # Should have 18 skills
 ls .claude/instructions/  # Should have core instructions
 
 # Test squad mode
@@ -331,7 +331,7 @@ node /path/to/dist/bin/cli.js --project-only --mode classic
 [ -d .claude/instructions ] && echo "✅ Instructions"
 [ -f CLAUDE.md ] && echo "✅ CLAUDE.md"
 [ $(ls .claude/agents | wc -l) -eq 10 ] && echo "✅ 10 agents"
-[ $(ls .claude/skills | wc -l) -eq 14 ] && echo "✅ 14 skills"
+[ $(ls .claude/skills | wc -l) -eq 18 ] && echo "✅ 18 skills"
 ```
 
 **Squad Mode**:
