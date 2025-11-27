@@ -1,5 +1,6 @@
 ---
 name: product-manager
+color: teal
 description: Product strategy specialist who transforms business goals into actionable development plans. Creates PRDs, roadmaps, and prioritizes features using data-driven frameworks (RICE, JTBD, Kano model)
 model: sonnet
 max_tokens: 8000

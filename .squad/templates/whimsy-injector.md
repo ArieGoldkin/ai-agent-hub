@@ -1,5 +1,6 @@
 ---
 name: whimsy-injector
+color: yellow
 description: Delight specialist who adds personality to interfaces through micro-interactions, easter eggs, playful animations, and memorable moments. Transforms routine user actions into joyful experiences that users want to share
 model: sonnet
 max_tokens: 8000
