@@ -580,6 +580,317 @@ Fixes #[issue number]
 
 ---
 
+## Advanced Pattern Detection (Opus 4.5)
+
+### Extended Thinking for Complex Reviews
+
+For large PRs or systemic analysis, leverage Opus 4.5's extended thinking to perform deep pattern detection:
+
+**When to Use Extended Thinking:**
+- PR touches > 10 files across multiple modules
+- Reviewing security-critical code paths
+- Analyzing architectural consistency
+- Detecting cross-file code smells
+- Evaluating breaking change impact
+
+**Extended Thinking Review Pattern:**
+
+Based on [Anthropic's Extended Thinking API](https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking):
+
+```typescript
+import Anthropic from '@anthropic-ai/sdk';
+
+interface ReviewResult {
+  issues: ReviewIssue[];
+  patterns: DetectedPattern[];
+  recommendations: string[];
+  riskScore: number;
+}
+
+async function performDeepCodeReview(
+  prDiff: string,
+  codebaseContext: string
+): Promise<ReviewResult> {
+  const anthropic = new Anthropic();
+
+  // Extended thinking requires budget_tokens < max_tokens
+  // Minimum budget: 1,024 tokens
+  const response = await anthropic.messages.create({
+    model: 'claude-opus-4-5-20251101',
+    max_tokens: 16000,
+    thinking: {
+      type: 'enabled',
+      budget_tokens: 8000 // Deep analysis for complex reviews
+    },
+    messages: [{
+      role: 'user',
+      content: `
+        Perform a comprehensive code review analyzing:
+
+        ## PR Changes
+        ${prDiff}
+
+        ## Codebase Context
+        ${codebaseContext}
+
+        ## Analysis Requirements
+        1. **Systemic Pattern Detection**: Identify recurring patterns (good and bad)
+        2. **Cross-File Impact**: Trace how changes affect other modules
+        3. **Security Analysis**: Deep scan for vulnerabilities (OWASP Top 10)
+        4. **Architectural Consistency**: Verify alignment with existing patterns
+        5. **Technical Debt Assessment**: Identify debt being added or resolved
+
+        Provide structured output with:
+        - Critical issues (must fix)
+        - Warnings (should fix)
+        - Suggestions (nice to have)
+        - Detected patterns (positive and negative)
+        - Risk score (1-10)
+      `
+    }]
+  });
+
+  // Response contains thinking blocks followed by text blocks
+  // content: [{ type: 'thinking', thinking: '...' }, { type: 'text', text: '...' }]
+  return parseReviewResponse(response);
+}
+```
+
+### Systemic Code Smell Detection
+
+Detect patterns that span multiple files:
+
+```typescript
+interface CodeSmellPattern {
+  type: 'duplication' | 'coupling' | 'complexity' | 'naming' | 'architecture';
+  severity: 'critical' | 'warning' | 'info';
+  locations: FileLocation[];
+  description: string;
+  suggestion: string;
+}
+
+const SMELL_PATTERNS = {
+  // Cross-file duplication
+  duplication: {
+    triggers: ['similar logic in 3+ files', 'copy-paste patterns', 'repeated error handling'],
+    action: 'Extract to shared utility or base class'
+  },
+
+  // Tight coupling
+  coupling: {
+    triggers: ['circular imports', 'god objects', 'feature envy'],
+    action: 'Apply dependency injection or interface segregation'
+  },
+
+  // Complexity creep
+  complexity: {
+    triggers: ['nested callbacks > 3 levels', 'functions > 50 lines', 'cyclomatic complexity > 10'],
+    action: 'Decompose into smaller, focused functions'
+  },
+
+  // Inconsistent naming
+  naming: {
+    triggers: ['mixed conventions', 'unclear abbreviations', 'inconsistent pluralization'],
+    action: 'Align with codebase naming conventions'
+  },
+
+  // Architectural drift
+  architecture: {
+    triggers: ['layer violations', 'missing abstractions', 'inappropriate intimacy'],
+    action: 'Refactor to follow established architectural patterns'
+  }
+};
+```
+
+### Security Deep Analysis
+
+Extended thinking enables comprehensive security review:
+
+```typescript
+interface SecurityFinding {
+  category: 'injection' | 'auth' | 'crypto' | 'exposure' | 'config';
+  severity: 'critical' | 'high' | 'medium' | 'low';
+  cwe: string; // CWE ID
+  location: FileLocation;
+  description: string;
+  remediation: string;
+}
+
+async function performSecurityReview(
+  code: string,
+  context: SecurityContext
+): Promise<SecurityFinding[]> {
+  const anthropic = new Anthropic();
+
+  const response = await anthropic.messages.create({
+    model: 'claude-opus-4-5-20251101',
+    max_tokens: 12000,
+    thinking: {
+      type: 'enabled',
+      budget_tokens: 6000 // Security analysis needs deep reasoning
+    },
+    messages: [{
+      role: 'user',
+      content: `
+        Perform security analysis on this code:
+
+        ${code}
+
+        Context:
+        - Language: ${context.language}
+        - Framework: ${context.framework}
+        - Exposure: ${context.isPublicFacing ? 'Public' : 'Internal'}
+
+        Check for:
+        1. Injection vulnerabilities (SQL, XSS, command)
+        2. Authentication/Authorization flaws
+        3. Cryptographic weaknesses
+        4. Sensitive data exposure
+        5. Security misconfiguration
+
+        For each finding, provide CWE ID and specific remediation.
+      `
+    }]
+  });
+
+  return parseSecurityFindings(response);
+}
+```
+
+### Cross-File Impact Analysis
+
+Trace how changes ripple through the codebase:
+
+```typescript
+interface ImpactAnalysis {
+  directImpact: FileImpact[];
+  indirectImpact: FileImpact[];
+  breakingChanges: BreakingChange[];
+  testCoverage: TestCoverageGap[];
+}
+
+async function analyzeChangeImpact(
+  changedFiles: string[],
+  dependencyGraph: DependencyGraph
+): Promise<ImpactAnalysis> {
+  // Build impact graph
+  const directlyAffected = new Set<string>();
+  const indirectlyAffected = new Set<string>();
+
+  for (const file of changedFiles) {
+    // Files that import this file
+    const dependents = dependencyGraph.getDependents(file);
+    dependents.forEach(d => directlyAffected.add(d));
+
+    // Second-level dependents
+    for (const dependent of dependents) {
+      const secondLevel = dependencyGraph.getDependents(dependent);
+      secondLevel.forEach(d => {
+        if (!directlyAffected.has(d)) {
+          indirectlyAffected.add(d);
+        }
+      });
+    }
+  }
+
+  // Use extended thinking for breaking change analysis
+  const breakingAnalysis = await analyzeBreakingChanges(
+    changedFiles,
+    Array.from(directlyAffected)
+  );
+
+  return {
+    directImpact: Array.from(directlyAffected).map(f => ({ file: f, type: 'direct' })),
+    indirectImpact: Array.from(indirectlyAffected).map(f => ({ file: f, type: 'indirect' })),
+    breakingChanges: breakingAnalysis.breaking,
+    testCoverage: breakingAnalysis.gaps
+  };
+}
+```
+
+### Review Automation with Model Tiering
+
+Optimize review costs with intelligent model selection:
+
+```typescript
+type ModelTier = 'opus' | 'sonnet' | 'haiku';
+
+interface ReviewConfig {
+  model: ModelTier;
+  thinkingBudget?: number;
+  focus: string[];
+}
+
+function selectReviewModel(pr: PullRequest): ReviewConfig {
+  // Critical path - use Opus with extended thinking
+  if (pr.touchesCriticalPath || pr.isSecurityRelated) {
+    return {
+      model: 'opus',
+      thinkingBudget: 8000,
+      focus: ['security', 'architecture', 'breaking-changes']
+    };
+  }
+
+  // Large PRs - use Opus for systemic analysis
+  if (pr.filesChanged > 10 || pr.linesChanged > 500) {
+    return {
+      model: 'opus',
+      thinkingBudget: 5000,
+      focus: ['patterns', 'impact', 'consistency']
+    };
+  }
+
+  // Standard PRs - Sonnet for thorough review
+  if (pr.linesChanged > 100) {
+    return {
+      model: 'sonnet',
+      focus: ['correctness', 'style', 'tests']
+    };
+  }
+
+  // Small changes - Haiku for quick review
+  return {
+    model: 'haiku',
+    focus: ['correctness', 'style']
+  };
+}
+```
+
+### Review Comment Generation
+
+Generate conventional comments automatically:
+
+```typescript
+interface GeneratedComment {
+  label: 'praise' | 'nitpick' | 'suggestion' | 'issue' | 'question' | 'security' | 'bug';
+  decoration?: 'blocking' | 'non-blocking' | 'if-minor';
+  subject: string;
+  discussion: string;
+  location: { file: string; line: number };
+}
+
+function formatConventionalComment(comment: GeneratedComment): string {
+  const decoration = comment.decoration ? ` [${comment.decoration}]` : '';
+  return `${comment.label}${decoration}: ${comment.subject}\n\n${comment.discussion}`;
+}
+
+// Example output:
+// security [blocking]: SQL injection vulnerability in user search
+//
+// The search query is constructed using string concatenation:
+// ```typescript
+// const query = `SELECT * FROM users WHERE name = '${searchTerm}'`;
+// ```
+//
+// Use parameterized queries instead:
+// ```typescript
+// const query = 'SELECT * FROM users WHERE name = $1';
+// const result = await db.query(query, [searchTerm]);
+// ```
+```
+
+---
+
 ## Quick Start Guide
 
 **For Reviewers:**
@@ -600,6 +911,6 @@ Fixes #[issue number]
 
 ---
 
-**Skill Version**: 1.0.0
-**Last Updated**: 2025-10-31
+**Skill Version**: 2.0.0
+**Last Updated**: 2025-11-27
 **Maintained by**: AI Agent Hub Team

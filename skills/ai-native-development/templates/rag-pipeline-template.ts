@@ -188,7 +188,7 @@ Instructions:
 
   return {
     answer: response.choices[0].message.content!,
-    sources: context.map((doc, i) => ({
+    sources: context.map((doc) => ({
       id: doc.id,
       text: doc.text,
       score: doc.score,

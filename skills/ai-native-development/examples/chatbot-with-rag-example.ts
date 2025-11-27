@@ -4,14 +4,13 @@
  */
 
 import OpenAI from 'openai'
-import { Pinecone } from '@pinecone-database/pinecone'
-import { createEmbedding, ragQuery } from '../templates/rag-pipeline-template'
+import { ragQuery } from '../templates/rag-pipeline-template'
 
 const openai = new OpenAI()
 
 // Next.js API Route Handler
 export async function POST(req: Request) {
-  const { messages, userId } = await req.json()
+  const { messages } = await req.json()
   const userMessage = messages[messages.length - 1].content
 
   // 1. Determine if RAG is needed
@@ -49,7 +48,7 @@ export async function POST(req: Request) {
   })
 }
 
-async function shouldUseRAG(message: string, history: any[]): Promise<boolean> {
+async function shouldUseRAG(message: string, _history: unknown[]): Promise<boolean> {
   // Use a cheap model to determine if RAG is needed
   const response = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo',

@@ -48,7 +48,7 @@ const tools: Tool[] = [
       },
       required: ['query']
     },
-    execute: async ({ query }) => {
+    execute: async ({ query: _query }) => {
       // Implement database query
       return { rows: [] }
     }
@@ -65,7 +65,7 @@ const tools: Tool[] = [
       },
       required: ['to', 'subject', 'body']
     },
-    execute: async ({ to, subject, body }) => {
+    execute: async ({ to: _to, subject: _subject, body: _body }) => {
       // Implement email sending
       return { sent: true, messageId: 'msg_123' }
     }
@@ -79,7 +79,7 @@ const tools: Tool[] = [
 interface AgentStep {
   thought: string
   action?: string
-  actionInput?: any
+  actionInput?: unknown
   observation?: string
 }
 
@@ -88,6 +88,33 @@ interface AgentResult {
   steps: AgentStep[]
   totalCost: number
   iterations: number
+}
+
+/**
+ * Parse agent response into step components
+ */
+function parseAgentResponse(content: string): { thought: string; action?: string; actionInput?: string } {
+  const thoughtMatch = content.match(/Thought: (.*?)(?=\nAction:|$)/s)
+  const actionMatch = content.match(/Action: (.*?)(?=\n|$)/)
+  const inputMatch = content.match(/Action Input: (.*?)(?=\n|$)/)
+
+  return {
+    thought: thoughtMatch?.[1]?.trim() || '',
+    action: actionMatch?.[1]?.trim(),
+    actionInput: inputMatch?.[1]?.trim()
+  }
+}
+
+/**
+ * Execute a tool and return the observation
+ */
+async function executeTool(action: string, actionInput: unknown): Promise<string> {
+  const tool = tools.find(t => t.name === action)
+  if (!tool) {
+    return `Error: Tool '${action}' not found`
+  }
+  const result = await tool.execute(actionInput as Record<string, unknown>)
+  return JSON.stringify(result, null, 2)
 }
 
 export async function reactAgent(
@@ -153,31 +180,16 @@ IMPORTANT:
     }
 
     // Parse thought, action, and input
-    const thoughtMatch = content.match(/Thought: (.*?)(?=\nAction:|$)/s)
-    const actionMatch = content.match(/Action: (.*?)(?=\n|$)/)
-    const inputMatch = content.match(/Action Input: (.*?)(?=\n|$)/)
+    const parsed = parseAgentResponse(content)
+    const step: AgentStep = { thought: parsed.thought }
 
-    const thought = thoughtMatch?.[1].trim() || ''
-    const action = actionMatch?.[1].trim()
-    const actionInput = inputMatch?.[1].trim()
-
-    const step: AgentStep = { thought }
-
-    if (action && actionInput) {
-      step.action = action
+    if (parsed.action && parsed.actionInput) {
+      step.action = parsed.action
       try {
-        step.actionInput = JSON.parse(actionInput)
-
-        // Execute tool
-        const tool = tools.find(t => t.name === action)
-        if (!tool) {
-          step.observation = `Error: Tool '${action}' not found`
-        } else {
-          const result = await tool.execute(step.actionInput)
-          step.observation = JSON.stringify(result, null, 2)
-        }
-      } catch (error) {
-        step.observation = `Error: ${error.message}`
+        step.actionInput = JSON.parse(parsed.actionInput)
+        step.observation = await executeTool(parsed.action, step.actionInput)
+      } catch (err) {
+        step.observation = `Error: ${err instanceof Error ? err.message : 'Unknown error'}`
       }
     }
 

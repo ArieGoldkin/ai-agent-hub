@@ -33,7 +33,7 @@ npx ai-agent-hub@latest
 ```
 ✓ Agents installed (9 agents)
 ✓ Instructions installed (7 files)
-✓ Skills installed (14 skills)
+✓ Skills installed (18 skills)
 ✓ Context system initialized
 ✓ CLAUDE.md generated
 ✓ Installation complete!

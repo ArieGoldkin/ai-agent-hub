@@ -163,24 +163,28 @@ export class QualityGateValidator {
   }
 
   /**
+   * Check if a specific evidence check passed
+   */
+  private checkPassed(check?: { executed?: boolean; exit_code?: number }): boolean {
+    return Boolean(check?.executed && check?.exit_code === 0);
+  }
+
+  /**
    * Check if evidence exists and passes for task completion
    * @param context Shared context with evidence
    * @returns True if evidence shows passing checks
    */
   checkEvidence(context: SharedContext): boolean {
     const evidence = context.quality_evidence;
-
-    if (!evidence) {
-      return false;
-    }
+    if (!evidence) return false;
 
     // At least one check must have been executed and passed
-    const hasPassingTest = evidence.tests?.executed && evidence.tests?.exit_code === 0;
-    const hasPassingBuild = evidence.build?.executed && evidence.build?.exit_code === 0;
-    const hasPassingLinter = evidence.linter?.executed && evidence.linter?.exit_code === 0;
-    const hasPassingTypeChecker = evidence.type_checker?.executed && evidence.type_checker?.exit_code === 0;
-
-    return !!(hasPassingTest || hasPassingBuild || hasPassingLinter || hasPassingTypeChecker);
+    return (
+      this.checkPassed(evidence.tests) ||
+      this.checkPassed(evidence.build) ||
+      this.checkPassed(evidence.linter) ||
+      this.checkPassed(evidence.type_checker)
+    );
   }
 
   /**

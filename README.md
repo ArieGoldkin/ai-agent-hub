@@ -4,7 +4,7 @@
 
   ### ✨ Transform Claude into 10 Context-Aware AI Agents Working in Parallel ✨
   ### 🧠 Intelligent Orchestration + 79% Faster with Squad Mode 🚀
-  ### 📚 15 Expert Skills + Production-Grade Quality Enforcement 📚
+  ### 📚 18 Expert Skills + Production-Grade Quality Enforcement 📚
   ### 🎯 Evidence-Based Verification - Proof Over Promises 🎯
 
   ```bash
@@ -239,7 +239,7 @@ Each agent is a specialized AI personality with deep expertise in their domain.
 
 ## 📚 Claude Code Skills
 
-**Updated in 3.5.9**: 14 comprehensive skills including production-grade quality enforcement and 2025+ modern patterns!
+**Updated in 3.7.0**: 18 comprehensive skills including production-grade quality enforcement, DevOps, observability, and 2025+ modern patterns!
 
 ### What Are Skills?
 
@@ -392,6 +392,32 @@ Each skill provides frameworks, templates, examples, and battle-tested best prac
 - Prisma ORM type generation
 - TypeScript 5.7+ advanced features
 - Full-stack type inference patterns
+
+#### 🚀 DevOps & Deployment **(NEW in v3.7.0)**
+**CI/CD pipelines, containerization & infrastructure as code**
+- GitHub Actions pipeline templates (6 stages)
+- Multi-stage Dockerfile best practices
+- Kubernetes deployments, services & ingress
+- Helm charts and GitOps with ArgoCD
+- Terraform AWS infrastructure (VPC, EKS, RDS)
+- Blue-green, canary & rolling deployment strategies
+
+#### ⚡ Performance Optimization **(NEW in v3.7.0)**
+**Full-stack performance analysis & tuning**
+- Core Web Vitals optimization (LCP, INP, CLS)
+- Database query optimization & N+1 fixes
+- Redis caching patterns & cache hierarchies
+- React memoization & virtualization
+- Bundle size optimization & code splitting
+- API compression, ETags & pagination
+
+#### 📊 Observability & Monitoring **(NEW in v3.7.0)**
+**Structured logging, metrics, tracing & alerting**
+- Winston structured logging with correlation IDs
+- Prometheus metrics (RED method)
+- OpenTelemetry distributed tracing
+- Alerting rules (critical, high, medium severity)
+- Health check endpoints (liveness, readiness, startup)
 
 ### How They Work
 

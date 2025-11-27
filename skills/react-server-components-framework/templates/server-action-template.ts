@@ -56,7 +56,7 @@ export async function createResource(formData: FormData) {
 
     // 4. Redirect to new resource
     redirect(`/resources/${resource.id}`)
-  } catch (error) {
+  } catch {
     console.error('Database error:', error)
     return {
       error: 'Failed to create resource'
@@ -95,7 +95,7 @@ export async function updateResource(id: string, data: Partial<Resource>) {
     revalidatePath(`/resources/${id}`)
 
     return { success: true, data: updated }
-  } catch (error) {
+  } catch {
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to update'
@@ -115,7 +115,7 @@ export async function deleteResource(id: string) {
 
     revalidatePath('/resources')
     return { success: true }
-  } catch (error) {
+  } catch {
     return {
       success: false,
       error: 'Failed to delete resource'
@@ -159,7 +159,7 @@ export async function bulkUpdateResources(ids: string[], data: Partial<Resource>
 
     revalidatePath('/resources')
     return { success: true, count: ids.length }
-  } catch (error) {
+  } catch {
     return {
       success: false,
       error: 'Failed to bulk update'
@@ -207,7 +207,7 @@ export async function uploadFile(formData: FormData) {
 
     revalidatePath('/uploads')
     return { success: true, url: upload.url }
-  } catch (error) {
+  } catch {
     return { error: 'Failed to upload file' }
   }
 }
