@@ -1,7 +1,7 @@
 ---
 name: claude-main
 description: AI Agent Hub - Source Repository (Package Development)
-version: 3.7.1
+version: 3.7.2
 scope: development
 ---
 
