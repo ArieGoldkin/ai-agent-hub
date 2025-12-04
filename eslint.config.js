@@ -64,6 +64,14 @@ export default [
     }
   },
   {
-    ignores: ['dist/', 'node_modules/', '*.js']
+    ignores: [
+      'dist/',
+      'node_modules/',
+      '*.js',
+      // Skill templates are reference code for users to copy, not project code
+      'skills/**/templates/**',
+      'skills/**/examples/**',
+      'skills/**/assets/**'
+    ]
   }
 ];
