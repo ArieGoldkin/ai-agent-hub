@@ -5,6 +5,28 @@ All notable changes to AI Agent Hub will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.7.2] - 2025-12-04
+
+### ✨ Added
+
+#### New Skill: prototype-to-production (19th Skill)
+- **New skill**: `prototype-to-production` - Convert design prototypes into production-ready components
+- **Input sources**: Super-design HTML prototypes, any HTML/CSS, Figma exports
+- **Output**: React + TypeScript components (adapts to project tech stack)
+- **Features**:
+  - Atomic design methodology (atoms → molecules → organisms)
+  - Design token extraction from prototype CSS/styles
+  - Tech stack detection (defaults to React + TypeScript)
+  - Accessibility-first component generation
+- **Bundled resources**:
+  - `templates/component-base.tsx` - Base component template
+  - `templates/component-with-variants.tsx` - Variant component template
+  - `templates/design-tokens-extract.json` - Token extraction template
+  - `references/conversion-patterns.md` - HTML → React conversion patterns
+- **Total skills**: 18 → 19
+
+---
+
 ## [3.7.1] - 2025-11-27
 
 ### ✨ Added

@@ -25,7 +25,7 @@ export function getVersion(): string {
     return packageJson.version;
   } catch {
     // Fallback for development or if package.json is not found
-    return '3.7.1';
+    return '3.7.2';
   }
 }
 
@@ -50,7 +50,7 @@ export const PACKAGE_NAME = 'ai-agent-hub';
  * Agent counts for documentation
  */
 export const AGENT_COUNT = 10;
-export const SKILL_COUNT = 18; // Updated: 15 existing + 3 new (performance, devops, observability)
+export const SKILL_COUNT = 19; // 15 base + 3 v3.7.0 (performance, devops, observability) + 1 v3.7.1 (prototype-to-production)
 
 /**
  * Model tiers for Opus 4.5 optimization

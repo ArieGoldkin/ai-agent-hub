@@ -4,7 +4,7 @@
 
   ### ✨ Transform Claude into 10 Context-Aware AI Agents Working in Parallel ✨
   ### 🧠 Intelligent Orchestration + 79% Faster with Squad Mode 🚀
-  ### 📚 18 Expert Skills + Production-Grade Quality Enforcement 📚
+  ### 📚 19 Expert Skills + Production-Grade Quality Enforcement 📚
   ### 🎯 Evidence-Based Verification - Proof Over Promises 🎯
 
   ```bash
@@ -239,7 +239,7 @@ Each agent is a specialized AI personality with deep expertise in their domain.
 
 ## 📚 Claude Code Skills
 
-**Updated in 3.7.0**: 18 comprehensive skills including production-grade quality enforcement, DevOps, observability, and 2025+ modern patterns!
+**Updated in 3.7.1**: 19 comprehensive skills including production-grade quality enforcement, DevOps, observability, prototype-to-production conversion, and 2025+ modern patterns!
 
 ### What Are Skills?
 
@@ -418,6 +418,52 @@ Each skill provides frameworks, templates, examples, and battle-tested best prac
 - OpenTelemetry distributed tracing
 - Alerting rules (critical, high, medium severity)
 - Health check endpoints (liveness, readiness, startup)
+
+#### 🎨 Prototype to Production **(NEW in v3.7.1)**
+**Convert design prototypes into production-ready components**
+- Accepts super-design HTML, generic HTML/CSS, Figma exports
+- Atomic design decomposition (atoms → molecules → organisms)
+- Design token extraction from prototype CSS/styles
+- Tech stack detection (defaults to React + TypeScript)
+- Accessibility-first component generation
+- Component templates with TypeScript interfaces
+
+### 🎨 Design to Production Workflow
+
+The **super-design** instruction and **prototype-to-production** skill work together for a streamlined design workflow:
+
+```
+┌─────────────┐         ┌─────────────┐         ┌─────────────┐
+│   DESIGN    │   →     │   CONVERT   │   →     │    SHIP     │
+│             │         │             │         │             │
+│ "Design a   │         │ "Convert to │         │  React +    │
+│  dashboard" │         │  components"│         │  TypeScript │
+└─────────────┘         └─────────────┘         └─────────────┘
+   super-design          prototype-to-            Production
+   (HTML prototype)      production skill         Components
+```
+
+**Step 1: Design** - Use super-design workflow to create HTML prototypes
+```markdown
+"Design a modern dashboard with analytics charts"
+→ Creates .superdesign/design_iterations/*.html
+```
+
+**Step 2: Convert** - Transform prototype to production components
+```markdown
+"Convert this prototype to React components"
+→ Analyzes HTML structure
+→ Extracts design tokens
+→ Generates typed components
+```
+
+**Step 3: Ship** - Production-ready output
+- TypeScript components with full type safety
+- Design tokens (colors, typography, spacing)
+- Accessibility built-in (ARIA, keyboard support)
+- Atomic design structure (atoms → molecules → organisms)
+
+---
 
 ### How They Work
 

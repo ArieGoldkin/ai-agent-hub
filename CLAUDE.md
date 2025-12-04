@@ -1,7 +1,7 @@
 ---
 name: claude-main
 description: AI Agent Hub - Source Repository (Package Development)
-version: 3.7.1
+version: 3.7.2
 scope: development
 ---
 
@@ -24,7 +24,7 @@ This repository builds the NPM package: `npx ai-agent-hub@latest`
 ```
 /agents/        # 10 agent personality definitions (source)
 /assets/        # Instruction templates (source)
-/skills/        # 18 knowledge modules (source)
+/skills/        # 19 knowledge modules (source)
 /lib/           # TypeScript CLI & generators
 /bin/           # CLI entry point
 /.squad/        # Squad mode orchestration
@@ -99,10 +99,10 @@ For comprehensive guides, see the `docs/` folder:
 
 ## ⚡ Quick Reference
 
-### Package Components (v3.7.0)
+### Package Components (v3.7.1)
 
 - **Agents**: 10 specialists (ai-ml-engineer, backend-system-architect, code-quality-reviewer, frontend-ui-developer, product-manager, rapid-ui-designer, sprint-prioritizer, studio-coach, ux-researcher, whimsy-injector)
-- **Skills**: 18 modules (ai-native-development, api-design-framework, architecture-decision-record, brainstorming, code-review-playbook, database-schema-designer, design-system-starter, devops-deployment, edge-computing-patterns, evidence-verification, observability-monitoring, performance-optimization, quality-gates, react-server-components-framework, security-checklist, streaming-api-patterns, testing-strategy-builder, type-safety-validation)
+- **Skills**: 19 modules (ai-native-development, api-design-framework, architecture-decision-record, brainstorming, code-review-playbook, database-schema-designer, design-system-starter, devops-deployment, edge-computing-patterns, evidence-verification, observability-monitoring, performance-optimization, prototype-to-production, quality-gates, react-server-components-framework, security-checklist, streaming-api-patterns, testing-strategy-builder, type-safety-validation)
 - **Modes**: Classic (sequential) + Squad (parallel, 97% token reduction)
 
 ### File Paths (Always Use These)
